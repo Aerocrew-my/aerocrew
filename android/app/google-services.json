@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "791157275777",
+    "project_id": "aerocrew-96754",
+    "storage_bucket": "aerocrew-96754.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791157275777:android:9cdd7d6f7639939ab92180",
+        "android_client_info": {
+          "package_name": "com.example.aerocrew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx9u6301ltMEx9zdNNXJ4ZOgYrWdB1rDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
