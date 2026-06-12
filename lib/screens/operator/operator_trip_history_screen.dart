@@ -4,7 +4,7 @@ import 'package:aerocrew/constants.dart';
 class OperatorTripHistoryScreen extends StatelessWidget {
   const OperatorTripHistoryScreen({super.key});
 
-  final List<Map<String, dynamic>> trips = const [
+  static const List<Map<String, dynamic>> trips = [
     {
       'date': 'Mon 16 Jun 2026',
       'route': 'PJ → SZB',
