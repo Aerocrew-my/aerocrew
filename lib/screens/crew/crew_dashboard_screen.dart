@@ -1,6 +1,7 @@
 import 'package:aerocrew/screens/crew/trip_history_screen.dart';
 import 'package:aerocrew/screens/crew/notifications_screen.dart';
 import 'package:aerocrew/screens/crew/billing_screen.dart';
+import 'package:aerocrew/screens/crew/crew_profile_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/crew/roster_upload_screen.dart';
@@ -24,6 +25,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   void initState() {
     super.initState();
     _loadUser();
+    _loadTrips();
   }
 
   Future<void> _loadUser() async {
@@ -70,7 +72,45 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
     }
   }
 
-  final List<Map<String, dynamic>> upcomingTrips = [
+  List<Map<String, dynamic>> upcomingTrips = [];
+  bool tripsLoading = true;
+
+  Future<void> _loadTrips() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final snapshot = await FirebaseFirestore.instance
+          .collection('trips')
+          .where('crewId', isEqualTo: uid)
+          .orderBy('createdAt', descending: false)
+          .limit(10)
+          .get();
+
+      if (mounted) {
+        if (snapshot.docs.isEmpty) {
+          setState(() {
+            upcomingTrips = _demoTrips();
+            tripsLoading = false;
+          });
+        } else {
+          setState(() {
+            upcomingTrips = snapshot.docs
+                .map((doc) => {...doc.data(), 'id': doc.id})
+                .toList();
+            tripsLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          upcomingTrips = _demoTrips();
+          tripsLoading = false;
+        });
+      }
+    }
+  }
+
+  List<Map<String, dynamic>> _demoTrips() => [
     {
       'flight': 'AK6101',
       'date': 'Mon 16 Jun',
@@ -220,6 +260,52 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   }
 
   Widget _buildBody() {
+    if (tripsLoading) {
+      return const Center(
+        child: CircularProgressIndicator(color: AeroColors.amber),
+      );
+    }
+    if (upcomingTrips.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AeroColors.navyCard,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Icon(Icons.flight_outlined,
+                  color: AeroColors.grey, size: 40),
+            ),
+            const SizedBox(height: 16),
+            const Text('No trips yet',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white)),
+            const SizedBox(height: 6),
+            const Text('Upload your roster to get matched',
+                style: TextStyle(fontSize: 13, color: AeroColors.grey)),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const RosterUploadScreen())),
+              icon: const Icon(Icons.upload_file, size: 16),
+              label: const Text('Upload roster'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AeroColors.amber,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                elevation: 0,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -446,11 +532,15 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.8)),
             const Spacer(),
-            Text('View all',
-                style: TextStyle(
-                    fontSize: 12,
-                    color: AeroColors.amber,
-                    fontWeight: FontWeight.w500)),
+            GestureDetector(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const TripHistoryScreen())),
+              child: const Text('View all',
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: AeroColors.amber,
+                      fontWeight: FontWeight.w500)),
+            ),
           ],
         ),
         const SizedBox(height: 10),
@@ -578,30 +668,36 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
         children: List.generate(items.length, (i) {
           final isActive = currentIndex == i;
           return GestureDetector(
-            onTap: () => setState(() => currentIndex = i),
+            onTap: () {
+              setState(() => currentIndex = i);
+              if (i == 1) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const RosterUploadScreen()));
+              } else if (i == 2) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const BillingScreen()));
+              } else if (i == 3) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const CrewProfileViewScreen()));
+              }
+            },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(items[i]['icon'] as IconData,
                     size: 22,
-                    color: isActive
-                        ? AeroColors.amber
-                        : AeroColors.lightGrey),
+                    color: isActive ? AeroColors.amber : AeroColors.lightGrey),
                 const SizedBox(height: 3),
                 Text(items[i]['label'] as String,
                     style: TextStyle(
                         fontSize: 10,
-                        fontWeight: isActive
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                        color: isActive
-                            ? AeroColors.amber
-                            : AeroColors.lightGrey)),
+                        fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                        color: isActive ? AeroColors.amber : AeroColors.lightGrey)),
               ],
             ),
           );
         }),
       ),
-    );
+        );
   }
 }

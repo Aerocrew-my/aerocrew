@@ -1,6 +1,8 @@
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
+import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
+import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/operator/job_details_screen.dart';
@@ -25,6 +27,7 @@ class _OperatorDashboardScreenState
   void initState() {
     super.initState();
     _loadOperator();
+    _loadJobs();
   }
 
   Future<void> _loadOperator() async {
@@ -53,70 +56,106 @@ class _OperatorDashboardScreenState
 
   String get firstName => operatorName.split(' ').first;
 
-  final List<Map<String, dynamic>> jobs = [
-    {
-      'id': 'job1',
-      'date': 'Mon 16 Jun',
-      'pickupTime': '03:00',
-      'crewCount': 3,
-      'zone': 'PJ zone',
-      'airport': 'SZB',
-      'flightTime': '05:30',
-      'earnings': 90.0,
-      'status': 'confirmed',
-      'crew': [
-        {'name': 'Faiz Zakaria', 'zone': 'Petaling Jaya', 'time': '03:00'},
-        {'name': 'Siti Nabilah', 'zone': 'Ara Damansara', 'time': '03:20'},
-        {'name': 'Razif Azman', 'zone': 'Subang Jaya', 'time': '03:40'},
-      ],
-    },
-    {
-      'id': 'job2',
-      'date': 'Mon 16 Jun',
-      'pickupTime': '07:00',
-      'crewCount': 2,
-      'zone': 'Shah Alam',
-      'airport': 'KLIA',
-      'flightTime': '09:30',
-      'earnings': 110.0,
-      'status': 'confirmed',
-      'crew': [
-        {'name': 'Ahmad Syafiq', 'zone': 'Shah Alam', 'time': '07:00'},
-        {'name': 'Nurul Ain', 'zone': 'Subang', 'time': '07:20'},
-      ],
-    },
-    {
-      'id': 'job3',
-      'date': 'Tue 17 Jun',
-      'pickupTime': '04:30',
-      'crewCount': 4,
-      'zone': 'Damansara',
-      'airport': 'KLIA',
-      'flightTime': '07:00',
-      'earnings': 160.0,
-      'status': 'upcoming',
-      'crew': [],
-    },
-    {
-      'id': 'job4',
-      'date': 'Wed 18 Jun',
-      'pickupTime': '05:00',
-      'crewCount': 2,
-      'zone': 'Cyberjaya',
-      'airport': 'klia2',
-      'flightTime': '07:30',
-      'earnings': 70.0,
-      'status': 'upcoming',
-      'crew': [],
-    },
-  ];
+  List<Map<String, dynamic>> jobs = [];
+  bool jobsLoading = true;
 
-  double get todayEarnings => jobs
-      .where((j) => j['date'] == 'Mon 16 Jun')
-      .fold(0.0, (sum, j) => sum + (j['earnings'] as double));
+  Future<void> _loadJobs() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final snapshot = await FirebaseFirestore.instance
+          .collection('pools')
+          .where('operatorId', isEqualTo: uid)
+          .limit(10)
+          .get();
 
-  int get todayJobs =>
-      jobs.where((j) => j['date'] == 'Mon 16 Jun').length;
+      if (mounted) {
+        if (snapshot.docs.isEmpty) {
+          setState(() {
+            jobs = _demoJobs();
+            jobsLoading = false;
+          });
+        } else {
+          setState(() {
+            jobs = snapshot.docs
+                .map((doc) => {...doc.data(), 'id': doc.id})
+                .toList();
+            jobsLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          jobs = _demoJobs();
+          jobsLoading = false;
+        });
+      }
+    }
+  }
+
+  List<Map<String, dynamic>> _demoJobs() => [
+  {
+    'id': 'job1',
+    'date': 'Mon 16 Jun',
+    'pickupTime': '03:00',
+    'crewCount': 3,
+    'zone': 'PJ zone',
+    'airport': 'SZB',
+    'flightTime': '05:30',
+    'earnings': 90.0,
+    'status': 'confirmed',
+    'crew': [
+      {'name': 'Faiz Zakaria', 'zone': 'Petaling Jaya', 'time': '03:00'},
+      {'name': 'Siti Nabilah', 'zone': 'Ara Damansara', 'time': '03:20'},
+      {'name': 'Razif Azman', 'zone': 'Subang Jaya', 'time': '03:40'},
+    ],
+  },
+  {
+    'id': 'job2',
+    'date': 'Mon 16 Jun',
+    'pickupTime': '07:00',
+    'crewCount': 2,
+    'zone': 'Shah Alam',
+    'airport': 'KLIA',
+    'flightTime': '09:30',
+    'earnings': 110.0,
+    'status': 'confirmed',
+    'crew': [
+      {'name': 'Ahmad Syafiq', 'zone': 'Shah Alam', 'time': '07:00'},
+      {'name': 'Nurul Ain', 'zone': 'Subang', 'time': '07:20'},
+    ],
+  },
+  {
+    'id': 'job3',
+    'date': 'Tue 17 Jun',
+    'pickupTime': '04:30',
+    'crewCount': 4,
+    'zone': 'Damansara',
+    'airport': 'KLIA',
+    'flightTime': '07:00',
+    'earnings': 160.0,
+    'status': 'upcoming',
+    'crew': [],
+  },
+  {
+    'id': 'job4',
+    'date': 'Wed 18 Jun',
+    'pickupTime': '05:00',
+    'crewCount': 2,
+    'zone': 'Cyberjaya',
+    'airport': 'klia2',
+    'flightTime': '07:30',
+    'earnings': 70.0,
+    'status': 'upcoming',
+    'crew': [],
+  },
+];
+
+double get todayEarnings => jobs
+    .where((j) => j['date'] == 'Mon 16 Jun')
+    .fold(0.0, (sum, j) => sum + ((j['earnings'] ?? 0.0) as double));
+    
+  int get todayJobs => jobs.where((j) => j['date'] == 'Mon 16 Jun').length;
 
   @override
   Widget build(BuildContext context) {
@@ -196,16 +235,20 @@ class _OperatorDashboardScreenState
             ),
           ),
           const SizedBox(width: 8),
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: AeroColors.navyCard,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AeroColors.divider, width: 0.5),
+          GestureDetector(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const OperatorNotificationsScreen())),
+            child: Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                color: AeroColors.navyCard,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
+              ),
+              child: const Icon(Icons.notifications_none,
+                  color: AeroColors.grey, size: 18),
             ),
-            child: const Icon(Icons.notifications_none,
-                color: AeroColors.grey, size: 18),
           ),
         ],
       ),
@@ -213,6 +256,11 @@ class _OperatorDashboardScreenState
   }
 
   Widget _buildBody() {
+    if (jobsLoading) {
+      return const Center(
+        child: CircularProgressIndicator(color: AeroColors.amber),
+      );
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -470,32 +518,36 @@ class _OperatorDashboardScreenState
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => OperatorTripHistoryScreen(),
+          builder: (_) => const OperatorProfileViewScreen(),
         ),
       );
     }
-  },
+  }, // <-- missing
   child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(items[i]['icon'] as IconData,
-                    size: 22,
-                    color: isActive
-                        ? AeroColors.amber
-                        : AeroColors.lightGrey),
-                const SizedBox(height: 3),
-                Text(items[i]['label'] as String,
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: isActive
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                        color: isActive
-                            ? AeroColors.amber
-                            : AeroColors.lightGrey)),
-              ],
-            ),
-          );
+    mainAxisSize: MainAxisSize.min,
+        children: [
+      Icon(
+        items[i]['icon'] as IconData,
+        size: 22,
+        color: isActive
+            ? AeroColors.amber
+            : AeroColors.lightGrey,
+      ),
+      const SizedBox(height: 3),
+      Text(
+        items[i]['label'] as String,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight:
+              isActive ? FontWeight.w600 : FontWeight.w400,
+          color: isActive
+              ? AeroColors.amber
+              : AeroColors.lightGrey,
+        ),
+      ),
+    ],
+  ),
+);
         }),
       ),
     );
