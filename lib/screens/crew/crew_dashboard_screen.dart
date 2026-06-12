@@ -1,3 +1,6 @@
+import 'package:aerocrew/screens/crew/trip_history_screen.dart';
+import 'package:aerocrew/screens/crew/notifications_screen.dart';
+import 'package:aerocrew/screens/crew/billing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/crew/roster_upload_screen.dart';
@@ -186,17 +189,31 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                     color: productColor)),
           ),
           const SizedBox(width: 8),
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: AeroColors.navyCard,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AeroColors.divider, width: 0.5),
-            ),
-            child: const Icon(Icons.notifications_none,
-                color: AeroColors.grey, size: 18),
-          ),
+          GestureDetector(
+  onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const NotificationsScreen(),
+    ),
+  ),
+  child: Container(
+    width: 38,
+    height: 38,
+    decoration: BoxDecoration(
+      color: AeroColors.navyCard,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(
+        color: AeroColors.divider,
+        width: 0.5,
+      ),
+    ),
+    child: const Icon(
+      Icons.notifications_none,
+      color: AeroColors.grey,
+      size: 18,
+    ),
+  ),
+),
         ],
       ),
     );

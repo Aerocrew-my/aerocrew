@@ -1,3 +1,6 @@
+import 'package:aerocrew/screens/operator/earnings_screen.dart';
+import 'package:aerocrew/screens/operator/availability_screen.dart';
+import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/operator/job_details_screen.dart';
@@ -446,8 +449,33 @@ class _OperatorDashboardScreenState
         children: List.generate(items.length, (i) {
           final isActive = currentIndex == i;
           return GestureDetector(
-            onTap: () => setState(() => currentIndex = i),
-            child: Column(
+  onTap: () {
+    setState(() => currentIndex = i);
+
+    if (i == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AvailabilityScreen(),
+        ),
+      );
+    } else if (i == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const EarningsScreen(),
+        ),
+      );
+    } else if (i == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => OperatorTripHistoryScreen(),
+        ),
+      );
+    }
+  },
+  child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(items[i]['icon'] as IconData,
