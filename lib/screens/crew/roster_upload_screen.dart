@@ -4,6 +4,8 @@ import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/services/anthropic_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aerocrew/services/matching_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RosterUploadScreen extends StatefulWidget {
   const RosterUploadScreen({super.key});
@@ -83,44 +85,75 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
   }
 
   Future<void> _confirmFlights() async {
-    setState(() => isConfirming = true);
-    try {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      final confirmed =
-          extractedFlights.where((f) => f['confirmed'] == true).toList();
-      await FirebaseFirestore.instance.collection('rosters').add({
-        'userId': uid,
-        'flights': confirmed,
-        'uploadedAt': FieldValue.serverTimestamp(),
-        'status': 'pending_match',
-      });
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: const [
-              Icon(Icons.check_circle, color: Colors.white, size: 16),
-              SizedBox(width: 8),
-              Text('Roster saved! Matching you with vans...'),
-            ],
-          ),
-          backgroundColor: AeroColors.success,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10)),
-        ),
-      );
-      await Future.delayed(const Duration(seconds: 1));
-      if (!mounted) return;
-      Navigator.pop(context);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error saving roster: $e')),
-      );
+  setState(() => isConfirming = true);
+  try {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final confirmed =
+        extractedFlights.where((f) => f['confirmed'] == true).toList();
+
+    // Get user's zone
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    final zone = userDoc.data()?['homeZone'] ?? 'Petaling Jaya';
+
+    // Save roster
+    await FirebaseFirestore.instance.collection('rosters').add({
+      'userId': uid,
+      'flights': confirmed,
+      'uploadedAt': FieldValue.serverTimestamp(),
+      'status': 'processing',
+    });
+
+    // Match each flight
+    int matchedCount = 0;
+    for (final flight in confirmed) {
+      try {
+        final dateparts = (flight['date'] as String).split(' ');
+        final now = DateTime.now();
+        final flightDate = DateTime(now.year, now.month, now.day);
+
+        await MatchingService.matchCrewToPool(
+          flightNumber: flight['flightNumber'] as String,
+          flightDate: flightDate,
+          departureTime: flight['departureTime'] as String,
+          airport: flight['airport'] as String,
+          zone: zone,
+        );
+        matchedCount++;
+      } catch (e) {
+        debugPrint('Match error for ${flight['flightNumber']}: $e');
+      }
     }
-    setState(() => isConfirming = false);
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white, size: 16),
+            const SizedBox(width: 8),
+            Text('$matchedCount flights matched! Finding your van...'),
+          ],
+        ),
+        backgroundColor: AeroColors.success,
+        behavior: SnackBarBehavior.floating,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+    await Future.delayed(const Duration(seconds: 1));
+    if (!mounted) return;
+    Navigator.pop(context);
+  } catch (e) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $e')),
+    );
   }
+  setState(() => isConfirming = false);
+}
 
   @override
   Widget build(BuildContext context) {
