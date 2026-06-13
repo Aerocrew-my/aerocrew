@@ -3,6 +3,7 @@ import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
+import 'package:aerocrew/screens/shared/help_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -268,6 +269,13 @@ class _OperatorProfileViewScreenState
         'desc': 'Set your schedule',
         'color': AeroColors.success,
         'screen': const AvailabilityScreen(),
+      },
+      {
+        'icon': Icons.help_outline,
+        'label': 'Help & support',
+        'desc': 'FAQs and contact us',
+        'color': AeroColors.grey,
+        'screen': const HelpScreen(),
       },
     ];
 

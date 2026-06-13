@@ -2,6 +2,8 @@ import 'package:aerocrew/screens/crew/trip_history_screen.dart';
 import 'package:aerocrew/screens/crew/notifications_screen.dart';
 import 'package:aerocrew/screens/crew/billing_screen.dart';
 import 'package:aerocrew/screens/crew/crew_profile_view_screen.dart';
+import 'package:aerocrew/screens/crew/crew_map_screen.dart';
+import 'package:aerocrew/screens/crew/poolmates_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/crew/roster_upload_screen.dart';
@@ -443,10 +445,24 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                   ),
                   Row(
                     children: [
-                      _buildIconBtn(Icons.phone, AeroColors.success),
+                      GestureDetector(
+                        onTap: () => Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (_) => CrewMapScreen(trip: upcomingTrips.first))),
+                        child: _buildIconBtn(Icons.map_outlined, AeroColors.amber),
+                      ),
                       const SizedBox(width: 6),
-                      _buildIconBtn(
-                          Icons.chat_bubble_outline, AeroColors.infoText),
+                      GestureDetector(
+                        onTap: () => Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (_) => PoolmatesScreen(
+                                      flightNumber: upcomingTrips.first['flight'] as String,
+                                      flightDate: upcomingTrips.first['date'] as String,
+                                    ))),
+                        child: _buildIconBtn(Icons.people_outline, AeroColors.success),
+                      ),
+                      const SizedBox(width: 6),
+                      _buildIconBtn(Icons.phone, AeroColors.infoText),
                     ],
                   ),
                 ],

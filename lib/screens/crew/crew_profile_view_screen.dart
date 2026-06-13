@@ -4,6 +4,9 @@ import 'package:aerocrew/screens/crew/edit_profile_screen.dart';
 import 'package:aerocrew/screens/crew/trip_history_screen.dart';
 import 'package:aerocrew/screens/crew/rate_trip_screen.dart';
 import 'package:aerocrew/screens/crew/change_plan_screen.dart';
+import 'package:aerocrew/screens/crew/roster_calendar_screen.dart';
+import 'package:aerocrew/screens/crew/poolmates_screen.dart';
+import 'package:aerocrew/screens/shared/help_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -298,7 +301,21 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
         'label': 'Change plan',
         'desc': 'Switch between AeroPool, Flex, Solo',
         'color': AeroColors.success,
-        'screen': ChangePlanScreen(),
+        'screen': const ChangePlanScreen(),
+      },
+      {
+        'icon': Icons.calendar_month,
+        'label': 'Roster calendar',
+        'desc': 'View all flights this month',
+        'color': AeroColors.infoText,
+        'screen': const RosterCalendarScreen(),
+      },
+      {
+        'icon': Icons.help_outline,
+        'label': 'Help & support',
+        'desc': 'FAQs and contact us',
+        'color': AeroColors.grey,
+        'screen': const HelpScreen(),
       },
     ];
 

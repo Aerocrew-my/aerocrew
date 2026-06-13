@@ -3,6 +3,7 @@ import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
 import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
+import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/operator/job_details_screen.dart';
@@ -384,7 +385,9 @@ double get todayEarnings => jobs
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => JobDetailsScreen(job: job),
+          builder: (_) => job['status'] == 'confirmed'
+              ? ActiveJobScreen(job: job)
+              : JobDetailsScreen(job: job),
         ),
       ),
       child: Container(
