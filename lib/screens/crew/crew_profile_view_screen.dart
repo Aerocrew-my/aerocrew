@@ -9,6 +9,7 @@ import 'package:aerocrew/screens/crew/poolmates_screen.dart';
 import 'package:aerocrew/screens/shared/help_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aerocrew/screens/shared/support_screen.dart';
 
 class CrewProfileViewScreen extends StatefulWidget {
   const CrewProfileViewScreen({super.key});
@@ -287,14 +288,14 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
         'label': 'Trip history',
         'desc': 'View all past trips',
         'color': AeroColors.infoText,
-        'screen': TripHistoryScreen(),
+        'screen': const TripHistoryScreen(),
       },
       {
         'icon': Icons.star_outline,
         'label': 'Rate a trip',
         'desc': 'Leave feedback for your driver',
         'color': AeroColors.amber,
-        'screen': RateTripScreen(),
+        'screen': const RateTripScreen(),
       },
       {
         'icon': Icons.swap_horiz,
@@ -304,18 +305,11 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
         'screen': const ChangePlanScreen(),
       },
       {
-        'icon': Icons.calendar_month,
-        'label': 'Roster calendar',
-        'desc': 'View all flights this month',
-        'color': AeroColors.infoText,
-        'screen': const RosterCalendarScreen(),
-      },
-      {
-        'icon': Icons.help_outline,
-        'label': 'Help & support',
-        'desc': 'FAQs and contact us',
-        'color': AeroColors.grey,
-        'screen': const HelpScreen(),
+        'icon': Icons.headset_mic_outlined,
+        'label': 'Support',
+        'desc': 'Help, FAQ and contact us',
+        'color': const Color(0xFF378ADD),
+        'screen': const SupportScreen(),
       },
     ];
 

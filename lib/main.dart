@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/auth/login_screen.dart';
 import 'package:aerocrew/screens/auth/signup_screen.dart';
+import 'package:aerocrew/screens/shared/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -227,7 +228,7 @@ class SplashScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => Navigator.push(context,
                           MaterialPageRoute(
-                              builder: (_) => const SignupScreen())),
+                              builder: (_) => OnboardingScreen())),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AeroColors.amber,
                         foregroundColor: Colors.white,

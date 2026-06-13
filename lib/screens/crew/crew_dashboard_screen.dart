@@ -2,6 +2,7 @@ import 'package:aerocrew/screens/crew/trip_history_screen.dart';
 import 'package:aerocrew/screens/crew/notifications_screen.dart';
 import 'package:aerocrew/screens/crew/billing_screen.dart';
 import 'package:aerocrew/screens/crew/crew_profile_view_screen.dart';
+import 'package:aerocrew/screens/crew/roster_calendar_screen.dart';
 import 'package:aerocrew/screens/crew/crew_map_screen.dart';
 import 'package:aerocrew/screens/crew/poolmates_screen.dart';
 import 'package:flutter/material.dart';
@@ -688,7 +689,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
               setState(() => currentIndex = i);
               if (i == 1) {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const RosterUploadScreen()));
+                    MaterialPageRoute(builder: (_) => const RosterCalendarScreen()));
               } else if (i == 2) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const BillingScreen()));

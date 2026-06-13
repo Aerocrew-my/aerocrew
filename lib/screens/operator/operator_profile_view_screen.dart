@@ -3,6 +3,8 @@ import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
+import 'package:aerocrew/screens/operator/operator_earnings_analytics_screen.dart';
+import 'package:aerocrew/screens/shared/support_screen.dart';
 import 'package:aerocrew/screens/shared/help_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -269,6 +271,20 @@ class _OperatorProfileViewScreenState
         'desc': 'Set your schedule',
         'color': AeroColors.success,
         'screen': const AvailabilityScreen(),
+      },
+      {
+        'icon': Icons.bar_chart,
+        'label': 'Earnings analytics',
+        'desc': 'Detailed income breakdown',
+        'color': AeroColors.amber,
+        'screen': const OperatorEarningsAnalyticsScreen(),
+      },
+      {
+        'icon': Icons.headset_mic_outlined,
+        'label': 'Support',
+        'desc': 'Help, FAQ and contact us',
+        'color': const Color(0xFF378ADD),
+        'screen': const SupportScreen(),
       },
       {
         'icon': Icons.help_outline,
