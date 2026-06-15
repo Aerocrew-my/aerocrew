@@ -123,10 +123,10 @@ class _OperatorEarningsAnalyticsScreenState
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.08),
+              color: AeroColors.amber.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                  color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+                  color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,7 +227,7 @@ class _OperatorEarningsAnalyticsScreenState
                             decoration: BoxDecoration(
                               color: isLast
                                   ? AeroColors.amber
-                                  : AeroColors.amber.withOpacity(0.3),
+                                  : AeroColors.amber.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(6)),
                             ),
@@ -298,7 +298,7 @@ class _OperatorEarningsAnalyticsScreenState
                           child: LinearProgressIndicator(
                             value: ratio,
                             backgroundColor:
-                                AeroColors.amber.withOpacity(0.1),
+                                AeroColors.amber.withValues(alpha: 0.1),
                             valueColor: const AlwaysStoppedAnimation<Color>(
                                 AeroColors.amber),
                             minHeight: 8,
@@ -408,10 +408,10 @@ class _OperatorEarningsAnalyticsScreenState
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.success.withOpacity(0.06),
+        color: AeroColors.success.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.success.withOpacity(0.2), width: 0.5),
+            color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

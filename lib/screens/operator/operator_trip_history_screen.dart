@@ -94,7 +94,7 @@ class OperatorTripHistoryScreen extends StatelessWidget {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: AeroColors.success.withOpacity(0.1),
+                            color: AeroColors.success.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(Icons.check_circle_outline,

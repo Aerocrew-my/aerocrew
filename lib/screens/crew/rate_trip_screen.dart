@@ -49,7 +49,7 @@ class _RateTripScreenState extends State<RateTripScreen> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: AeroColors.success.withOpacity(0.12),
+                      color: AeroColors.success.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Icon(Icons.check_rounded,
@@ -265,7 +265,7 @@ class _RateTripScreenState extends State<RateTripScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? AeroColors.amber
-                                      .withOpacity(0.15)
+                                      .withValues(alpha: 0.15)
                                   : AeroColors.navyCard,
                               borderRadius:
                                   BorderRadius.circular(20),

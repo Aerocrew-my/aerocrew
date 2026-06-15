@@ -115,7 +115,7 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: widget.recipientColor.withOpacity(0.15),
+              color: widget.recipientColor.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
@@ -163,7 +163,7 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AeroColors.success.withOpacity(0.1),
+                color: AeroColors.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.phone,
@@ -195,7 +195,7 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                   width: 28,
                   height: 28,
                   decoration: BoxDecoration(
-                    color: widget.recipientColor.withOpacity(0.15),
+                    color: widget.recipientColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: Center(

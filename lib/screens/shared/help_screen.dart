@@ -129,17 +129,17 @@ class _HelpScreenState extends State<HelpScreen> {
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.amber.withOpacity(0.08),
+        color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.15),
+              color: AeroColors.amber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(Icons.headset_mic,
@@ -181,12 +181,12 @@ class _HelpScreenState extends State<HelpScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isExpanded
-              ? AeroColors.amber.withOpacity(0.06)
+              ? AeroColors.amber.withValues(alpha: 0.06)
               : AeroColors.navyCard,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: isExpanded
-                ? AeroColors.amber.withOpacity(0.3)
+                ? AeroColors.amber.withValues(alpha: 0.3)
                 : AeroColors.divider,
             width: isExpanded ? 1 : 0.5,
           ),

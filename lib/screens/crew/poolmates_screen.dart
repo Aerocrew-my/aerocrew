@@ -99,7 +99,7 @@ class PoolmatesScreen extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text('${poolmates.length} crew',
@@ -118,10 +118,10 @@ class PoolmatesScreen extends StatelessWidget {
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AeroColors.amber.withOpacity(0.08),
+        color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Row(
         children: const [
@@ -158,7 +158,7 @@ class PoolmatesScreen extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
@@ -240,10 +240,10 @@ class PoolmatesScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 14, vertical: 10),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        color: color.withOpacity(0.2), width: 0.5),
+                        color: color.withValues(alpha: 0.2), width: 0.5),
                   ),
                   child: Row(
                     children: [

@@ -140,17 +140,17 @@ class _SupportScreenState extends State<SupportScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.amber.withOpacity(0.08),
+        color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.15),
+              color: AeroColors.amber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(Icons.headset_mic_outlined,
@@ -176,7 +176,7 @@ class _SupportScreenState extends State<SupportScreen> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Row(
@@ -209,7 +209,7 @@ class _SupportScreenState extends State<SupportScreen> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isOpen
-                  ? AeroColors.amber.withOpacity(0.3)
+                  ? AeroColors.amber.withValues(alpha: 0.3)
                   : AeroColors.divider,
               width: 0.5,
             ),
@@ -284,7 +284,7 @@ class _SupportScreenState extends State<SupportScreen> {
                         horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? AeroColors.amber.withOpacity(0.15)
+                          ? AeroColors.amber.withValues(alpha: 0.15)
                           : AeroColors.navy,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
@@ -384,7 +384,7 @@ class _SupportScreenState extends State<SupportScreen> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AeroColors.success.withOpacity(0.12),
+                color: AeroColors.success.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Icon(Icons.check_rounded,

@@ -145,7 +145,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           color: AeroColors.dangerLight,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                              color: AeroColors.danger.withOpacity(0.3)),
+                              color: AeroColors.danger.withValues(alpha: 0.3)),
                         ),
                         child: Text(errorMessage!,
                             style: const TextStyle(
@@ -217,16 +217,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: planColor.withOpacity(0.08),
+        color: planColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: planColor.withOpacity(0.3), width: 1),
+        border: Border.all(color: planColor.withValues(alpha: 0.3), width: 1),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: planColor.withOpacity(0.15),
+              color: planColor.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(

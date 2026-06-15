@@ -183,20 +183,20 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                   decoration: BoxDecoration(
                                     color: isAvailable
                                         ? AeroColors.success
-                                            .withOpacity(0.2)
+                                            .withValues(alpha: 0.2)
                                         : isBlocked
                                             ? AeroColors.danger
-                                                .withOpacity(0.15)
+                                                .withValues(alpha: 0.15)
                                             : Colors.transparent,
                                     borderRadius:
                                         BorderRadius.circular(8),
                                     border: Border.all(
                                       color: isAvailable
                                           ? AeroColors.success
-                                              .withOpacity(0.4)
+                                              .withValues(alpha: 0.4)
                                           : isBlocked
                                               ? AeroColors.danger
-                                                  .withOpacity(0.3)
+                                                  .withValues(alpha: 0.3)
                                               : Colors.transparent,
                                       width: 0.5,
                                     ),
@@ -237,10 +237,10 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.08),
+                        color: AeroColors.amber.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.amber.withOpacity(0.2),
+                            color: AeroColors.amber.withValues(alpha: 0.2),
                             width: 0.5),
                       ),
                       child: const Row(
@@ -317,9 +317,9 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
           width: 12,
           height: 12,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(3),
-            border: Border.all(color: color.withOpacity(0.5)),
+            border: Border.all(color: color.withValues(alpha: 0.5)),
           ),
         ),
         const SizedBox(width: 6),

@@ -184,9 +184,9 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,10 +216,10 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AeroColors.success.withOpacity(0.06),
+          color: AeroColors.success.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-              color: AeroColors.success.withOpacity(0.2), width: 0.5),
+              color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
         ),
         child: const Row(
           children: [
@@ -248,7 +248,7 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: AeroColors.danger.withOpacity(0.12),
+                color: AeroColors.danger.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text('${pendingUsers.length}',
@@ -267,7 +267,7 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                    color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+                    color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
               ),
               child: Row(
                 children: [
@@ -275,7 +275,7 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: AeroColors.amber.withOpacity(0.12),
+                      color: AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
@@ -317,7 +317,7 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
-                            color: AeroColors.success.withOpacity(0.12),
+                            color: AeroColors.success.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text('Approve',
@@ -335,7 +335,7 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
-                            color: AeroColors.danger.withOpacity(0.12),
+                            color: AeroColors.danger.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text('Reject',
@@ -376,8 +376,8 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
                     height: 36,
                     decoration: BoxDecoration(
                       color: user['role'] == 'crew'
-                          ? const Color(0xFF378ADD).withOpacity(0.12)
-                          : AeroColors.amber.withOpacity(0.12),
+                          ? const Color(0xFF378ADD).withValues(alpha: 0.12)
+                          : AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
@@ -410,8 +410,8 @@ class _AdminFlutterDashboardState extends State<AdminFlutterDashboard> {
                         horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: user['status'] == 'verified'
-                          ? AeroColors.success.withOpacity(0.12)
-                          : AeroColors.amber.withOpacity(0.12),
+                          ? AeroColors.success.withValues(alpha: 0.12)
+                          : AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(

@@ -77,10 +77,10 @@ class TripConfirmedScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AeroColors.success.withOpacity(0.1),
+        color: AeroColors.success.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: AeroColors.success.withOpacity(0.3), width: 0.5),
+            color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
       ),
       child: Column(
         children: [
@@ -88,7 +88,7 @@ class TripConfirmedScreen extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.15),
+              color: AeroColors.success.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(Icons.check_rounded,
@@ -182,9 +182,9 @@ class TripConfirmedScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -228,7 +228,7 @@ class TripConfirmedScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: AeroColors.success.withOpacity(0.1),
+                  color: AeroColors.success.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text('${poolmates.length} crew',
@@ -281,7 +281,7 @@ class TripConfirmedScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.1),
+                        color: AeroColors.amber.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(p['time'] ?? '',

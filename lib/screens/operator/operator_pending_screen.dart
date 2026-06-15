@@ -18,7 +18,7 @@ class OperatorPendingScreen extends StatelessWidget {
               height: 240,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.05),
+                color: AeroColors.amber.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -30,7 +30,7 @@ class OperatorPendingScreen extends StatelessWidget {
               height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.03),
+                color: AeroColors.amber.withValues(alpha: 0.03),
               ),
             ),
           ),
@@ -44,7 +44,7 @@ class OperatorPendingScreen extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: AeroColors.amber.withOpacity(0.12),
+                      color: AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Icon(Icons.access_time_rounded,
@@ -102,10 +102,10 @@ class OperatorPendingScreen extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: AeroColors.amber.withOpacity(0.08),
+                      color: AeroColors.amber.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                          color: AeroColors.amber.withOpacity(0.2),
+                          color: AeroColors.amber.withValues(alpha: 0.2),
                           width: 0.5),
                     ),
                     child: const Row(
@@ -157,8 +157,8 @@ class OperatorPendingScreen extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: approved
-                  ? AeroColors.success.withOpacity(0.12)
-                  : AeroColors.amber.withOpacity(0.12),
+                  ? AeroColors.success.withValues(alpha: 0.12)
+                  : AeroColors.amber.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(

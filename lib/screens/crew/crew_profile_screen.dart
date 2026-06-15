@@ -149,7 +149,7 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
               height: 260,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.05),
+                color: AeroColors.amber.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -164,7 +164,7 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: AeroColors.amber.withOpacity(0.15),
+                          color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(Icons.flight_takeoff,

@@ -255,9 +255,9 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          color: color.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+          border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
         ),
         child: Column(
           children: [
@@ -327,14 +327,14 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                       color: isSelected
                           ? AeroColors.amber
                           : hasFlights
-                              ? AeroColors.amber.withOpacity(0.1)
+                              ? AeroColors.amber.withValues(alpha: 0.1)
                               : Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: isSelected
                             ? AeroColors.amber
                             : hasFlights
-                                ? AeroColors.amber.withOpacity(0.3)
+                                ? AeroColors.amber.withValues(alpha: 0.3)
                                 : Colors.transparent,
                         width: 0.5,
                       ),
@@ -439,7 +439,7 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                   color: AeroColors.navyCard,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                      color: color.withOpacity(0.3), width: 0.5),
+                      color: color.withValues(alpha: 0.3), width: 0.5),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,7 +449,7 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: color.withOpacity(0.12),
+                            color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Icon(
@@ -479,7 +479,7 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: color.withOpacity(0.12),
+                            color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(_statusLabel(status),
@@ -521,9 +521,9 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         children: [

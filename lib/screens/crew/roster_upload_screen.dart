@@ -225,10 +225,10 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.08),
+              color: AeroColors.amber.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                  color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+                  color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
             ),
             child: Row(
               children: const [
@@ -300,7 +300,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.12),
+                        color: AeroColors.amber.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(Icons.camera_alt_outlined,
@@ -423,10 +423,10 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: AeroColors.success.withOpacity(0.08),
+                    color: AeroColors.success.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                        color: AeroColors.success.withOpacity(0.2),
+                        color: AeroColors.success.withValues(alpha: 0.2),
                         width: 0.5),
                   ),
                   child: Row(
@@ -474,7 +474,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isConfirmed
-                              ? AeroColors.success.withOpacity(0.4)
+                              ? AeroColors.success.withValues(alpha: 0.4)
                               : AeroColors.divider,
                           width: isConfirmed ? 1 : 0.5,
                         ),
@@ -486,7 +486,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                               color: isConfirmed
-                                  ? AeroColors.amber.withOpacity(0.12)
+                                  ? AeroColors.amber.withValues(alpha: 0.12)
                                   : AeroColors.navyCard,
                               borderRadius: BorderRadius.circular(10),
                             ),

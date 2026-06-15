@@ -158,10 +158,10 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.08),
+                        color: AeroColors.amber.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.amber.withOpacity(0.2),
+                            color: AeroColors.amber.withValues(alpha: 0.2),
                             width: 0.5),
                       ),
                       child: Column(
@@ -229,7 +229,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 3),
                               decoration: BoxDecoration(
-                                color: color.withOpacity(0.12),
+                                color: color.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -300,7 +300,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                                     horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
                                   color:
-                                      AeroColors.amber.withOpacity(0.1),
+                                      AeroColors.amber.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: const Text('Rate trip',

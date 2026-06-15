@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/auth/login_screen.dart';
-import 'package:aerocrew/screens/auth/signup_screen.dart';
 import 'package:aerocrew/screens/shared/onboarding_screen.dart';
 
 void main() async {

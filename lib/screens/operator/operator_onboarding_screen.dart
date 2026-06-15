@@ -3,49 +3,51 @@ import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/auth/signup_screen.dart';
 import 'package:aerocrew/screens/auth/login_screen.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+class OperatorOnboardingScreen extends StatefulWidget {
+  const OperatorOnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  State<OperatorOnboardingScreen> createState() =>
+      _OperatorOnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
+class _OperatorOnboardingScreenState
+    extends State<OperatorOnboardingScreen> {
+  final PageController _controller = PageController();
   int currentPage = 0;
 
-  final List<Map<String, dynamic>> pages = [
-    {
-      'icon': Icons.auto_awesome,
-      'color': Color(0xFFBA7517),
-      'title': 'AI reads your roster',
-      'subtitle':
-          'Take a photo of your airline schedule. Claude AI extracts every flight in seconds — no manual entry.',
-      'highlight': 'Works with AirAsia, MAS, Batik and more',
-    },
-    {
-      'icon': Icons.people,
-      'color': Color(0xFF1D9E75),
-      'title': 'Smart zone pooling',
-      'subtitle':
-          'Automatically matched with crew in your area going to the same airport at similar times.',
-      'highlight': 'Save up to 70% vs Grab',
-    },
+  final pages = [
     {
       'icon': Icons.verified_user,
-      'color': Color(0xFF378ADD),
-      'title': 'Verified operators only',
+      'color': Color(0xFF1D9E75),
+      'title': 'Earn with verified crew',
       'subtitle':
-          'Every van operator is verified with SSM, PSV licence and operator permit before being activated.',
-      'highlight': 'Your safety is our priority',
+          'Connect with airline pilots and cabin crew who need regular airport transport every month.',
+      'highlight': 'Recurring monthly income',
     },
     {
-      'icon': Icons.schedule,
-      'color': Color(0xFFEF9F27),
-      'title': 'Always on time',
+      'icon': Icons.calendar_month,
+      'color': Color(0xFFBA7517),
+      'title': 'Advance schedule visibility',
       'subtitle':
-          'Pickup times calculated from your departure. Operators get your schedule weeks in advance.',
-      'highlight': 'Never miss a check-in again',
+          'See upcoming trips weeks in advance from crew rosters. Plan your schedule with confidence.',
+      'highlight': 'No more uncertainty',
+    },
+    {
+      'icon': Icons.payments_outlined,
+      'color': Color(0xFF378ADD),
+      'title': 'Weekly automated payouts',
+      'subtitle':
+          'Earnings are calculated automatically and transferred to your bank account every Monday.',
+      'highlight': 'Transparent 15% commission',
+    },
+    {
+      'icon': Icons.route,
+      'color': Color(0xFFEF9F27),
+      'title': 'AI route optimization',
+      'subtitle':
+          'Our AI calculates the most efficient pickup route for each job, saving you time and fuel.',
+      'highlight': 'Smarter every trip',
     },
   ];
 
@@ -70,19 +72,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           color: AeroColors.amber,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.flight,
+                        child: const Icon(Icons.directions_car,
                             color: Colors.white, size: 16),
                       ),
                       const SizedBox(width: 8),
-                      const Text('AeroCrew',
+                      const Text('AeroCrew Operators',
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: Colors.white)),
                     ],
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pushReplacement(context,
+                    onTap: () => Navigator.pushReplacement(
+                        context,
                         MaterialPageRoute(
                             builder: (_) => const LoginScreen())),
                     child: const Text('Skip',
@@ -94,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Expanded(
               child: PageView.builder(
-                controller: _pageController,
+                controller: _controller,
                 onPageChanged: (i) => setState(() => currentPage = i),
                 itemCount: pages.length,
                 itemBuilder: (context, i) {
@@ -109,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: color.withValues(alpha: 0.12),
+                            color: color.withOpacity(0.12),
                             borderRadius: BorderRadius.circular(28),
                           ),
                           child: Icon(page['icon'] as IconData,
@@ -119,7 +122,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(page['title'] as String,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 28,
+                                fontSize: 26,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                                 letterSpacing: -0.5,
@@ -128,18 +131,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(page['subtitle'] as String,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 14,
                                 color: AeroColors.grey,
                                 height: 1.6)),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 20),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: color.withValues(alpha: 0.1),
+                            color: color.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                                color: color.withValues(alpha: 0.3), width: 0.5),
+                                color: color.withOpacity(0.3),
+                                width: 0.5),
                           ),
                           child: Text(page['highlight'] as String,
                               style: TextStyle(
@@ -181,7 +185,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (currentPage < pages.length - 1) {
-                          _pageController.nextPage(
+                          _controller.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
@@ -204,7 +208,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Text(
                           currentPage < pages.length - 1
                               ? 'Next'
-                              : 'Get started',
+                              : 'Join as operator',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600)),
@@ -212,10 +216,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () => Navigator.pushReplacement(context,
+                    onTap: () => Navigator.pushReplacement(
+                        context,
                         MaterialPageRoute(
                             builder: (_) => const LoginScreen())),
-                    child: const Text('Already have an account? Sign in',
+                    child: const Text(
+                        'Already registered? Sign in',
                         style: TextStyle(
                             fontSize: 13, color: AeroColors.grey)),
                   ),

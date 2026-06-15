@@ -72,7 +72,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                 width: 90,
                 height: 90,
                 decoration: BoxDecoration(
-                  color: AeroColors.success.withOpacity(0.12),
+                  color: AeroColors.success.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: const Icon(Icons.check_rounded,

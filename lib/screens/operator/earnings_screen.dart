@@ -145,10 +145,10 @@ class _EarningsScreenState extends State<EarningsScreen> {
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.08),
+                        color: AeroColors.amber.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                            color: AeroColors.amber.withOpacity(0.2),
+                            color: AeroColors.amber.withValues(alpha: 0.2),
                             width: 0.5),
                       ),
                       child: Column(

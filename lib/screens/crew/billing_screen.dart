@@ -174,7 +174,7 @@ class _BillingScreenState extends State<BillingScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [planColor, planColor.withOpacity(0.6)],
+          colors: [planColor, planColor.withValues(alpha: 0.6)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -205,7 +205,7 @@ class _BillingScreenState extends State<BillingScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text('Active',
@@ -233,7 +233,7 @@ class _BillingScreenState extends State<BillingScreen> {
             const Text('per month',
                 style: TextStyle(fontSize: 13, color: Colors.white70)),
           const SizedBox(height: 16),
-          Container(height: 1, color: Colors.white.withOpacity(0.2)),
+          Container(height: 1, color: Colors.white.withValues(alpha: 0.2)),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -343,7 +343,7 @@ class _BillingScreenState extends State<BillingScreen> {
                 color: AeroColors.dangerLight,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                    color: AeroColors.danger.withOpacity(0.2), width: 0.5),
+                    color: AeroColors.danger.withValues(alpha: 0.2), width: 0.5),
               ),
               child: const Column(
                 children: [
@@ -379,7 +379,7 @@ class _BillingScreenState extends State<BillingScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.1),
+              color: AeroColors.success.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(Icons.receipt_long,
@@ -414,7 +414,7 @@ class _BillingScreenState extends State<BillingScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AeroColors.success.withOpacity(0.1),
+                  color: AeroColors.success.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text('Paid',

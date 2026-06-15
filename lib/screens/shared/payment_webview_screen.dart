@@ -104,10 +104,10 @@ class _PaymentWebviewScreenState
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
-                  color: AeroColors.success.withOpacity(0.3), width: 0.5),
+                  color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
             ),
             child: Row(
               children: const [

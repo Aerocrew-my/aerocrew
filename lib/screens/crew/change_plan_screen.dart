@@ -160,7 +160,7 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? planColor.withOpacity(0.08)
+                                ? planColor.withValues(alpha: 0.08)
                                 : AeroColors.navyCard,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
@@ -178,7 +178,7 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                                   Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: planColor.withOpacity(0.15),
+                                      color: planColor.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(plan['icon'] as IconData,
@@ -207,7 +207,7 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                                           horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
                                         color: AeroColors.success
-                                            .withOpacity(0.12),
+                                            .withValues(alpha: 0.12),
                                         borderRadius:
                                             BorderRadius.circular(20),
                                       ),
@@ -222,7 +222,7 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
-                                        color: planColor.withOpacity(0.12),
+                                        color: planColor.withValues(alpha: 0.12),
                                         borderRadius:
                                             BorderRadius.circular(20),
                                       ),

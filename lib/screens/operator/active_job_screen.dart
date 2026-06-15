@@ -81,10 +81,10 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: AeroColors.success.withOpacity(0.3), width: 0.5),
+                  color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
             ),
             child: Row(
               children: [
@@ -171,10 +171,10 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AeroColors.success.withOpacity(0.08),
+          color: AeroColors.success.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: AeroColors.success.withOpacity(0.3), width: 0.5),
+              color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
         ),
         child: const Row(
           children: [
@@ -198,10 +198,10 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.amber.withOpacity(0.08),
+        color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.3), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.3), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +219,7 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: AeroColors.amber.withOpacity(0.15),
+                  color: AeroColors.amber.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(Icons.person,
@@ -437,7 +437,7 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Icon(Icons.emoji_events,

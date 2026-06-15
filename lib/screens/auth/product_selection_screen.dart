@@ -95,7 +95,7 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
               height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.05),
+                color: AeroColors.amber.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -110,7 +110,7 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: AeroColors.amber.withOpacity(0.15),
+                          color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(Icons.local_taxi,
@@ -174,7 +174,7 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? color.withOpacity(0.08)
+                                    ? color.withValues(alpha: 0.08)
                                     : AeroColors.navyCard,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
@@ -192,7 +192,7 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                       Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: color.withOpacity(0.15),
+                                          color: color.withValues(alpha: 0.15),
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
@@ -224,7 +224,7 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 8, vertical: 3),
                                           decoration: BoxDecoration(
-                                            color: color.withOpacity(0.15),
+                                            color: color.withValues(alpha: 0.15),
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                           ),

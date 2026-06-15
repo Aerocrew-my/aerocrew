@@ -47,7 +47,7 @@ void _verify() {
               height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.06),
+                color: AeroColors.amber.withValues(alpha: 0.06),
               ),
             ),
           ),
@@ -81,7 +81,7 @@ void _verify() {
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: AeroColors.amber.withOpacity(0.15),
+                          color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: const Icon(Icons.lock_outline,
@@ -233,7 +233,7 @@ void _verify() {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                   color: AeroColors.infoText
-                                      .withOpacity(0.2)),
+                                      .withValues(alpha: 0.2)),
                             ),
                             child: Row(
                               children: const [

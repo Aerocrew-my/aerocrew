@@ -3,6 +3,8 @@ import 'package:aerocrew/screens/crew/notifications_screen.dart';
 import 'package:aerocrew/screens/crew/billing_screen.dart';
 import 'package:aerocrew/screens/crew/crew_profile_view_screen.dart';
 import 'package:aerocrew/screens/crew/roster_calendar_screen.dart';
+import 'package:aerocrew/screens/crew/pre_trip_checklist_screen.dart';
+import 'package:aerocrew/screens/crew/pool_members_screen.dart';
 import 'package:aerocrew/screens/crew/crew_map_screen.dart';
 import 'package:aerocrew/screens/crew/poolmates_screen.dart';
 import 'package:flutter/material.dart';
@@ -196,7 +198,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: AeroColors.success.withOpacity(0.15),
+                          color: AeroColors.success.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -220,10 +222,10 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: productColor.withOpacity(0.15),
+              color: productColor.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: productColor.withOpacity(0.3), width: 0.5),
+                  color: productColor.withValues(alpha: 0.3), width: 0.5),
             ),
             child: Text(productName,
                 style: TextStyle(
@@ -387,7 +389,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                        color: AeroColors.success.withOpacity(0.1),
+                        color: AeroColors.success.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -454,18 +456,41 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                       ),
                       const SizedBox(width: 6),
                       GestureDetector(
-                        onTap: () => Navigator.push(context,
-                            MaterialPageRoute(
-                                builder: (_) => PoolmatesScreen(
-                                      flightNumber: upcomingTrips.first['flight'] as String,
-                                      flightDate: upcomingTrips.first['date'] as String,
-                                    ))),
-                        child: _buildIconBtn(Icons.people_outline, AeroColors.success),
-                      ),
+  onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => PoolmatesScreen(
+        flightNumber: upcomingTrips.first['flight'] as String,
+        flightDate: upcomingTrips.first['date'] as String,
+      ),
+    ),
+  ),
+  child: _buildIconBtn(Icons.group, AeroColors.infoText),
+),
+
+const SizedBox(width: 6),
+
+GestureDetector(
+  onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => PoolMembersScreen(
+        trip: upcomingTrips.first,
+      ),
+    ),
+  ),
+  child: _buildIconBtn(Icons.people, AeroColors.infoText),
+),
                       const SizedBox(width: 6),
-                      _buildIconBtn(Icons.phone, AeroColors.infoText),
+                      GestureDetector(
+                        onTap: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) =>
+                                PreTripChecklistScreen(trip: upcomingTrips.first))),
+                        child: _buildIconBtn(Icons.checklist, AeroColors.success),
+                      ),
                     ],
                   ),
+
                 ],
               ),
             ),
@@ -480,7 +505,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
       width: 32,
       height: 32,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Icon(icon, size: 15, color: color),
@@ -496,17 +521,17 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AeroColors.amber.withOpacity(0.08),
+          color: AeroColors.amber.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-              color: AeroColors.amber.withOpacity(0.25), width: 0.5),
+              color: AeroColors.amber.withValues(alpha: 0.25), width: 0.5),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AeroColors.amber.withOpacity(0.15),
+                color: AeroColors.amber.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.auto_awesome,
@@ -627,19 +652,19 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
     switch (status) {
       case 'matched':
         color = AeroColors.success;
-        bgColor = AeroColors.success.withOpacity(0.12);
+        bgColor = AeroColors.success.withValues(alpha: 0.12);
         label = 'Matched';
         icon = Icons.check_circle_outline;
         break;
       case 'matching':
         color = AeroColors.amber;
-        bgColor = AeroColors.amber.withOpacity(0.12);
+        bgColor = AeroColors.amber.withValues(alpha: 0.12);
         label = 'Matching';
         icon = Icons.sync;
         break;
       default:
         color = const Color(0xFF378ADD);
-        bgColor = const Color(0xFF378ADD).withOpacity(0.12);
+        bgColor = const Color(0xFF378ADD).withValues(alpha: 0.12);
         label = 'Scheduled';
         icon = Icons.calendar_today;
     }

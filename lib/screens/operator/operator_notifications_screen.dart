@@ -142,12 +142,12 @@ class _OperatorNotificationsScreenState
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: isUnread
-                            ? color.withOpacity(0.05)
+                            ? color.withValues(alpha: 0.05)
                             : AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isUnread
-                              ? color.withOpacity(0.2)
+                              ? color.withValues(alpha: 0.2)
                               : AeroColors.divider,
                           width: isUnread ? 1 : 0.5,
                         ),
@@ -159,7 +159,7 @@ class _OperatorNotificationsScreenState
                             width: 38,
                             height: 38,
                             decoration: BoxDecoration(
-                              color: color.withOpacity(0.12),
+                              color: color.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(n['icon'] as IconData,

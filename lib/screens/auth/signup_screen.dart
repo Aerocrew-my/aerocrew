@@ -82,7 +82,7 @@ class _SignupScreenState extends State<SignupScreen> {
               height: 240,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.05),
+                color: AeroColors.amber.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -326,7 +326,7 @@ class _SignupScreenState extends State<SignupScreen> {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: AeroColors.amber.withOpacity(0.15),
+                      color: AeroColors.amber.withValues(alpha: 0.15),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     )

@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.05),
+                color: AeroColors.amber.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -333,7 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: AeroColors.amber.withOpacity(0.15),
+                      color: AeroColors.amber.withValues(alpha: 0.15),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     )

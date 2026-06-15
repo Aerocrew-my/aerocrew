@@ -73,7 +73,7 @@ class StaffIdScreen extends StatelessWidget {
                   color: AeroColors.infoLight,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                      color: AeroColors.infoText.withOpacity(0.2)),
+                      color: AeroColors.infoText.withValues(alpha: 0.2)),
                 ),
                 child: Row(
                   children: const [

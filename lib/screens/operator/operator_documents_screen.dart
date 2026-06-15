@@ -116,7 +116,7 @@ class _OperatorDocumentsScreenState
               height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.04),
+                color: AeroColors.amber.withValues(alpha: 0.04),
               ),
             ),
           ),
@@ -233,7 +233,7 @@ class _OperatorDocumentsScreenState
                                 backgroundColor: AeroColors.amber,
                                 foregroundColor: Colors.white,
                                 disabledBackgroundColor:
-                                    AeroColors.amber.withOpacity(0.3),
+                                    AeroColors.amber.withValues(alpha: 0.3),
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 16),
                                 shape: RoundedRectangleBorder(
@@ -284,13 +284,13 @@ class _OperatorDocumentsScreenState
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isUploaded
-              ? AeroColors.success.withOpacity(0.3)
+              ? AeroColors.success.withValues(alpha: 0.3)
               : AeroColors.cardBorder,
           width: isUploaded ? 1 : 0.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -366,7 +366,7 @@ class _OperatorDocumentsScreenState
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isUploaded
-                      ? AeroColors.success.withOpacity(0.3)
+                      ? AeroColors.success.withValues(alpha: 0.3)
                       : AeroColors.amberBorder,
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
 import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
+import 'package:aerocrew/screens/operator/route_optimizer_screen.dart';
 import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
@@ -202,12 +203,12 @@ double get todayEarnings => jobs
                   horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: isActive
-                    ? AeroColors.success.withOpacity(0.12)
+                    ? AeroColors.success.withValues(alpha: 0.12)
                     : AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                     color: isActive
-                        ? AeroColors.success.withOpacity(0.3)
+                        ? AeroColors.success.withValues(alpha: 0.3)
                         : AeroColors.divider,
                     width: 0.5),
               ),
@@ -314,10 +315,10 @@ double get todayEarnings => jobs
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.08),
+              color: AeroColors.amber.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                  color: AeroColors.amber.withOpacity(0.2),
+                  color: AeroColors.amber.withValues(alpha: 0.2),
                   width: 0.5),
             ),
             child: Column(
@@ -385,9 +386,7 @@ double get todayEarnings => jobs
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => job['status'] == 'confirmed'
-              ? ActiveJobScreen(job: job)
-              : JobDetailsScreen(job: job),
+          builder: (_) => RouteOptimizerScreen(job: job),
         ),
       ),
       child: Container(
@@ -398,7 +397,7 @@ double get todayEarnings => jobs
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
               color: isConfirmed
-                  ? AeroColors.success.withOpacity(0.2)
+                  ? AeroColors.success.withValues(alpha: 0.2)
                   : AeroColors.divider,
               width: 0.5),
         ),
@@ -457,8 +456,8 @@ double get todayEarnings => jobs
                           horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: isConfirmed
-                            ? AeroColors.success.withOpacity(0.12)
-                            : AeroColors.amber.withOpacity(0.12),
+                            ? AeroColors.success.withValues(alpha: 0.12)
+                            : AeroColors.amber.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(

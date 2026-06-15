@@ -80,7 +80,7 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
               height: 260,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AeroColors.amber.withOpacity(0.05),
+                color: AeroColors.amber.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -95,7 +95,7 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: AeroColors.amber.withOpacity(0.15),
+                          color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(Icons.directions_car,
@@ -222,7 +222,7 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                   color: AeroColors.infoText
-                                      .withOpacity(0.2)),
+                                      .withValues(alpha: 0.2)),
                             ),
                             child: const Row(
                               children: [

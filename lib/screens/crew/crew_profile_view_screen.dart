@@ -10,6 +10,9 @@ import 'package:aerocrew/screens/shared/help_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aerocrew/screens/shared/support_screen.dart';
+import 'package:aerocrew/screens/crew/referral_screen.dart';
+import 'package:aerocrew/screens/crew/wallet_screen.dart';
+import 'package:aerocrew/screens/crew/settings_screen.dart';
 
 class CrewProfileViewScreen extends StatefulWidget {
   const CrewProfileViewScreen({super.key});
@@ -132,10 +135,10 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
   child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AeroColors.amber.withOpacity(0.15),
+                color: AeroColors.amber.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                    color: AeroColors.amber.withOpacity(0.3), width: 0.5),
+                    color: AeroColors.amber.withValues(alpha: 0.3), width: 0.5),
               ),
               child: const Text('Edit',
                   style: TextStyle(
@@ -165,7 +168,7 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: AeroColors.amber.withOpacity(0.15),
+                color: AeroColors.amber.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
@@ -195,10 +198,10 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: productColor.withOpacity(0.12),
+                    color: productColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: productColor.withOpacity(0.3), width: 0.5),
+                        color: productColor.withValues(alpha: 0.3), width: 0.5),
                   ),
                   child: Text(productName,
                       style: TextStyle(
@@ -214,7 +217,7 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
                     color: (userData['status'] == 'verified'
                             ? AeroColors.success
                             : AeroColors.amber)
-                        .withOpacity(0.12),
+                        .withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -305,6 +308,27 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
         'screen': const ChangePlanScreen(),
       },
       {
+        'icon': Icons.account_balance_wallet_outlined,
+        'label': 'Wallet',
+        'desc': 'Credits, cashback and rewards',
+        'color': const Color(0xFFEF9F27),
+        'screen': const WalletScreen(),
+      },
+      {
+        'icon': Icons.card_giftcard_outlined,
+        'label': 'Refer & earn',
+        'desc': 'Earn RM50 per referral',
+        'color': AeroColors.success,
+        'screen': const ReferralScreen(),
+      },
+      {
+        'icon': Icons.settings_outlined,
+        'label': 'Settings',
+        'desc': 'Notifications, privacy, preferences',
+        'color': AeroColors.grey,
+        'screen': const SettingsScreen(),
+      },
+      {
         'icon': Icons.headset_mic_outlined,
         'label': 'Support',
         'desc': 'Help, FAQ and contact us',
@@ -334,7 +358,7 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: (item['color'] as Color).withOpacity(0.12),
+                          color: (item['color'] as Color).withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(item['icon'] as IconData,
@@ -369,10 +393,10 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AeroColors.danger.withOpacity(0.08),
+                color: AeroColors.danger.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                    color: AeroColors.danger.withOpacity(0.2), width: 0.5),
+                    color: AeroColors.danger.withValues(alpha: 0.2), width: 0.5),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
