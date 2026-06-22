@@ -128,7 +128,7 @@ class _VehicleManagementScreenState
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                    color: AeroColors.amber.withOpacity(0.12),
+                    color: AeroColors.amber.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(Icons.directions_car,
@@ -155,7 +155,7 @@ class _VehicleManagementScreenState
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: AeroColors.success.withOpacity(0.12),
+                    color: AeroColors.success.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text('Active',

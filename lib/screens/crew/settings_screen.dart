@@ -232,8 +232,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AeroColors.amber,
-            activeTrackColor: AeroColors.amber.withOpacity(0.3),
+            activeThumbColor: AeroColors.amber,
+            activeTrackColor: AeroColors.amber.withValues(alpha: 0.3),
             inactiveThumbColor: AeroColors.grey,
             inactiveTrackColor: AeroColors.divider,
           ),
@@ -297,7 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, size: 16, color: color),
@@ -311,7 +311,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       color: color)),
             ),
             Icon(Icons.arrow_forward_ios,
-                size: 13, color: color.withOpacity(0.5)),
+                size: 13, color: color.withValues(alpha: 0.5)),
           ],
         ),
       ),

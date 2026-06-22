@@ -204,7 +204,7 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
                           child: LinearProgressIndicator(
                             value: ratio,
                             backgroundColor:
-                                AeroColors.amber.withOpacity(0.1),
+                                AeroColors.amber.withValues(alpha: 0.1),
                             valueColor:
                                 const AlwaysStoppedAnimation<Color>(
                                     AeroColors.amber),
@@ -287,7 +287,7 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: AeroColors.amber.withOpacity(0.12),
+                  color: AeroColors.amber.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
@@ -343,10 +343,10 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: AeroColors.success.withOpacity(0.08),
+                      color: AeroColors.success.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                          color: AeroColors.success.withOpacity(0.2),
+                          color: AeroColors.success.withValues(alpha: 0.2),
                           width: 0.5),
                     ),
                     child: Text(tag,

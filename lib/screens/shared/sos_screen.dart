@@ -99,10 +99,10 @@ class _SosScreenState extends State<SosScreen>
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AeroColors.danger.withOpacity(0.08),
+                          color: AeroColors.danger.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                              color: AeroColors.danger.withOpacity(0.2),
+                              color: AeroColors.danger.withValues(alpha: 0.2),
                               width: 0.5),
                         ),
                         child: const Row(
@@ -138,8 +138,8 @@ class _SosScreenState extends State<SosScreen>
                                       (_pulseController.value * 20),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AeroColors.danger.withOpacity(
-                                        0.1 *
+                                    color: AeroColors.danger.withValues(
+                                        alpha: 0.1 *
                                             (1 - _pulseController.value)),
                                   ),
                                 ),
@@ -152,7 +152,7 @@ class _SosScreenState extends State<SosScreen>
                                     boxShadow: [
                                       BoxShadow(
                                         color: AeroColors.danger
-                                            .withOpacity(0.4),
+                                            .withValues(alpha: 0.4),
                                         blurRadius: 30,
                                         spreadRadius: 5,
                                       )
@@ -193,7 +193,7 @@ class _SosScreenState extends State<SosScreen>
                           color: AeroColors.danger,
                           boxShadow: [
                             BoxShadow(
-                              color: AeroColors.danger.withOpacity(0.5),
+                              color: AeroColors.danger.withValues(alpha: 0.5),
                               blurRadius: 40,
                               spreadRadius: 10,
                             )
@@ -289,7 +289,7 @@ class _SosScreenState extends State<SosScreen>
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 16),
@@ -314,7 +314,7 @@ class _SosScreenState extends State<SosScreen>
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text('Call',

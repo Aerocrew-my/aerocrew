@@ -132,7 +132,7 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.2),
+                        color: AeroColors.amber.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                         border: Border.all(
                             color: AeroColors.navy, width: 2),
@@ -281,7 +281,7 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AeroColors.success.withOpacity(0.1),
+                  color: AeroColors.success.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Row(
@@ -308,12 +308,12 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: member['isMe'] == true
-                    ? AeroColors.amber.withOpacity(0.06)
+                    ? AeroColors.amber.withValues(alpha: 0.06)
                     : AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: member['isMe'] == true
-                      ? AeroColors.amber.withOpacity(0.2)
+                      ? AeroColors.amber.withValues(alpha: 0.2)
                       : AeroColors.divider,
                   width: 0.5,
                 ),
@@ -324,7 +324,7 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: AeroColors.amber.withOpacity(0.12),
+                      color: AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
@@ -354,7 +354,7 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                                     horizontal: 6, vertical: 1),
                                 decoration: BoxDecoration(
                                   color: AeroColors.amber
-                                      .withOpacity(0.12),
+                                      .withValues(alpha: 0.12),
                                   borderRadius:
                                       BorderRadius.circular(4),
                                 ),
@@ -390,8 +390,8 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                             horizontal: 7, vertical: 2),
                         decoration: BoxDecoration(
                           color: member['status'] == 'ready'
-                              ? AeroColors.success.withOpacity(0.1)
-                              : AeroColors.amber.withOpacity(0.1),
+                              ? AeroColors.success.withValues(alpha: 0.1)
+                              : AeroColors.amber.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -538,8 +538,9 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  if (messageController.text.trim().isEmpty)
+                  if (messageController.text.trim().isEmpty) {
                     return;
+                  }
                   setState(() {
                     messages.add({
                       'sender': 'Me',

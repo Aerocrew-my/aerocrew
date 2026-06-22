@@ -141,17 +141,17 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.amber.withOpacity(0.08),
+        color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.15),
+              color: AeroColors.amber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(Icons.flight_takeoff,
@@ -237,12 +237,12 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: isChecked
-                  ? AeroColors.success.withOpacity(0.06)
+                  ? AeroColors.success.withValues(alpha: 0.06)
                   : AeroColors.navyCard,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: isChecked
-                    ? AeroColors.success.withOpacity(0.3)
+                    ? AeroColors.success.withValues(alpha: 0.3)
                     : AeroColors.divider,
                 width: isChecked ? 1 : 0.5,
               ),
@@ -254,7 +254,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
                   height: 44,
                   decoration: BoxDecoration(
                     color: isChecked
-                        ? AeroColors.success.withOpacity(0.12)
+                        ? AeroColors.success.withValues(alpha: 0.12)
                         : AeroColors.navy,
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -287,7 +287,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 1),
                               decoration: BoxDecoration(
-                                color: AeroColors.danger.withOpacity(0.12),
+                                color: AeroColors.danger.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: const Text('Required',

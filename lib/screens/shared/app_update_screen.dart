@@ -78,7 +78,7 @@ class AppUpdateScreen extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             AeroColors.amber,
-                            AeroColors.amber.withOpacity(0.6)
+                            AeroColors.amber.withValues(alpha: 0.6)
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -111,7 +111,7 @@ class AppUpdateScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: v['isLatest'] == true
-                                  ? AeroColors.amber.withOpacity(0.3)
+                                  ? AeroColors.amber.withValues(alpha: 0.3)
                                   : AeroColors.divider,
                               width: 0.5,
                             ),
@@ -157,7 +157,7 @@ Text(
   v['date'],
   style: TextStyle(
     fontSize: 12,
-    color: Colors.white.withOpacity(0.6),
+    color: Colors.white.withValues(alpha: 0.6),
   ),
 ),
 const SizedBox(height: 14),
@@ -189,7 +189,7 @@ const SizedBox(height: 14),
 ],
 ),
 ))
-                        .toList(),
+                        ,
                   ],
                 ),
               ),

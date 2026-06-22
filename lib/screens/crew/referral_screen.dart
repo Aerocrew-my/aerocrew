@@ -115,7 +115,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AeroColors.amber, AeroColors.amber.withOpacity(0.6)],
+          colors: [AeroColors.amber, AeroColors.amber.withValues(alpha: 0.6)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -147,14 +147,14 @@ class _ReferralScreenState extends State<ReferralScreen> {
               Container(
                   width: 1,
                   height: 32,
-                  color: Colors.white.withOpacity(0.3)),
+                  color: Colors.white.withValues(alpha: 0.3)),
               _buildRewardStat(
                   '${referrals.where((r) => r['status'] == 'subscribed').length}',
                   'Subscribed'),
               Container(
                   width: 1,
                   height: 32,
-                  color: Colors.white.withOpacity(0.3)),
+                  color: Colors.white.withValues(alpha: 0.3)),
               _buildRewardStat(
                   'RM${totalRewards.toStringAsFixed(0)}', 'Earned'),
             ],
@@ -194,10 +194,10 @@ class _ReferralScreenState extends State<ReferralScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AeroColors.amber.withOpacity(0.06),
+              color: AeroColors.amber.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                  color: AeroColors.amber.withOpacity(0.3), width: 1),
+                  color: AeroColors.amber.withValues(alpha: 0.3), width: 1),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -227,13 +227,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
                       color: codeCopied
-                          ? AeroColors.success.withOpacity(0.12)
-                          : AeroColors.amber.withOpacity(0.12),
+                          ? AeroColors.success.withValues(alpha: 0.12)
+                          : AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: codeCopied
-                            ? AeroColors.success.withOpacity(0.3)
-                            : AeroColors.amber.withOpacity(0.3),
+                            ? AeroColors.success.withValues(alpha: 0.3)
+                            : AeroColors.amber.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(
@@ -312,7 +312,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: AeroColors.amber.withOpacity(0.12),
+                        color: AeroColors.amber.withValues(alpha: 0.12),
                         shape: BoxShape.circle,
                       ),
                       child: Center(
@@ -369,7 +369,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: AeroColors.amber.withOpacity(0.12),
+                      color: AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
@@ -406,8 +406,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
                           color: r['status'] == 'subscribed'
-                              ? AeroColors.success.withOpacity(0.1)
-                              : AeroColors.amber.withOpacity(0.1),
+                              ? AeroColors.success.withValues(alpha: 0.1)
+                              : AeroColors.amber.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(

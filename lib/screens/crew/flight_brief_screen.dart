@@ -78,7 +78,7 @@ class FlightBriefScreen extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Text('All confirmed',
@@ -97,13 +97,13 @@ class FlightBriefScreen extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AeroColors.navyCard, AeroColors.amber.withOpacity(0.1)],
+          colors: [AeroColors.navyCard, AeroColors.amber.withValues(alpha: 0.1)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         children: [
@@ -431,10 +431,10 @@ class FlightBriefScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.amber.withOpacity(0.06),
+        color: AeroColors.amber.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

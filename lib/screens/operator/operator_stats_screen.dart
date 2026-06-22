@@ -101,9 +101,9 @@ class OperatorStatsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +175,7 @@ class OperatorStatsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                     child: LinearProgressIndicator(
                       value: value / 100,
-                      backgroundColor: color.withOpacity(0.1),
+                      backgroundColor: color.withValues(alpha: 0.1),
                       valueColor: AlwaysStoppedAnimation<Color>(color),
                       minHeight: 6,
                     ),
@@ -234,7 +234,7 @@ class OperatorStatsScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: isLast
                                   ? AeroColors.amber
-                                  : AeroColors.amber.withOpacity(0.3),
+                                  : AeroColors.amber.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(5)),
                             ),
@@ -276,7 +276,7 @@ class OperatorStatsScreen extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: const Color(0xFFEF9F27).withOpacity(0.3), width: 1),
+            color: const Color(0xFFEF9F27).withValues(alpha: 0.3), width: 1),
       ),
       child: Column(
         children: [

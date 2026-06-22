@@ -143,9 +143,9 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,7 +245,7 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                             decoration: BoxDecoration(
                               color: isLast
                                   ? AeroColors.amber
-                                  : AeroColors.amber.withOpacity(0.3),
+                                  : AeroColors.amber.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(5)),
                             ),
@@ -279,10 +279,10 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.success.withOpacity(0.06),
+        color: AeroColors.success.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.success.withOpacity(0.2), width: 0.5),
+            color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,7 +336,7 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.1),
+              color: AeroColors.success.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Row(
@@ -377,12 +377,12 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: earned
-                    ? color.withOpacity(0.08)
+                    ? color.withValues(alpha: 0.08)
                     : AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: earned
-                      ? color.withOpacity(0.3)
+                      ? color.withValues(alpha: 0.3)
                       : AeroColors.divider,
                   width: 0.5,
                 ),
@@ -451,7 +451,7 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: ratio,
-                        backgroundColor: color.withOpacity(0.1),
+                        backgroundColor: color.withValues(alpha: 0.1),
                         valueColor:
                             AlwaysStoppedAnimation<Color>(color),
                         minHeight: 8,

@@ -154,7 +154,7 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.1),
+              color: AeroColors.success.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(Icons.flight_takeoff,
@@ -196,10 +196,10 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AeroColors.amber.withOpacity(0.08),
+          color: AeroColors.amber.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: AeroColors.amber.withOpacity(0.3), width: 1),
+              color: AeroColors.amber.withValues(alpha: 0.3), width: 1),
         ),
         child: isOptimizing
             ? const Column(
@@ -251,10 +251,10 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AeroColors.success.withOpacity(0.08),
+        color: AeroColors.success.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.success.withOpacity(0.3), width: 0.5),
+            color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
       ),
       child: Row(
         children: [
@@ -316,7 +316,7 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AeroColors.success.withOpacity(0.1),
+                    color: AeroColors.success.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Text('AI optimized',

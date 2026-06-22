@@ -152,7 +152,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: AeroColors.success.withOpacity(0.15),
+                  color: AeroColors.success.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Row(
@@ -217,7 +217,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AeroColors.amber
-                            .withOpacity(0.15 * (1 - _pulseController.value)),
+                            .withValues(alpha: 0.15 * (1 - _pulseController.value)),
                       ),
                     ),
                     Container(
@@ -228,7 +228,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AeroColors.amber.withOpacity(0.4),
+                            color: AeroColors.amber.withValues(alpha: 0.4),
                             blurRadius: 12,
                           )
                         ],
@@ -270,7 +270,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: AeroColors.navy.withOpacity(0.9),
+                color: AeroColors.navy.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(10),
                 border:
                     Border.all(color: AeroColors.divider, width: 0.5),
@@ -317,7 +317,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: AeroColors.amber.withOpacity(0.15),
+                color: AeroColors.amber.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Center(
@@ -379,9 +379,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.5),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Icon(icon, size: 16, color: color),
     );
@@ -393,10 +393,10 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AeroColors.amber.withOpacity(0.08),
+          color: AeroColors.amber.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+              color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
         ),
         child: Row(
           children: [
@@ -421,7 +421,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AeroColors.amber.withOpacity(0.12),
+                color: AeroColors.amber.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Icon(Icons.access_time,
@@ -487,10 +487,10 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
-                          color: dotColor.withOpacity(0.15),
+                          color: dotColor.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                           border: Border.all(
-                              color: dotColor.withOpacity(0.4)),
+                              color: dotColor.withValues(alpha: 0.4)),
                         ),
                         child: Icon(dotIcon, size: 14, color: dotColor),
                       ),
@@ -560,10 +560,10 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AeroColors.danger.withOpacity(0.08),
+                  color: AeroColors.danger.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                      color: AeroColors.danger.withOpacity(0.3),
+                      color: AeroColors.danger.withValues(alpha: 0.3),
                       width: 0.5),
                 ),
                 child: const Row(
@@ -617,7 +617,7 @@ class _MapGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF2A3347).withOpacity(0.5)
+      ..color = const Color(0xFF2A3347).withValues(alpha: 0.5)
       ..strokeWidth = 0.5;
 
     for (double x = 0; x < size.width; x += 40) {
@@ -636,7 +636,7 @@ class _RoutePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFBA7517).withOpacity(0.6)
+      ..color = const Color(0xFFBA7517).withValues(alpha: 0.6)
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;

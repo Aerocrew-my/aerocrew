@@ -143,14 +143,14 @@ class WalletScreen extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             AeroColors.navyCard,
-            AeroColors.amber.withOpacity(0.15)
+            AeroColors.amber.withValues(alpha: 0.15)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-            color: AeroColors.amber.withOpacity(0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +174,7 @@ class WalletScreen extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AeroColors.navy.withOpacity(0.5),
+                    color: AeroColors.navy.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -206,7 +206,7 @@ class WalletScreen extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AeroColors.navy.withOpacity(0.5),
+                    color: AeroColors.navy.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -344,7 +344,7 @@ class WalletScreen extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(_txIcon(tx['type'] as String),

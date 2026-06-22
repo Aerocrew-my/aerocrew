@@ -5,7 +5,6 @@ import 'package:aerocrew/services/anthropic_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aerocrew/services/matching_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RosterUploadScreen extends StatefulWidget {
   const RosterUploadScreen({super.key});
@@ -110,7 +109,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
     int matchedCount = 0;
     for (final flight in confirmed) {
       try {
-        final dateparts = (flight['date'] as String).split(' ');
+        // delete dateParts
         final now = DateTime.now();
         final flightDate = DateTime(now.year, now.month, now.day);
 

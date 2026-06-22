@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
-import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/operator_earnings_analytics_screen.dart';
 import 'package:aerocrew/screens/shared/support_screen.dart';
 import 'package:aerocrew/screens/crew/settings_screen.dart';
 import 'package:aerocrew/screens/crew/referral_screen.dart';
-import 'package:aerocrew/screens/shared/help_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aerocrew/screens/operator/vehicle_management_screen.dart';
 
 class OperatorProfileViewScreen extends StatefulWidget {
   const OperatorProfileViewScreen({super.key});
@@ -67,7 +66,17 @@ class _OperatorProfileViewScreenState
                   children: [
                     _buildHeader(),
                     _buildProfileCard(),
-                    _buildVehicleCard(),
+                    GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const VehicleManagementScreen(),
+      ),
+    );
+  },
+  child: _buildVehicleCard(),
+),
                     _buildMenuSection(),
                   ],
                 ),
@@ -253,63 +262,58 @@ class _OperatorProfileViewScreenState
 
   Widget _buildMenuSection() {
     final items = [
-      {
-        'icon': Icons.history,
-        'label': 'Trip history',
-        'desc': 'View completed jobs',
-        'color': AeroColors.infoText,
-        'screen': const OperatorTripHistoryScreen(),
-      },
-      {
-        'icon': Icons.bar_chart,
-        'label': 'Earnings',
-        'desc': 'Income breakdown and payouts',
-        'color': AeroColors.amber,
-        'screen': const EarningsScreen(),
-      },
-      {
-        'icon': Icons.calendar_today,
-        'label': 'Availability',
-        'desc': 'Set your schedule',
-        'color': AeroColors.success,
-        'screen': const AvailabilityScreen(),
-      },
-      {
-        'icon': Icons.bar_chart,
-        'label': 'Earnings analytics',
-        'desc': 'Detailed income breakdown',
-        'color': AeroColors.amber,
-        'screen': const OperatorEarningsAnalyticsScreen(),
-      },
-      {
-        'icon': Icons.card_giftcard_outlined,
-        'label': 'Refer operators',
-        'desc': 'Earn for every operator you refer',
-        'color': AeroColors.success,
-        'screen': const ReferralScreen(),
-      },
-      {
-        'icon': Icons.settings_outlined,
-        'label': 'Settings',
-        'desc': 'Notifications, privacy, preferences',
-        'color': AeroColors.grey,
-        'screen': const SettingsScreen(),
-      },
-      {
-        'icon': Icons.headset_mic_outlined,
-        'label': 'Support',
-        'desc': 'Help, FAQ and contact us',
-        'color': const Color(0xFF378ADD),
-        'screen': const SupportScreen(),
-      },
-      {
-        'icon': Icons.help_outline,
-        'label': 'Help & support',
-        'desc': 'FAQs and contact us',
-        'color': AeroColors.grey,
-        'screen': const HelpScreen(),
-      },
-    ];
+  {
+    'icon': Icons.directions_car_filled_outlined,
+    'label': 'My Vehicles',
+    'desc': 'Manage fleet, documents and maintenance',
+    'color': AeroColors.amber,
+    'screen': const VehicleManagementScreen(),
+  },
+  {
+    'icon': Icons.history,
+    'label': 'Trip history',
+    'desc': 'View completed jobs',
+    'color': AeroColors.infoText,
+    'screen': const OperatorTripHistoryScreen(),
+  },
+  {
+    'icon': Icons.bar_chart,
+    'label': 'Earnings',
+    'desc': 'Income breakdown and payouts',
+    'color': AeroColors.amber,
+    'screen': const EarningsScreen(),
+  },
+  
+  {
+    'icon': Icons.bar_chart,
+    'label': 'Earnings analytics',
+    'desc': 'Detailed income breakdown',
+    'color': AeroColors.amber,
+    'screen': const OperatorEarningsAnalyticsScreen(),
+  },
+  {
+    'icon': Icons.card_giftcard_outlined,
+    'label': 'Refer operators',
+    'desc': 'Earn for every operator you refer',
+    'color': AeroColors.success,
+    'screen': const ReferralScreen(),
+  },
+  {
+    'icon': Icons.settings_outlined,
+    'label': 'Settings',
+    'desc': 'Notifications, privacy, preferences',
+    'color': AeroColors.grey,
+    'screen': const SettingsScreen(),
+  },
+  {
+    'icon': Icons.headset_mic_outlined,
+    'label': 'Support',
+    'desc': 'Help, FAQ and contact us',
+    'color': const Color(0xFF378ADD),
+    'screen': const SupportScreen(),
+  },
+  
+];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),

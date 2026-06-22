@@ -18,34 +18,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       'icon': Icons.auto_awesome,
       'color': Color(0xFFBA7517),
-      'title': 'AI reads your roster',
+      'title': 'Scan Your Roster',
       'subtitle':
-          'Take a photo of your airline schedule. Claude AI extracts every flight in seconds — no manual entry.',
-      'highlight': 'Works with AirAsia, MAS, Batik and more',
+          'Take a photo of your airline schedule and extract your flights in seconds',
+      'highlight': 'Works with AirAsia, MAS, Batik Air and more',
     },
     {
       'icon': Icons.people,
       'color': Color(0xFF1D9E75),
-      'title': 'Smart zone pooling',
+      'title': 'Smart Zone Pooling',
       'subtitle':
           'Automatically matched with crew in your area going to the same airport at similar times.',
-      'highlight': 'Save up to 70% vs Grab',
+      'highlight': 'Save up to 70% vs e-Hailing',
     },
     {
       'icon': Icons.verified_user,
       'color': Color(0xFF378ADD),
-      'title': 'Verified operators only',
+      'title': 'Verified Operators Only',
       'subtitle':
-          'Every van operator is verified with SSM, PSV licence and operator permit before being activated.',
-      'highlight': 'Your safety is our priority',
+          'Every operator is verified with SSM, PSV licence and operator permit before being activated.',
+      'highlight': 'Your safety is our utmost priority',
     },
     {
       'icon': Icons.schedule,
       'color': Color(0xFFEF9F27),
-      'title': 'Always on time',
+      'title': 'Always On Time',
       'subtitle':
           'Pickup times calculated from your departure. Operators get your schedule weeks in advance.',
-      'highlight': 'Never miss a check-in again',
+      'highlight': 'Never miss reporting-in again',
     },
   ];
 

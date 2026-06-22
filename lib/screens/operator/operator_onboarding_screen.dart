@@ -112,7 +112,7 @@ class _OperatorOnboardingScreenState
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: color.withOpacity(0.12),
+                            color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(28),
                           ),
                           child: Icon(page['icon'] as IconData,
@@ -139,10 +139,10 @@ class _OperatorOnboardingScreenState
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: color.withOpacity(0.1),
+                            color: color.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                                color: color.withOpacity(0.3),
+                                color: color.withValues(alpha: 0.3),
                                 width: 0.5),
                           ),
                           child: Text(page['highlight'] as String,

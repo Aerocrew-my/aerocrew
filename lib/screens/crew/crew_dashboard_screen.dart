@@ -4,7 +4,7 @@ import 'package:aerocrew/screens/crew/billing_screen.dart';
 import 'package:aerocrew/screens/crew/crew_profile_view_screen.dart';
 import 'package:aerocrew/screens/crew/roster_calendar_screen.dart';
 import 'package:aerocrew/screens/crew/pre_trip_checklist_screen.dart';
-import 'package:aerocrew/screens/crew/pool_members_screen.dart';
+// import 'package:aerocrew/screens/crew/pool_members_screen.dart';
 import 'package:aerocrew/screens/crew/crew_map_screen.dart';
 import 'package:aerocrew/screens/crew/poolmates_screen.dart';
 import 'package:flutter/material.dart';
@@ -470,18 +470,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
 
 const SizedBox(width: 6),
 
-GestureDetector(
-  onTap: () => Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => PoolMembersScreen(
-        trip: upcomingTrips.first,
-      ),
-    ),
-  ),
-  child: _buildIconBtn(Icons.people, AeroColors.infoText),
-),
-                      const SizedBox(width: 6),
+// Pool Members temporarily disabled for MVP
                       GestureDetector(
                         onTap: () => Navigator.push(context,
                             MaterialPageRoute(builder: (_) =>

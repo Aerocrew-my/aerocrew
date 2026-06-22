@@ -150,7 +150,7 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: AeroColors.success.withOpacity(0.12),
+              color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -183,10 +183,10 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AeroColors.success.withOpacity(0.08),
+          color: AeroColors.success.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-              color: AeroColors.success.withOpacity(0.2), width: 0.5),
+              color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
         ),
         child: Row(
           children: [
@@ -337,10 +337,10 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                       width: 28,
                       height: 28,
                       decoration: BoxDecoration(
-                        color: dotColor.withOpacity(0.15),
+                        color: dotColor.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: dotColor.withOpacity(0.5)),
+                            color: dotColor.withValues(alpha: 0.5)),
                       ),
                       child: Icon(
                         status == 'completed'
@@ -358,7 +358,7 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                         height: 40,
                         margin:
                             const EdgeInsets.symmetric(vertical: 3),
-                        color: dotColor.withOpacity(0.3),
+                        color: dotColor.withValues(alpha: 0.3),
                       ),
                   ],
                 ),
@@ -411,7 +411,7 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                                           vertical: 3),
                                   decoration: BoxDecoration(
                                     color: AeroColors.success
-                                        .withOpacity(0.1),
+                                        .withValues(alpha: 0.1),
                                     borderRadius:
                                         BorderRadius.circular(6),
                                   ),

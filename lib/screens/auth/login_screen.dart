@@ -152,10 +152,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              _buildRoleCard('crew', 'Flight crew',
+                              _buildRoleCard('crew', 'Flight Crew',
                                   Icons.flight_takeoff),
                               const SizedBox(width: 10),
-                              _buildRoleCard('operator', 'Van operator',
+                              _buildRoleCard('operator', 'Operator',
                                   Icons.directions_car),
                             ],
                           ),

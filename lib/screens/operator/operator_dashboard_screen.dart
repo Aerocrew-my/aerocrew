@@ -1,13 +1,10 @@
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
-import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
 import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
 import 'package:aerocrew/screens/operator/route_optimizer_screen.dart';
-import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
-import 'package:aerocrew/screens/operator/job_details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -155,7 +152,10 @@ class _OperatorDashboardScreenState
 
 double get todayEarnings => jobs
     .where((j) => j['date'] == 'Mon 16 Jun')
-    .fold(0.0, (sum, j) => sum + ((j['earnings'] ?? 0.0) as double));
+    .fold(
+  0.0,
+  (earnings, job) => earnings + ((job['earnings'] ?? 0.0) as double),
+);
     
   int get todayJobs => jobs.where((j) => j['date'] == 'Mon 16 Jun').length;
 
