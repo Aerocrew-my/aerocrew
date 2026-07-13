@@ -60,7 +60,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCx9u6301ltMEx9zdNNXJ4ZOgYrWdB1rDU',
-    appId: '1:791157275777:android:9cdd7d6f7639939ab92180',
+    appId: '1:791157275777:android:aa77725cc18692dbb92180',
     messagingSenderId: '791157275777',
     projectId: 'aerocrew-96754',
     storageBucket: 'aerocrew-96754.firebasestorage.app',

@@ -1,4 +1,5 @@
 import 'package:aerocrew/screens/auth/login_screen.dart';
+import 'package:aerocrew/screens/auth/auth_gate.dart';
 import 'package:aerocrew/screens/shared/onboarding_screen.dart';
 import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:aerocrew/theme/appearance_controller.dart';
@@ -49,7 +50,7 @@ class AeroCrewApp extends StatelessWidget {
               child: child ?? const SizedBox.shrink(),
             );
           },
-          home: const SplashScreen(),
+          home: const AuthGate(unauthenticated: SplashScreen()),
         );
       },
     );

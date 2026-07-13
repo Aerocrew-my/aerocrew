@@ -49,7 +49,7 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
         'coverageZones': zonesController.text.trim(),
         'capacity': int.tryParse(capacityController.text.trim()) ?? 8,
         'profileComplete': true,
-        'status': 'pending_documents',
+        'onboardingStage': 'pending_documents',
       });
       if (!mounted) return;
       Navigator.pushReplacement(

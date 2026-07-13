@@ -4,7 +4,7 @@
       "android": {
         "default": {
           "projectId": "aerocrew-96754",
-          "appId": "1:791157275777:android:9cdd7d6f7639939ab92180",
+          "appId": "1:791157275777:android:aa77725cc18692dbb92180",
           "fileOutput": "android/app/google-services.json"
         }
       },
@@ -12,12 +12,15 @@
         "lib/firebase_options.dart": {
           "projectId": "aerocrew-96754",
           "configurations": {
-            "android": "1:791157275777:android:9cdd7d6f7639939ab92180",
+            "android": "1:791157275777:android:aa77725cc18692dbb92180",
             "web": "1:791157275777:web:10196a6160bbf19bb92180"
           }
         }
       }
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules"
   },
   "hosting": {
     "public": "build/web",

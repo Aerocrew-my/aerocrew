@@ -20,6 +20,17 @@ class _OtpScreenState extends State<OtpScreen> {
   final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   bool isLoading = false;
 
+  @override
+  void dispose() {
+    for (final controller in controllers) {
+      controller.dispose();
+    }
+    for (final focusNode in focusNodes) {
+      focusNode.dispose();
+    }
+    super.dispose();
+  }
+
   void _verify() {
     setState(() => isLoading = true);
     Future.delayed(const Duration(seconds: 1), () {

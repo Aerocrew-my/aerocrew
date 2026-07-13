@@ -81,7 +81,7 @@ class _OperatorDocumentsScreenState extends State<OperatorDocumentsScreen> {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'status': 'pending_verification',
+        'onboardingStage': 'pending_verification',
         'documentsSubmittedAt': FieldValue.serverTimestamp(),
         'documents': uploadedDocs,
       });
