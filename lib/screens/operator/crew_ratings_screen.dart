@@ -66,8 +66,7 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
   }
 
   double get avgRating =>
-      ratings.fold(0, (s, r) => s + (r['rating'] as int)) /
-      ratings.length;
+      ratings.fold(0, (s, r) => s + (r['rating'] as int)) / ratings.length;
 
   Map<int, int> get ratingCounts {
     final counts = <int, int>{};
@@ -118,28 +117,36 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('CREW RATINGS',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('What crew say about you',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'CREW RATINGS',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'What crew say about you',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -159,26 +166,31 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
         children: [
           Column(
             children: [
-              Text(avgRating.toStringAsFixed(1),
-                  style: const TextStyle(
-                      fontSize: 52,
-                      fontWeight: FontWeight.w800,
-                      color: AeroColors.amber,
-                      letterSpacing: -2)),
+              Text(
+                avgRating.toStringAsFixed(1),
+                style: const TextStyle(
+                  fontSize: 52,
+                  fontWeight: FontWeight.w800,
+                  color: AeroColors.amber,
+                  letterSpacing: -2,
+                ),
+              ),
               Row(
                 children: List.generate(
-                    5,
-                    (i) => Icon(
-                          Icons.star,
-                          size: 16,
-                          color: i < avgRating.round()
-                              ? AeroColors.amber
-                              : AeroColors.divider,
-                        )),
+                  5,
+                  (i) => Icon(
+                    Icons.star,
+                    size: 16,
+                    color: i < avgRating.round()
+                        ? AeroColors.amber
+                        : AeroColors.divider,
+                  ),
+                ),
               ),
-              Text('${ratings.length} reviews',
-                  style: const TextStyle(
-                      fontSize: 11, color: AeroColors.grey)),
+              Text(
+                '${ratings.length} reviews',
+                style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+              ),
             ],
           ),
           const SizedBox(width: 20),
@@ -191,31 +203,39 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(
                     children: [
-                      Text('$star',
-                          style: const TextStyle(
-                              fontSize: 11, color: AeroColors.grey)),
+                      Text(
+                        '$star',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
+                        ),
+                      ),
                       const SizedBox(width: 4),
-                      const Icon(Icons.star,
-                          size: 10, color: AeroColors.amber),
+                      const Icon(Icons.star, size: 10, color: AeroColors.amber),
                       const SizedBox(width: 6),
                       Expanded(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(3),
                           child: LinearProgressIndicator(
                             value: ratio,
-                            backgroundColor:
-                                AeroColors.amber.withValues(alpha: 0.1),
-                            valueColor:
-                                const AlwaysStoppedAnimation<Color>(
-                                    AeroColors.amber),
+                            backgroundColor: AeroColors.amber.withValues(
+                              alpha: 0.1,
+                            ),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AeroColors.amber,
+                            ),
                             minHeight: 6,
                           ),
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text('$count',
-                          style: const TextStyle(
-                              fontSize: 11, color: AeroColors.grey)),
+                      Text(
+                        '$count',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -249,8 +269,7 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
     return GestureDetector(
       onTap: () => setState(() => selectedFilter = id),
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? AeroColors.amber : AeroColors.navyCard,
           borderRadius: BorderRadius.circular(20),
@@ -259,11 +278,14 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
             width: 0.5,
           ),
         ),
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : AeroColors.grey)),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: isSelected ? Colors.white : AeroColors.grey,
+          ),
+        ),
       ),
     );
   }
@@ -291,11 +313,14 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                  child: Text(r['initials'] as String,
-                      style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AeroColors.amber)),
+                  child: Text(
+                    r['initials'] as String,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AeroColors.amber,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -303,58 +328,78 @@ class _CrewRatingsScreenState extends State<CrewRatingsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(r['crew'] as String,
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
                     Text(
-                        '${r['route']} · ${r['date']}',
-                        style: const TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
+                      r['crew'] as String,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '${r['route']} · ${r['date']}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AeroColors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ),
               Row(
                 children: List.generate(
-                    5,
-                    (i) => Icon(Icons.star,
-                        size: 13,
-                        color: i < rating
-                            ? AeroColors.amber
-                            : AeroColors.divider)),
+                  5,
+                  (i) => Icon(
+                    Icons.star,
+                    size: 13,
+                    color: i < rating ? AeroColors.amber : AeroColors.divider,
+                  ),
+                ),
               ),
             ],
           ),
           if ((r['comment'] as String).isNotEmpty) ...[
             const SizedBox(height: 8),
-            Text(r['comment'] as String,
-                style: const TextStyle(
-                    fontSize: 12,
-                    color: AeroColors.greyLight,
-                    height: 1.4)),
+            Text(
+              r['comment'] as String,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AeroColors.greyLight,
+                height: 1.4,
+              ),
+            ),
           ],
           if ((r['tags'] as List).isNotEmpty) ...[
             const SizedBox(height: 8),
             Wrap(
               spacing: 6,
               runSpacing: 4,
-              children: (r['tags'] as List<String>).map((tag) => Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AeroColors.success.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
+              children: (r['tags'] as List<String>)
+                  .map(
+                    (tag) => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AeroColors.success.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
                           color: AeroColors.success.withValues(alpha: 0.2),
-                          width: 0.5),
-                    ),
-                    child: Text(tag,
+                          width: 0.5,
+                        ),
+                      ),
+                      child: Text(
+                        tag,
                         style: const TextStyle(
-                            fontSize: 10,
-                            color: AeroColors.success,
-                            fontWeight: FontWeight.w500)),
-                  )).toList(),
+                          fontSize: 10,
+                          color: AeroColors.success,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ],

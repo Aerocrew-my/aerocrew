@@ -14,10 +14,7 @@ class OperatorMapScreen extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           'Live Map',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -31,19 +28,12 @@ class OperatorMapScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AeroColors.navyCard,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AeroColors.divider,
-                    width: 0.5,
-                  ),
+                  border: Border.all(color: AeroColors.divider, width: 0.5),
                 ),
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.map_outlined,
-                      size: 80,
-                      color: AeroColors.amber,
-                    ),
+                    Icon(Icons.map_outlined, size: 80, color: AeroColors.amber),
                     SizedBox(height: 16),
                     Text(
                       'Operator Map',
@@ -57,10 +47,7 @@ class OperatorMapScreen extends StatelessWidget {
                     Text(
                       'Live route optimization and crew tracking\nwill appear here.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AeroColors.grey,
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: AeroColors.grey, fontSize: 14),
                     ),
                   ],
                 ),
@@ -81,19 +68,12 @@ class OperatorMapScreen extends StatelessWidget {
               ),
               child: const Row(
                 children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: AeroColors.amber,
-                    size: 18,
-                  ),
+                  Icon(Icons.info_outline, color: AeroColors.amber, size: 18),
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       'Phase 2: Live driver location, pickup sequencing, crew ETAs and route optimization.',
-                      style: TextStyle(
-                        color: AeroColors.amber,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: AeroColors.amber, fontSize: 12),
                     ),
                   ),
                 ],

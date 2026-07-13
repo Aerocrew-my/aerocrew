@@ -18,12 +18,10 @@ class PaymentWebviewScreen extends StatefulWidget {
   });
 
   @override
-  State<PaymentWebviewScreen> createState() =>
-      _PaymentWebviewScreenState();
+  State<PaymentWebviewScreen> createState() => _PaymentWebviewScreenState();
 }
 
-class _PaymentWebviewScreenState
-    extends State<PaymentWebviewScreen> {
+class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
   late final WebViewController _controller;
   bool isLoading = true;
 
@@ -80,44 +78,50 @@ class _PaymentWebviewScreenState
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AeroColors.divider, width: 0.5),
             ),
-            child: const Icon(Icons.close,
-                color: Colors.white, size: 18),
+            child: const Icon(Icons.close, color: Colors.white, size: 18),
           ),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Secure payment',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white)),
-            Text('Powered by CHIP',
-                style: TextStyle(
-                    fontSize: 11,
-                    color: AeroColors.grey)),
+            const Text(
+              'Secure payment',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              'Powered by CHIP',
+              style: TextStyle(fontSize: 11, color: AeroColors.grey),
+            ),
           ],
         ),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
-                  color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
+                color: AeroColors.success.withValues(alpha: 0.3),
+                width: 0.5,
+              ),
             ),
             child: Row(
               children: const [
                 Icon(Icons.lock, size: 10, color: AeroColors.success),
                 SizedBox(width: 4),
-                Text('SSL secured',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.success,
-                        fontWeight: FontWeight.w600)),
+                Text(
+                  'SSL secured',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AeroColors.success,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ),
@@ -135,9 +139,10 @@ class _PaymentWebviewScreenState
                   children: [
                     CircularProgressIndicator(color: AeroColors.amber),
                     SizedBox(height: 16),
-                    Text('Loading secure payment...',
-                        style: TextStyle(
-                            color: AeroColors.grey, fontSize: 13)),
+                    Text(
+                      'Loading secure payment...',
+                      style: TextStyle(color: AeroColors.grey, fontSize: 13),
+                    ),
                   ],
                 ),
               ),

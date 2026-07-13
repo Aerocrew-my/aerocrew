@@ -87,8 +87,19 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
 
   String get monthName {
     const months = [
-      '', 'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      '',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return months[currentMonth];
   }
@@ -103,19 +114,27 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
 
   Color _statusColor(String status) {
     switch (status) {
-      case 'matched': return AeroColors.success;
-      case 'matching': return AeroColors.amber;
-      case 'inbound': return const Color(0xFF378ADD);
-      default: return AeroColors.grey;
+      case 'matched':
+        return AeroColors.success;
+      case 'matching':
+        return AeroColors.amber;
+      case 'inbound':
+        return const Color(0xFF378ADD);
+      default:
+        return AeroColors.grey;
     }
   }
 
   String _statusLabel(String status) {
     switch (status) {
-      case 'matched': return 'Van matched';
-      case 'matching': return 'Finding van';
-      case 'inbound': return 'Return flight';
-      default: return 'Scheduled';
+      case 'matched':
+        return 'Van matched';
+      case 'matching':
+        return 'Finding van';
+      case 'inbound':
+        return 'Return flight';
+      default:
+        return 'Scheduled';
     }
   }
 
@@ -149,14 +168,16 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (_) => const RosterUploadScreen())),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const RosterUploadScreen()),
+        ),
         backgroundColor: AeroColors.amber,
         icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('Upload roster',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600)),
+        label: const Text(
+          'Upload roster',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
@@ -175,25 +196,34 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('MY ROSTER',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Flight schedule',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'MY ROSTER',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Flight schedule',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const Spacer(),
@@ -208,14 +238,20 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                     currentMonth--;
                   }
                 }),
-                child: const Icon(Icons.chevron_left,
-                    color: AeroColors.grey, size: 20),
+                child: const Icon(
+                  Icons.chevron_left,
+                  color: AeroColors.grey,
+                  size: 20,
+                ),
               ),
-              Text('$monthName $currentYear',
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white)),
+              Text(
+                '$monthName $currentYear',
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
               GestureDetector(
                 onTap: () => setState(() {
                   if (currentMonth == 12) {
@@ -225,8 +261,11 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                     currentMonth++;
                   }
                 }),
-                child: const Icon(Icons.chevron_right,
-                    color: AeroColors.grey, size: 20),
+                child: const Icon(
+                  Icons.chevron_right,
+                  color: AeroColors.grey,
+                  size: 20,
+                ),
               ),
             ],
           ),
@@ -244,7 +283,11 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
           const SizedBox(width: 10),
           _buildStatCard('Matched', '$matched', AeroColors.success),
           const SizedBox(width: 10),
-          _buildStatCard('Pending', '${total - matched}', const Color(0xFF378ADD)),
+          _buildStatCard(
+            'Pending',
+            '${total - matched}',
+            const Color(0xFF378ADD),
+          ),
         ],
       ),
     );
@@ -261,14 +304,18 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
         ),
         child: Column(
           children: [
-            Text(value,
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: color)),
-            Text(label,
-                style: const TextStyle(
-                    fontSize: 11, color: AeroColors.grey)),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: color,
+              ),
+            ),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+            ),
           ],
         ),
       ),
@@ -290,23 +337,27 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-                  .map((d) => SizedBox(
-                        width: 36,
-                        child: Text(d,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 11,
-                                color: AeroColors.grey,
-                                fontWeight: FontWeight.w600)),
-                      ))
+                  .map(
+                    (d) => SizedBox(
+                      width: 36,
+                      child: Text(
+                        d,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
                   .toList(),
             ),
             const SizedBox(height: 8),
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 7,
                 childAspectRatio: 1,
               ),
@@ -327,32 +378,35 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                       color: isSelected
                           ? AeroColors.amber
                           : hasFlights
-                              ? AeroColors.amber.withValues(alpha: 0.1)
-                              : Colors.transparent,
+                          ? AeroColors.amber.withValues(alpha: 0.1)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: isSelected
                             ? AeroColors.amber
                             : hasFlights
-                                ? AeroColors.amber.withValues(alpha: 0.3)
-                                : Colors.transparent,
+                            ? AeroColors.amber.withValues(alpha: 0.3)
+                            : Colors.transparent,
                         width: 0.5,
                       ),
                     ),
                     child: Stack(
                       children: [
                         Center(
-                          child: Text('$day',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: hasFlights
-                                      ? FontWeight.w600
-                                      : FontWeight.w400,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : hasFlights
-                                          ? AeroColors.amber
-                                          : AeroColors.grey)),
+                          child: Text(
+                            '$day',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: hasFlights
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                              color: isSelected
+                                  ? Colors.white
+                                  : hasFlights
+                                  ? AeroColors.amber
+                                  : AeroColors.grey,
+                            ),
+                          ),
                         ),
                         if (hasFlights && isMatched && !isSelected)
                           Positioned(
@@ -392,15 +446,17 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                     ? 'No flights on day $selectedDay'
                     : '${flights.length} flight${flights.length > 1 ? 's' : ''} on day $selectedDay',
                 style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
               const Spacer(),
               if (flights.isNotEmpty)
-                Text('$monthName $selectedDay',
-                    style: const TextStyle(
-                        fontSize: 12, color: AeroColors.grey)),
+                Text(
+                  '$monthName $selectedDay',
+                  style: const TextStyle(fontSize: 12, color: AeroColors.grey),
+                ),
             ],
           ),
           const SizedBox(height: 12),
@@ -415,14 +471,16 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
               ),
               child: const Column(
                 children: [
-                  Icon(Icons.event_available,
-                      color: AeroColors.grey, size: 28),
+                  Icon(Icons.event_available, color: AeroColors.grey, size: 28),
                   SizedBox(height: 8),
-                  Text('Rest day',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AeroColors.grey)),
+                  Text(
+                    'Rest day',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AeroColors.grey,
+                    ),
+                  ),
                 ],
               ),
             )
@@ -439,7 +497,9 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                   color: AeroColors.navyCard,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                      color: color.withValues(alpha: 0.3), width: 0.5),
+                    color: color.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,57 +513,76 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Icon(
-                              status == 'inbound'
-                                  ? Icons.flight_land
-                                  : Icons.flight_takeoff,
-                              color: color,
-                              size: 16),
+                            status == 'inbound'
+                                ? Icons.flight_land
+                                : Icons.flight_takeoff,
+                            color: color,
+                            size: 16,
+                          ),
                         ),
                         const SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(flight['flight'] as String,
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white)),
-                            Text(flight['route'] as String,
-                                style: const TextStyle(
-                                    fontSize: 12,
-                                    color: AeroColors.grey)),
+                            Text(
+                              flight['flight'] as String,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              flight['route'] as String,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AeroColors.grey,
+                              ),
+                            ),
                           ],
                         ),
                         const Spacer(),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Text(_statusLabel(status),
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: color)),
+                          child: Text(
+                            _statusLabel(status),
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: color,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        _buildTimeChip('DEP', flight['dep'] as String,
-                            AeroColors.amber),
+                        _buildTimeChip(
+                          'DEP',
+                          flight['dep'] as String,
+                          AeroColors.amber,
+                        ),
                         const SizedBox(width: 8),
-                        _buildTimeChip('ARR', flight['arr'] as String,
-                            AeroColors.grey),
+                        _buildTimeChip(
+                          'ARR',
+                          flight['arr'] as String,
+                          AeroColors.grey,
+                        ),
                         if (hasPickup) ...[
                           const SizedBox(width: 8),
                           _buildTimeChip(
-                              'PICKUP',
-                              flight['pickup'] as String,
-                              AeroColors.success),
+                            'PICKUP',
+                            flight['pickup'] as String,
+                            AeroColors.success,
+                          ),
                         ],
                       ],
                     ),
@@ -527,17 +606,23 @@ class _RosterCalendarScreenState extends State<RosterCalendarScreen> {
       ),
       child: Column(
         children: [
-          Text(label,
-              style: TextStyle(
-                  fontSize: 9,
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5)),
-          Text(time,
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 9,
+              color: color,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
+          ),
+          Text(
+            time,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );

@@ -5,8 +5,7 @@ class AvailabilityScreen extends StatefulWidget {
   const AvailabilityScreen({super.key});
 
   @override
-  State<AvailabilityScreen> createState() =>
-      _AvailabilityScreenState();
+  State<AvailabilityScreen> createState() => _AvailabilityScreenState();
 }
 
 class _AvailabilityScreenState extends State<AvailabilityScreen> {
@@ -20,8 +19,19 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
 
   String get monthName {
     const months = [
-      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[currentMonth]} $currentYear';
   }
@@ -45,27 +55,38 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('AVAILABILITY',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('Set your schedule',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'AVAILABILITY',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'Set your schedule',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -84,13 +105,14 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
                                 onTap: () => setState(() {
@@ -102,14 +124,18 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                   }
                                 }),
                                 child: const Icon(
-                                    Icons.chevron_left,
-                                    color: AeroColors.grey),
+                                  Icons.chevron_left,
+                                  color: AeroColors.grey,
+                                ),
                               ),
-                              Text(monthName,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
+                              Text(
+                                monthName,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
                               GestureDetector(
                                 onTap: () => setState(() {
                                   if (currentMonth == 12) {
@@ -120,50 +146,49 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                   }
                                 }),
                                 child: const Icon(
-                                    Icons.chevron_right,
-                                    color: AeroColors.grey),
+                                  Icons.chevron_right,
+                                  color: AeroColors.grey,
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 14),
                           Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-                                .map((d) => SizedBox(
-                                      width: 36,
-                                      child: Text(d,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontSize: 11,
-                                              color: AeroColors.grey,
-                                              fontWeight:
-                                                  FontWeight.w600)),
-                                    ))
+                                .map(
+                                  (d) => SizedBox(
+                                    width: 36,
+                                    child: Text(
+                                      d,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        color: AeroColors.grey,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                )
                                 .toList(),
                           ),
                           const SizedBox(height: 8),
                           GridView.builder(
                             shrinkWrap: true,
-                            physics:
-                                const NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 7,
-                              childAspectRatio: 1,
-                            ),
-                            itemCount:
-                                daysInMonth + firstDayOfWeek - 1,
+                                  crossAxisCount: 7,
+                                  childAspectRatio: 1,
+                                ),
+                            itemCount: daysInMonth + firstDayOfWeek - 1,
                             itemBuilder: (context, index) {
                               if (index < firstDayOfWeek - 1) {
                                 return const SizedBox();
                               }
-                              final day =
-                                  index - firstDayOfWeek + 2;
-                              final isAvailable =
-                                  availableDays.contains(day);
-                              final isBlocked =
-                                  blockedDays.contains(day);
+                              final day = index - firstDayOfWeek + 2;
+                              final isAvailable = availableDays.contains(day);
+                              final isBlocked = blockedDays.contains(day);
 
                               return GestureDetector(
                                 onTap: () {
@@ -182,38 +207,41 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                   margin: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     color: isAvailable
-                                        ? AeroColors.success
-                                            .withValues(alpha: 0.2)
+                                        ? AeroColors.success.withValues(
+                                            alpha: 0.2,
+                                          )
                                         : isBlocked
-                                            ? AeroColors.danger
-                                                .withValues(alpha: 0.15)
-                                            : Colors.transparent,
-                                    borderRadius:
-                                        BorderRadius.circular(8),
+                                        ? AeroColors.danger.withValues(
+                                            alpha: 0.15,
+                                          )
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
                                       color: isAvailable
-                                          ? AeroColors.success
-                                              .withValues(alpha: 0.4)
+                                          ? AeroColors.success.withValues(
+                                              alpha: 0.4,
+                                            )
                                           : isBlocked
-                                              ? AeroColors.danger
-                                                  .withValues(alpha: 0.3)
-                                              : Colors.transparent,
+                                          ? AeroColors.danger.withValues(
+                                              alpha: 0.3,
+                                            )
+                                          : Colors.transparent,
                                       width: 0.5,
                                     ),
                                   ),
                                   child: Center(
-                                    child: Text('$day',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight:
-                                                FontWeight.w500,
-                                            color: isAvailable
-                                                ? AeroColors.success
-                                                : isBlocked
-                                                    ? AeroColors
-                                                        .danger
-                                                    : AeroColors
-                                                        .grey)),
+                                    child: Text(
+                                      '$day',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: isAvailable
+                                            ? AeroColors.success
+                                            : isBlocked
+                                            ? AeroColors.danger
+                                            : AeroColors.grey,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               );
@@ -225,8 +253,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        _buildLegend(
-                            AeroColors.success, 'Available'),
+                        _buildLegend(AeroColors.success, 'Available'),
                         const SizedBox(width: 16),
                         _buildLegend(AeroColors.danger, 'Unavailable'),
                         const SizedBox(width: 16),
@@ -240,21 +267,26 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                         color: AeroColors.amber.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.amber.withValues(alpha: 0.2),
-                            width: 0.5),
+                          color: AeroColors.amber.withValues(alpha: 0.2),
+                          width: 0.5,
+                        ),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.info_outline,
-                              color: AeroColors.amber, size: 16),
+                          Icon(
+                            Icons.info_outline,
+                            color: AeroColors.amber,
+                            size: 16,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Tap a date to toggle availability. Crew are only matched with available operators.',
                               style: TextStyle(
-                                  fontSize: 12,
-                                  color: AeroColors.amber,
-                                  height: 1.4),
+                                fontSize: 12,
+                                color: AeroColors.amber,
+                                height: 1.4,
+                              ),
                             ),
                           ),
                         ],
@@ -269,8 +301,11 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                             SnackBar(
                               content: const Row(
                                 children: [
-                                  Icon(Icons.check_circle,
-                                      color: Colors.white, size: 16),
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
                                   SizedBox(width: 8),
                                   Text('Availability saved!'),
                                 ],
@@ -278,8 +313,8 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                               backgroundColor: AeroColors.success,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(10)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           );
                           Navigator.pop(context);
@@ -287,17 +322,19 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AeroColors.amber,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(14)),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 0,
                         ),
-                        child: const Text('Save availability',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600)),
+                        child: const Text(
+                          'Save availability',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -323,9 +360,10 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
           ),
         ),
         const SizedBox(width: 6),
-        Text(label,
-            style: const TextStyle(
-                fontSize: 11, color: AeroColors.grey)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+        ),
       ],
     );
   }

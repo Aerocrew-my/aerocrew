@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'theme/aero_theme.dart';
+
 class AeroColors {
-  static const navy = Color(0xFF0A0E1A);
-  static const navyLight = Color(0xFF141927);
-  static const navyCard = Color(0xFF1C2333);
-  static const amber = Color(0xFFBA7517);
-  static const amberBright = Color(0xFFE8920A);
-  static const amberLight = Color(0xFFFFF8EC);
-  static const amberBorder = Color(0xFFFAEEDA);
+  // Compatibility aliases for legacy screens. New code must use ColorScheme or
+  // AeroSemanticColors through context.aero.
+  static const navy = AeroPalette.darkCanvas;
+  static const navyLight = AeroPalette.darkSurface;
+  static const navyCard = AeroPalette.darkElevatedSurface;
+  static const amber = AeroPalette.primary;
+  static const amberBright = AeroPalette.skyBlue;
+  static const amberLight = AeroPalette.lightBlueSurface;
+  static const amberBorder = Color(0xFFBFDBFE);
   static const white = Colors.white;
   static const grey = Color(0xFF888888);
   static const greyLight = Color(0xFFB0B0B0);
@@ -15,12 +19,12 @@ class AeroColors {
   static const background = Color(0xFFF0F2F8);
   static const cardBorder = Color(0xFFE0E0E8);
   static const cardWhite = Color(0xFFFFFFFF);
-  static const success = Color(0xFF1D9E75);
+  static const success = AeroPalette.success;
   static const successLight = Color(0xFFE1F5EE);
-  static const danger = Color(0xFFA32D2D);
+  static const danger = AeroPalette.danger;
   static const dangerLight = Color(0xFFFCEBEB);
   static const infoLight = Color(0xFFE6F1FB);
-  static const infoText = Color(0xFF185FA5);
+  static const infoText = AeroPalette.information;
   static const divider = Color(0xFF2A3347);
 }
 

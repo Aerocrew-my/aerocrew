@@ -1,76 +1,66 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
+/// Calls the server-side roster extraction endpoint.
+///
+/// API provider credentials must never ship in the Flutter application. Supply
+/// the HTTPS endpoint at build time with `--dart-define=ROSTER_EXTRACTION_URL=...`.
 class AnthropicService {
-  static const String _apiKey = 'YOUR_API_KEY_HERE';
-  static const String _baseUrl = 'https://api.anthropic.com/v1/messages';
+  static const _endpoint = String.fromEnvironment('ROSTER_EXTRACTION_URL');
 
-  static Future<List<Map<String, dynamic>>> extractRosterFromImage(
-      Uint8List imageBytes, String mediaType) async {
-    try {
-      final base64Image = base64Encode(imageBytes);
+  static bool get isConfigured => _endpoint.trim().isNotEmpty;
 
-      final response = await http.post(
-        Uri.parse(_baseUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': _apiKey,
-          'anthropic-version': '2023-06-01',
-        },
-        body: jsonEncode({
-          'model': 'claude-opus-4-6',
-          'max_tokens': 1024,
-          'messages': [
-            {
-              'role': 'user',
-              'content': [
-                {
-                  'type': 'image',
-                  'source': {
-                    'type': 'base64',
-                    'media_type': mediaType,
-                    'data': base64Image,
-                  },
-                },
-                {
-                  'type': 'text',
-                  'text': '''You are an expert at reading airline crew rosters. 
-Extract all flight duties from this roster image.
-
-Return ONLY a JSON array with no other text, markdown, or explanation.
-Each object must have exactly these fields:
-- flightNumber: string (e.g. "AK6101")
-- date: string (e.g. "Mon 16 Jun")  
-- departureTime: string in HH:MM format (e.g. "05:30")
-- airport: string (e.g. "SZB", "KLIA", "KUL")
-- dutyType: string ("outbound" or "inbound")
-
-Example output:
-[{"flightNumber":"AK6101","date":"Mon 16 Jun","departureTime":"05:30","airport":"SZB","dutyType":"outbound"}]
-
-If you cannot read the roster clearly, return an empty array: []'''
-                }
-              ],
-            }
-          ],
-        }),
+  static Future<List<Map<String, dynamic>>> extractRoster(
+    Uint8List bytes,
+    String mediaType,
+  ) async {
+    if (!isConfigured) {
+      throw const RosterExtractionException(
+        'Secure roster extraction is not configured for this build.',
       );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final text = data['content'][0]['text'] as String;
-        final cleaned = text
-            .replaceAll('```json', '')
-            .replaceAll('```', '')
-            .trim();
-        final List<dynamic> flights = jsonDecode(cleaned);
-        return flights.cast<Map<String, dynamic>>();
-      } else {
-        throw Exception('API error: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Failed to extract roster: $e');
     }
+    final token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token == null) {
+      throw const RosterExtractionException(
+        'Sign in before uploading a roster.',
+      );
+    }
+
+    final response = await http.post(
+      Uri.parse(_endpoint),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'mediaType': mediaType, 'file': base64Encode(bytes)}),
+    );
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw const RosterExtractionException(
+        'The roster could not be processed. Try again or contact support.',
+      );
+    }
+
+    final decoded = jsonDecode(response.body);
+    final duties = decoded is List ? decoded : (decoded as Map)['duties'];
+    if (duties is! List) {
+      throw const RosterExtractionException(
+        'The extraction response was not in the expected format.',
+      );
+    }
+    return duties
+        .whereType<Map>()
+        .map((duty) => Map<String, dynamic>.from(duty))
+        .toList();
   }
+}
+
+class RosterExtractionException implements Exception {
+  const RosterExtractionException(this.message);
+  final String message;
+
+  @override
+  String toString() => message;
 }

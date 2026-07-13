@@ -77,9 +77,7 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
             _buildHeader(context),
             _buildTabs(),
             Expanded(
-              child: selectedTab == 0
-                  ? _buildMembersList()
-                  : _buildGroupChat(),
+              child: selectedTab == 0 ? _buildMembersList() : _buildGroupChat(),
             ),
           ],
         ),
@@ -101,8 +99,11 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -110,44 +111,52 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('POOL GROUP',
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: AeroColors.amber,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1)),
-                Text('${poolMembers.length} crew · SZB 05:30',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
+                const Text(
+                  'POOL GROUP',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: AeroColors.amber,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                  ),
+                ),
+                Text(
+                  '${poolMembers.length} crew · SZB 05:30',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           ),
           Stack(
             children: [
-              ...poolMembers.asMap().entries.map((e) => Positioned(
-                    left: e.key * 20.0,
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: AeroColors.amber.withValues(alpha: 0.2),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: AeroColors.navy, width: 2),
-                      ),
-                      child: Center(
-                        child: Text(
-                          e.value['initials'] as String,
-                          style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              color: AeroColors.amber),
+              ...poolMembers.asMap().entries.map(
+                (e) => Positioned(
+                  left: e.key * 20.0,
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: AeroColors.amber.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AeroColors.navy, width: 2),
+                    ),
+                    child: Center(
+                      child: Text(
+                        e.value['initials'] as String,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: AeroColors.amber,
                         ),
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
               SizedBox(width: poolMembers.length * 20.0 + 12),
             ],
           ),
@@ -182,19 +191,24 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.people,
-                          size: 14,
+                      Icon(
+                        Icons.people,
+                        size: 14,
+                        color: selectedTab == 0
+                            ? Colors.white
+                            : AeroColors.grey,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Members',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
                           color: selectedTab == 0
                               ? Colors.white
-                              : AeroColors.grey),
-                      const SizedBox(width: 6),
-                      Text('Members',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: selectedTab == 0
-                                  ? Colors.white
-                                  : AeroColors.grey)),
+                              : AeroColors.grey,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -214,19 +228,24 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.chat_bubble_outline,
-                          size: 14,
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        size: 14,
+                        color: selectedTab == 1
+                            ? Colors.white
+                            : AeroColors.grey,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Group chat',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
                           color: selectedTab == 1
                               ? Colors.white
-                              : AeroColors.grey),
-                      const SizedBox(width: 6),
-                      Text('Group chat',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: selectedTab == 1
-                                  ? Colors.white
-                                  : AeroColors.grey)),
+                              : AeroColors.grey,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -258,42 +277,50 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                   color: AeroColors.amberLight,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.directions_car,
-                    color: AeroColors.amber, size: 20),
+                child: const Icon(
+                  Icons.directions_car,
+                  color: AeroColors.amber,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 12),
               const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Ahmad Hassan',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
-                    Text('Toyota Hiace · WXY 1234 · Driver',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
+                    Text(
+                      'Ahmad Hassan',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Toyota Hiace · WXY 1234 · Driver',
+                      style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                    ),
                   ],
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: AeroColors.success.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.circle,
-                        size: 6, color: AeroColors.success),
+                    Icon(Icons.circle, size: 6, color: AeroColors.success),
                     SizedBox(width: 4),
-                    Text('En route',
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: AeroColors.success)),
+                    Text(
+                      'En route',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AeroColors.success,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -303,113 +330,130 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
         const SizedBox(height: 12),
         const Text('CREW MEMBERS', style: AeroText.label),
         const SizedBox(height: 8),
-        ...poolMembers.map((member) => Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
+        ...poolMembers.map(
+          (member) => Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: member['isMe'] == true
+                  ? AeroColors.amber.withValues(alpha: 0.06)
+                  : AeroColors.navyCard,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
                 color: member['isMe'] == true
-                    ? AeroColors.amber.withValues(alpha: 0.06)
-                    : AeroColors.navyCard,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: member['isMe'] == true
-                      ? AeroColors.amber.withValues(alpha: 0.2)
-                      : AeroColors.divider,
-                  width: 0.5,
-                ),
+                    ? AeroColors.amber.withValues(alpha: 0.2)
+                    : AeroColors.divider,
+                width: 0.5,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: AeroColors.amber.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Text(member['initials'] as String,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: AeroColors.amber)),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: AeroColors.amber.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      member['initials'] as String,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AeroColors.amber,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(member['name'] as String,
-                                style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white)),
-                            if (member['isMe'] == true) ...[
-                              const SizedBox(width: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 1),
-                                decoration: BoxDecoration(
-                                  color: AeroColors.amber
-                                      .withValues(alpha: 0.12),
-                                  borderRadius:
-                                      BorderRadius.circular(4),
-                                ),
-                                child: const Text('You',
-                                    style: TextStyle(
-                                        fontSize: 9,
-                                        color: AeroColors.amber,
-                                        fontWeight:
-                                            FontWeight.w600)),
-                              ),
-                            ],
-                          ],
-                        ),
-                        Text(
-                            '${member['airline']} · ${member['zone']}',
-                            style: const TextStyle(
-                                fontSize: 11,
-                                color: AeroColors.grey)),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Pickup ${member['pickup']}',
-                          style: const TextStyle(
-                              fontSize: 11,
+                      Row(
+                        children: [
+                          Text(
+                            member['name'] as String,
+                            style: const TextStyle(
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: AeroColors.amber)),
-                      Container(
-                        margin: const EdgeInsets.only(top: 3),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: member['status'] == 'ready'
-                              ? AeroColors.success.withValues(alpha: 0.1)
-                              : AeroColors.amber.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(6),
+                              color: Colors.white,
+                            ),
+                          ),
+                          if (member['isMe'] == true) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AeroColors.amber.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                'You',
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  color: AeroColors.amber,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      Text(
+                        '${member['airline']} · ${member['zone']}',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
                         ),
-                        child: Text(
-                            member['status'] == 'ready'
-                                ? 'Ready'
-                                : 'Waiting',
-                            style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.w600,
-                                color: member['status'] == 'ready'
-                                    ? AeroColors.success
-                                    : AeroColors.amber)),
                       ),
                     ],
                   ),
-                ],
-              ),
-            )),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Pickup ${member['pickup']}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AeroColors.amber,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: member['status'] == 'ready'
+                            ? AeroColors.success.withValues(alpha: 0.1)
+                            : AeroColors.amber.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        member['status'] == 'ready' ? 'Ready' : 'Waiting',
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          color: member['status'] == 'ready'
+                              ? AeroColors.success
+                              : AeroColors.amber,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -425,13 +469,12 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
               final msg = messages[i];
               final isMe = msg['isMe'] as bool;
               return Align(
-                alignment:
-                    isMe ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   constraints: BoxConstraints(
-                      maxWidth:
-                          MediaQuery.of(context).size.width * 0.72),
+                    maxWidth: MediaQuery.of(context).size.width * 0.72,
+                  ),
                   child: Column(
                     crossAxisAlignment: isMe
                         ? CrossAxisAlignment.end
@@ -439,52 +482,58 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                     children: [
                       if (!isMe)
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 4, bottom: 3),
-                          child: Text(msg['sender'] as String,
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.grey,
-                                  fontWeight: FontWeight.w500)),
+                          padding: const EdgeInsets.only(left: 4, bottom: 3),
+                          child: Text(
+                            msg['sender'] as String,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.grey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 10),
+                          horizontal: 14,
+                          vertical: 10,
+                        ),
                         decoration: BoxDecoration(
-                          color: isMe
-                              ? AeroColors.amber
-                              : AeroColors.navyCard,
+                          color: isMe ? AeroColors.amber : AeroColors.navyCard,
                           borderRadius: BorderRadius.only(
-                            topLeft:
-                                const Radius.circular(16),
-                            topRight:
-                                const Radius.circular(16),
-                            bottomLeft: Radius.circular(
-                                isMe ? 16 : 4),
-                            bottomRight: Radius.circular(
-                                isMe ? 4 : 16),
+                            topLeft: const Radius.circular(16),
+                            topRight: const Radius.circular(16),
+                            bottomLeft: Radius.circular(isMe ? 16 : 4),
+                            bottomRight: Radius.circular(isMe ? 4 : 16),
                           ),
                           border: isMe
                               ? null
                               : Border.all(
                                   color: AeroColors.divider,
-                                  width: 0.5),
+                                  width: 0.5,
+                                ),
                         ),
-                        child: Text(msg['message'] as String,
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: isMe
-                                    ? Colors.white
-                                    : AeroColors.greyLight,
-                                height: 1.4)),
+                        child: Text(
+                          msg['message'] as String,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: isMe ? Colors.white : AeroColors.greyLight,
+                            height: 1.4,
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 3, left: 4, right: 4),
-                        child: Text(msg['time'] as String,
-                            style: const TextStyle(
-                                fontSize: 10,
-                                color: AeroColors.grey)),
+                          top: 3,
+                          left: 4,
+                          right: 4,
+                        ),
+                        child: Text(
+                          msg['time'] as String,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: AeroColors.grey,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -498,39 +547,48 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
           decoration: BoxDecoration(
             color: AeroColors.navyCard,
             border: Border(
-                top: BorderSide(
-                    color: AeroColors.divider, width: 0.5)),
+              top: BorderSide(color: AeroColors.divider, width: 0.5),
+            ),
           ),
           child: Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: messageController,
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 13),
+                  style: const TextStyle(color: Colors.white, fontSize: 13),
                   decoration: InputDecoration(
                     hintText: 'Message the group...',
                     hintStyle: const TextStyle(
-                        color: AeroColors.grey, fontSize: 13),
+                      color: AeroColors.grey,
+                      fontSize: 13,
+                    ),
                     filled: true,
                     fillColor: AeroColors.navy,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(
-                          color: AeroColors.divider, width: 0.5),
+                        color: AeroColors.divider,
+                        width: 0.5,
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(
-                          color: AeroColors.divider, width: 0.5),
+                        color: AeroColors.divider,
+                        width: 0.5,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(
-                          color: AeroColors.amber, width: 1),
+                        color: AeroColors.amber,
+                        width: 1,
+                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     isDense: true,
                   ),
                 ),
@@ -559,8 +617,7 @@ class _PoolMembersScreenState extends State<PoolMembersScreen> {
                     color: AeroColors.amber,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.send,
-                      color: Colors.white, size: 18),
+                  child: const Icon(Icons.send, color: Colors.white, size: 18),
                 ),
               ),
             ],

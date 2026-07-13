@@ -44,28 +44,36 @@ class TripReceiptScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('TRIP RECEIPT',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Payment summary',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'TRIP RECEIPT',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Payment summary',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -92,8 +100,7 @@ class TripReceiptScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
               color: AeroColors.navy,
-              borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
             child: Column(
               children: [
@@ -106,43 +113,56 @@ class TripReceiptScreen extends StatelessWidget {
                         color: AeroColors.amber,
                         borderRadius: BorderRadius.circular(9),
                       ),
-                      child: const Icon(Icons.flight,
-                          color: Colors.white, size: 18),
+                      child: const Icon(
+                        Icons.flight,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ),
                     const SizedBox(width: 10),
-                    const Text('AeroCrew',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
+                    const Text(
+                      'AeroCrew',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AeroColors.success.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text('PAID',
-                          style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: AeroColors.success,
-                              letterSpacing: 1)),
+                      child: const Text(
+                        'PAID',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: AeroColors.success,
+                          letterSpacing: 1,
+                        ),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
                 Text(
-                    'RM${(trip['fare'] ?? 75.0).toStringAsFixed(2)}',
-                    style: const TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white)),
+                  'RM${(trip['fare'] ?? 75.0).toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
                 Text(
-                    '${trip['flight'] ?? 'AK6101'} · ${trip['date'] ?? 'Mon 16 Jun 2026'}',
-                    style: const TextStyle(
-                        fontSize: 13, color: AeroColors.grey)),
+                  '${trip['flight'] ?? 'AK6101'} · ${trip['date'] ?? 'Mon 16 Jun 2026'}',
+                  style: const TextStyle(fontSize: 13, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -150,11 +170,15 @@ class TripReceiptScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                _buildReceiptRow('Trip route',
-                    '${trip['zone'] ?? 'PJ'} → ${trip['airport'] ?? 'SZB'}'),
+                _buildReceiptRow(
+                  'Trip route',
+                  '${trip['zone'] ?? 'PJ'} → ${trip['airport'] ?? 'SZB'}',
+                ),
                 _buildDivider(),
-                _buildReceiptRow('Pickup time',
-                    trip['pickupTime'] as String? ?? '03:00'),
+                _buildReceiptRow(
+                  'Pickup time',
+                  trip['pickupTime'] as String? ?? '03:00',
+                ),
                 _buildReceiptRow('Arrival time', '04:15'),
                 _buildReceiptRow('Driver', 'Ahmad Hassan'),
                 _buildReceiptRow('Vehicle', 'Toyota Hiace · WXY 1234'),
@@ -168,17 +192,22 @@ class TripReceiptScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Total',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AeroColors.navy)),
+                    const Text(
+                      'Total',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: AeroColors.navy,
+                      ),
+                    ),
                     Text(
-                        'RM${(trip['fare'] ?? 75.0).toStringAsFixed(2)}',
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: AeroColors.navy)),
+                      'RM${(trip['fare'] ?? 75.0).toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: AeroColors.navy,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -191,14 +220,18 @@ class TripReceiptScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Payment method',
-                          style: TextStyle(
-                              fontSize: 12, color: AeroColors.grey)),
-                      const Text('AeroPool Subscription',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: AeroColors.navy)),
+                      const Text(
+                        'Payment method',
+                        style: TextStyle(fontSize: 12, color: AeroColors.grey),
+                      ),
+                      const Text(
+                        'AeroPool Subscription',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AeroColors.navy,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -206,15 +239,18 @@ class TripReceiptScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Transaction ID',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
+                    const Text(
+                      'Transaction ID',
+                      style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                    ),
                     Text(
-                        'TXN-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}',
-                        style: const TextStyle(
-                            fontSize: 11,
-                            color: AeroColors.grey,
-                            fontFamily: 'monospace')),
+                      'TXN-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AeroColors.grey,
+                        fontFamily: 'monospace',
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -243,14 +279,16 @@ class TripReceiptScreen extends StatelessWidget {
                 const Text(
                   'Thank you for flying with AeroCrew!',
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AeroColors.navy),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AeroColors.navy,
+                  ),
                 ),
                 const SizedBox(height: 4),
-                const Text('aerocrew.my',
-                    style: TextStyle(
-                        fontSize: 12, color: AeroColors.grey)),
+                const Text(
+                  'aerocrew.my',
+                  style: TextStyle(fontSize: 12, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -265,14 +303,18 @@ class TripReceiptScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 12, color: AeroColors.grey)),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AeroColors.navy)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12, color: AeroColors.grey),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AeroColors.navy,
+            ),
+          ),
         ],
       ),
     );
@@ -293,15 +335,17 @@ class TripReceiptScreen extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.download_outlined, size: 18),
-            label: const Text('Download PDF receipt',
-                style: TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w600)),
+            label: const Text(
+              'Download PDF receipt',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AeroColors.amber,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),
+              ),
               elevation: 0,
             ),
           ),
@@ -316,10 +360,10 @@ class TripReceiptScreen extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: AeroColors.amber,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              side:
-                  const BorderSide(color: AeroColors.amber, width: 1),
+              side: const BorderSide(color: AeroColors.amber, width: 1),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
           ),
         ),

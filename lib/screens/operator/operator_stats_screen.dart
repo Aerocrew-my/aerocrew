@@ -46,28 +46,36 @@ class OperatorStatsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('MY PERFORMANCE',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Operator stats',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'MY PERFORMANCE',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Operator stats',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -84,20 +92,40 @@ class OperatorStatsScreen extends StatelessWidget {
       mainAxisSpacing: 10,
       childAspectRatio: 1.5,
       children: [
-        _buildStatTile('Total trips', '87', Icons.directions_car,
-            AeroColors.amber),
-        _buildStatTile('Avg rating', '4.9', Icons.star,
-            const Color(0xFFEF9F27)),
-        _buildStatTile('On-time', '98%', Icons.check_circle_outline,
-            AeroColors.success),
-        _buildStatTile('Total earned', 'RM7,830', Icons.payments_outlined,
-            AeroColors.infoText),
+        _buildStatTile(
+          'Total trips',
+          '87',
+          Icons.directions_car,
+          AeroColors.amber,
+        ),
+        _buildStatTile(
+          'Avg rating',
+          '4.9',
+          Icons.star,
+          const Color(0xFFEF9F27),
+        ),
+        _buildStatTile(
+          'On-time',
+          '98%',
+          Icons.check_circle_outline,
+          AeroColors.success,
+        ),
+        _buildStatTile(
+          'Total earned',
+          'RM7,830',
+          Icons.payments_outlined,
+          AeroColors.infoText,
+        ),
       ],
     );
   }
 
   Widget _buildStatTile(
-      String label, String value, IconData icon, Color color) {
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -113,14 +141,18 @@ class OperatorStatsScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(value,
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: color)),
-              Text(label,
-                  style: const TextStyle(
-                      fontSize: 11, color: AeroColors.grey)),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: color,
+                ),
+              ),
+              Text(
+                label,
+                style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+              ),
             ],
           ),
         ],
@@ -159,15 +191,21 @@ class OperatorStatsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(m['label'] as String,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: AeroColors.greyLight)),
-                      Text('$value%',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: color)),
+                      Text(
+                        m['label'] as String,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AeroColors.greyLight,
+                        ),
+                      ),
+                      Text(
+                        '$value%',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: color,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -222,11 +260,14 @@ class OperatorStatsScreen extends StatelessWidget {
                         if (isLast)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 2),
-                            child: Text('${e.value}',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: AeroColors.amber)),
+                            child: Text(
+                              '${e.value}',
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: AeroColors.amber,
+                              ),
+                            ),
                           ),
                         Flexible(
                           flex: (ratio * 100).toInt().clamp(1, 100),
@@ -236,23 +277,23 @@ class OperatorStatsScreen extends StatelessWidget {
                                   ? AeroColors.amber
                                   : AeroColors.amber.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(5)),
+                                top: Radius.circular(5),
+                              ),
                             ),
                           ),
                         ),
                         Flexible(
-                          flex: ((1 - ratio) * 100)
-                              .toInt()
-                              .clamp(1, 100),
+                          flex: ((1 - ratio) * 100).toInt().clamp(1, 100),
                           child: const SizedBox(),
                         ),
                         const SizedBox(height: 6),
-                        Text(labels[e.key],
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: isLast
-                                    ? AeroColors.amber
-                                    : AeroColors.grey)),
+                        Text(
+                          labels[e.key],
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isLast ? AeroColors.amber : AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -276,20 +317,26 @@ class OperatorStatsScreen extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: const Color(0xFFEF9F27).withValues(alpha: 0.3), width: 1),
+          color: const Color(0xFFEF9F27).withValues(alpha: 0.3),
+          width: 1,
+        ),
       ),
       child: Column(
         children: [
-          const Text('🥇',
-              style: TextStyle(fontSize: 48)),
+          const Text('🥇', style: TextStyle(fontSize: 48)),
           const SizedBox(height: 8),
-          const Text('Top operator',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFFEF9F27))),
-          const Text('Ranked #1 in Petaling Jaya zone',
-              style: TextStyle(fontSize: 12, color: AeroColors.grey)),
+          const Text(
+            'Top operator',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFEF9F27),
+            ),
+          ),
+          const Text(
+            'Ranked #1 in Petaling Jaya zone',
+            style: TextStyle(fontSize: 12, color: AeroColors.grey),
+          ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -307,14 +354,18 @@ class OperatorStatsScreen extends StatelessWidget {
   Widget _buildRankStat(String value, String label) {
     return Column(
       children: [
-        Text(value,
-            style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFFEF9F27))),
-        Text(label,
-            style: const TextStyle(
-                fontSize: 11, color: AeroColors.grey)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFFEF9F27),
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+        ),
       ],
     );
   }

@@ -55,7 +55,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       AppConfig.plans[widget.plan]?['name'] as String? ?? 'AeroPool';
 
   Color get planColor =>
-      Color(AppConfig.plans[widget.plan]?['color'] as int? ?? 0xFFBA7517);
+      Color(AppConfig.plans[widget.plan]?['color'] as int? ?? 0xFF2563EB);
 
   String get planDesc =>
       AppConfig.plans[widget.plan]?['description'] as String? ?? '';
@@ -69,7 +69,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      final reference = 'AEROCREW-${uid.substring(0, 8).toUpperCase()}-${DateTime.now().millisecondsSinceEpoch}';
+      final reference =
+          'AEROCREW-${uid.substring(0, 8).toUpperCase()}-${DateTime.now().millisecondsSinceEpoch}';
 
       final result = await ChipService.createPurchase(
         email: userData['email'] ?? '',
@@ -81,6 +82,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       );
 
       if (!mounted) return;
+
+      if (result['success'] != true) {
+        setState(() {
+          errorMessage =
+              result['error'] as String? ?? 'Payment could not be started.';
+          isLoading = false;
+        });
+        return;
+      }
 
       if (result['success'] == true) {
         Navigator.push(
@@ -100,8 +110,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           context,
           MaterialPageRoute(
             builder: (_) => PaymentWebviewScreen(
-              checkoutUrl:
-                  'https://gate.chip-in.asia/p/demo/',
+              checkoutUrl: result['checkoutUrl'] as String,
               amount: price,
               plan: planName,
               transactionId: reference,
@@ -145,11 +154,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           color: AeroColors.dangerLight,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                              color: AeroColors.danger.withValues(alpha: 0.3)),
+                            color: AeroColors.danger.withValues(alpha: 0.3),
+                          ),
                         ),
-                        child: Text(errorMessage!,
-                            style: const TextStyle(
-                                fontSize: 12, color: AeroColors.danger)),
+                        child: Text(
+                          errorMessage!,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AeroColors.danger,
+                          ),
+                        ),
                       ),
                     ],
                     const SizedBox(height: 24),
@@ -158,8 +172,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     const Center(
                       child: Text(
                         'Cancel anytime · No hidden fees · SSL secured',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey),
+                        style: TextStyle(fontSize: 11, color: AeroColors.grey),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -187,25 +200,34 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('SUBSCRIBE',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text(planName,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              const Text(
+                'SUBSCRIBE',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                planName,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -233,8 +255,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               widget.plan == 'aeroflex'
                   ? Icons.bolt
                   : widget.plan == 'aerosolo'
-                      ? Icons.star
-                      : Icons.people,
+                  ? Icons.star
+                  : Icons.people,
               color: planColor,
               size: 24,
             ),
@@ -244,14 +266,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(planName,
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: planColor)),
-                Text(planDesc,
-                    style: const TextStyle(
-                        fontSize: 12, color: AeroColors.grey)),
+                Text(
+                  planName,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: planColor,
+                  ),
+                ),
+                Text(
+                  planDesc,
+                  style: const TextStyle(fontSize: 12, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -272,8 +298,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('PRICE BREAKDOWN',
-              style: AeroText.label),
+          const Text('PRICE BREAKDOWN', style: AeroText.label),
           const SizedBox(height: 12),
           _buildPriceRow('Zone', zone),
           _buildPriceRow('Billing cycle', 'Monthly'),
@@ -282,16 +307,22 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Total per month',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
-              Text('RM${price.toStringAsFixed(0)}',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: planColor)),
+              const Text(
+                'Total per month',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                'RM${price.toStringAsFixed(0)}',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: planColor,
+                ),
+              ),
             ],
           ),
         ],
@@ -305,14 +336,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 12, color: AeroColors.grey)),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AeroColors.greyLight)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12, color: AeroColors.grey),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AeroColors.greyLight,
+            ),
+          ),
         ],
       ),
     );
@@ -327,21 +362,21 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             'Verified operators only',
           ]
         : widget.plan == 'aerosolo'
-            ? [
-                'Private dedicated vehicle',
-                'No sharing with other crew',
-                'Sedan, MPV, Alphard available',
-                'Priority matching',
-                'Guaranteed pickup every trip',
-              ]
-            : [
-                'AI-matched van pooling',
-                'Guaranteed seat every trip',
-                'Zone-based efficient routing',
-                'Up to 8 crew per van',
-                'Verified PSV operators',
-                'Advance scheduling from roster',
-              ];
+        ? [
+            'Private dedicated vehicle',
+            'No sharing with other crew',
+            'Sedan, MPV, Alphard available',
+            'Priority matching',
+            'Guaranteed pickup every trip',
+          ]
+        : [
+            'AI-matched van pooling',
+            'Guaranteed seat every trip',
+            'Zone-based efficient routing',
+            'Up to 8 crew per van',
+            'Verified PSV operators',
+            'Advance scheduling from roster',
+          ];
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -355,20 +390,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         children: [
           const Text("WHAT YOU GET", style: AeroText.label),
           const SizedBox(height: 12),
-          ...features.map((f) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Icon(Icons.check_circle,
-                        size: 14, color: planColor),
-                    const SizedBox(width: 10),
-                    Text(f,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: AeroColors.greyLight)),
-                  ],
-                ),
-              )),
+          ...features.map(
+            (f) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  Icon(Icons.check_circle, size: 14, color: planColor),
+                  const SizedBox(width: 10),
+                  Text(
+                    f,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AeroColors.greyLight,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -390,27 +429,39 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: [
-              'FPX Online Banking',
-              'Visa / Mastercard',
-              'Touch \'n Go',
-              'Boost',
-              'GrabPay',
-              'Maybank QR',
-            ].map((method) => Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AeroColors.navy,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color: AeroColors.divider, width: 0.5),
-                  ),
-                  child: Text(method,
-                      style: const TextStyle(
-                          fontSize: 11,
-                          color: AeroColors.greyLight)),
-                )).toList(),
+            children:
+                [
+                      'FPX Online Banking',
+                      'Visa / Mastercard',
+                      'Touch \'n Go',
+                      'Boost',
+                      'GrabPay',
+                      'Maybank QR',
+                    ]
+                    .map(
+                      (method) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AeroColors.navy,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: AeroColors.divider,
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Text(
+                          method,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AeroColors.greyLight,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
           ),
         ],
       ),
@@ -427,7 +478,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14)),
+            borderRadius: BorderRadius.circular(14),
+          ),
           elevation: 0,
         ),
         child: isLoading
@@ -435,13 +487,19 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                    color: Colors.white, strokeWidth: 2))
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
             : Text(
                 widget.plan == 'aeroflex'
                     ? 'Continue with AeroFlex'
                     : 'Subscribe for RM${price.toStringAsFixed(0)}/month',
                 style: const TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w600)),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }

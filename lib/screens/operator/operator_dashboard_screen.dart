@@ -1,12 +1,16 @@
-import 'package:aerocrew/screens/operator/earnings_screen.dart';
+import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
-import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
+import 'package:aerocrew/screens/operator/earnings_screen.dart';
+import 'package:aerocrew/screens/operator/operator_live_job_screen.dart';
 import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
+import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
+import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
 import 'package:aerocrew/screens/operator/route_optimizer_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:aerocrew/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:aerocrew/theme/aero_theme.dart';
+import 'package:aerocrew/widgets/aero_components.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class OperatorDashboardScreen extends StatefulWidget {
   const OperatorDashboardScreen({super.key});
@@ -16,542 +20,576 @@ class OperatorDashboardScreen extends StatefulWidget {
       _OperatorDashboardScreenState();
 }
 
-class _OperatorDashboardScreenState
-    extends State<OperatorDashboardScreen> {
-  int currentIndex = 0;
-  String operatorName = 'Operator';
-  bool isActive = true;
+class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
+  int _index = 0;
+  String _operatorName = 'Operator';
+  bool _acceptingJobs = true;
+  bool _loading = true;
+  String? _error;
+  List<Map<String, dynamic>> _jobs = const [];
 
   @override
   void initState() {
     super.initState();
-    _loadOperator();
-    _loadJobs();
+    _loadDashboard();
   }
 
-  Future<void> _loadOperator() async {
+  Future<void> _loadDashboard() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      if (mounted) setState(() => _loading = false);
+      return;
+    }
     try {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .get();
-      if (doc.exists && mounted) {
-        setState(() {
-          operatorName = doc.data()?['name'] ?? 'Operator';
-        });
-      }
-    } catch (e) {
-      debugPrint('Error: $e');
+      final results = await Future.wait([
+        FirebaseFirestore.instance.collection('users').doc(user.uid).get(),
+        FirebaseFirestore.instance
+            .collection('pools')
+            .where('operatorId', isEqualTo: user.uid)
+            .limit(20)
+            .get(),
+      ]);
+      final profile = results[0] as DocumentSnapshot<Map<String, dynamic>>;
+      final jobs = results[1] as QuerySnapshot<Map<String, dynamic>>;
+      if (!mounted) return;
+      setState(() {
+        _operatorName = profile.data()?['name'] as String? ?? 'Operator';
+        _acceptingJobs = profile.data()?['isAvailable'] as bool? ?? true;
+        _jobs = jobs.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList()
+          ..sort((a, b) => _sortKey(a).compareTo(_sortKey(b)));
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _error =
+            'Jobs could not be loaded. Check your connection and try again.';
+        _loading = false;
+      });
     }
   }
 
-  String get greeting {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good morning';
-    if (hour < 17) return 'Good afternoon';
-    return 'Good evening';
-  }
+  static String _sortKey(Map<String, dynamic> job) =>
+      '${job['date'] ?? ''}${job['pickupTime'] ?? ''}';
 
-  String get firstName => operatorName.split(' ').first;
+  String get _firstName => _operatorName.trim().split(' ').first;
 
-  List<Map<String, dynamic>> jobs = [];
-  bool jobsLoading = true;
-
-  Future<void> _loadJobs() async {
-    try {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      final snapshot = await FirebaseFirestore.instance
-          .collection('pools')
-          .where('operatorId', isEqualTo: uid)
-          .limit(10)
-          .get();
-
-      if (mounted) {
-        if (snapshot.docs.isEmpty) {
-          setState(() {
-            jobs = _demoJobs();
-            jobsLoading = false;
-          });
-        } else {
-          setState(() {
-            jobs = snapshot.docs
-                .map((doc) => {...doc.data(), 'id': doc.id})
-                .toList();
-            jobsLoading = false;
-          });
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          jobs = _demoJobs();
-          jobsLoading = false;
-        });
+  Map<String, dynamic>? get _activeJob {
+    for (final job in _jobs) {
+      if ([
+        'active',
+        'en_route',
+        'arrived',
+        'boarding',
+      ].contains(job['status'])) {
+        return job;
       }
     }
+    return _jobs.isEmpty ? null : _jobs.first;
   }
 
-  List<Map<String, dynamic>> _demoJobs() => [
-  {
-    'id': 'job1',
-    'date': 'Mon 16 Jun',
-    'pickupTime': '03:00',
-    'crewCount': 3,
-    'zone': 'PJ zone',
-    'airport': 'SZB',
-    'flightTime': '05:30',
-    'earnings': 90.0,
-    'status': 'confirmed',
-    'crew': [
-      {'name': 'Faiz Zakaria', 'zone': 'Petaling Jaya', 'time': '03:00'},
-      {'name': 'Siti Nabilah', 'zone': 'Ara Damansara', 'time': '03:20'},
-      {'name': 'Razif Azman', 'zone': 'Subang Jaya', 'time': '03:40'},
-    ],
-  },
-  {
-    'id': 'job2',
-    'date': 'Mon 16 Jun',
-    'pickupTime': '07:00',
-    'crewCount': 2,
-    'zone': 'Shah Alam',
-    'airport': 'KLIA',
-    'flightTime': '09:30',
-    'earnings': 110.0,
-    'status': 'confirmed',
-    'crew': [
-      {'name': 'Ahmad Syafiq', 'zone': 'Shah Alam', 'time': '07:00'},
-      {'name': 'Nurul Ain', 'zone': 'Subang', 'time': '07:20'},
-    ],
-  },
-  {
-    'id': 'job3',
-    'date': 'Tue 17 Jun',
-    'pickupTime': '04:30',
-    'crewCount': 4,
-    'zone': 'Damansara',
-    'airport': 'KLIA',
-    'flightTime': '07:00',
-    'earnings': 160.0,
-    'status': 'upcoming',
-    'crew': [],
-  },
-  {
-    'id': 'job4',
-    'date': 'Wed 18 Jun',
-    'pickupTime': '05:00',
-    'crewCount': 2,
-    'zone': 'Cyberjaya',
-    'airport': 'klia2',
-    'flightTime': '07:30',
-    'earnings': 70.0,
-    'status': 'upcoming',
-    'crew': [],
-  },
-];
-
-double get todayEarnings => jobs
-    .where((j) => j['date'] == 'Mon 16 Jun')
-    .fold(
-  0.0,
-  (earnings, job) => earnings + ((job['earnings'] ?? 0.0) as double),
-);
-    
-  int get todayJobs => jobs.where((j) => j['date'] == 'Mon 16 Jun').length;
+  double get _dailyEarnings => _jobs.fold<double>(
+    0,
+    (total, job) => total + ((job['earnings'] as num?)?.toDouble() ?? 0),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AeroColors.navy,
-      body: SafeArea(
+    final destinations = const [
+      NavigationDestination(
+        icon: Icon(Icons.work_outline),
+        selectedIcon: Icon(Icons.work),
+        label: 'Jobs',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.calendar_month_outlined),
+        selectedIcon: Icon(Icons.calendar_month),
+        label: 'Schedule',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.navigation_outlined),
+        selectedIcon: Icon(Icons.navigation),
+        label: 'Live',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.payments_outlined),
+        selectedIcon: Icon(Icons.payments),
+        label: 'Earnings',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.person_outline),
+        selectedIcon: Icon(Icons.person),
+        label: 'Account',
+      ),
+    ];
+    final pages = [_jobsPage(), _schedule(), _live(), _earnings(), _account()];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final useRail = constraints.maxWidth >= 840;
+        final content = IndexedStack(index: _index, children: pages);
+        return Scaffold(
+          body: SafeArea(
+            child: useRail
+                ? Row(
+                    children: [
+                      NavigationRail(
+                        selectedIndex: _index,
+                        onDestinationSelected: (value) =>
+                            setState(() => _index = value),
+                        labelType: NavigationRailLabelType.all,
+                        destinations: destinations
+                            .map(
+                              (item) => NavigationRailDestination(
+                                icon: item.icon,
+                                selectedIcon: item.selectedIcon,
+                                label: Text(item.label),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      VerticalDivider(width: 1, color: context.aero.border),
+                      Expanded(child: content),
+                    ],
+                  )
+                : content,
+          ),
+          bottomNavigationBar: useRail
+              ? null
+              : NavigationBar(
+                  selectedIndex: _index,
+                  onDestinationSelected: (value) =>
+                      setState(() => _index = value),
+                  destinations: destinations,
+                ),
+        );
+      },
+    );
+  }
+
+  Widget _page({required String title, Widget? action, required Widget child}) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 760),
         child: Column(
           children: [
-            _buildHeader(),
-            Expanded(child: _buildBody()),
-            _buildNavBar(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 12, 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+                  action ?? const SizedBox.shrink(),
+                ],
+              ),
+            ),
+            Expanded(child: child),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _jobsPage() => _page(
+    title: 'Good day, $_firstName',
+    action: IconButton(
+      tooltip: 'Notifications',
+      onPressed: () => _open(const OperatorNotificationsScreen()),
+      icon: const Icon(Icons.notifications_none),
+    ),
+    child: _loading
+        ? const AeroLoadingState(label: 'Loading assigned jobs')
+        : _error != null
+        ? AeroErrorState(message: _error!, onRetry: _loadDashboard)
+        : RefreshIndicator(
+            onRefresh: _loadDashboard,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
               children: [
-                Text(greeting,
-                    style: const TextStyle(
-                        fontSize: 12, color: AeroColors.grey)),
-                const SizedBox(height: 2),
-                Text(firstName,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                _availabilityControl(),
+                const SizedBox(height: AeroSpacing.section),
+                if (_activeJob == null)
+                  const AeroEmptyState(
+                    icon: Icons.work_outline,
+                    title: 'No assigned jobs',
+                    message: 'New work will appear here when it is assigned.',
+                  )
+                else
+                  _priorityJob(_activeJob!),
+                if (_jobs.length > 1) ...[
+                  const SizedBox(height: AeroSpacing.section),
+                  const AeroSectionHeader(title: 'Remaining jobs'),
+                  const SizedBox(height: AeroSpacing.sm),
+                  ..._jobs.skip(1).map(_jobCard),
+                ],
+                const SizedBox(height: AeroSpacing.section),
+                AeroCard(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.payments_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Daily earnings',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      Text(
+                        'RM ${_dailyEarnings.toStringAsFixed(2)}',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () => setState(() => isActive = !isActive),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: isActive
-                    ? AeroColors.success.withValues(alpha: 0.12)
-                    : AeroColors.navyCard,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: isActive
-                        ? AeroColors.success.withValues(alpha: 0.3)
-                        : AeroColors.divider,
-                    width: 0.5),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isActive
-                          ? AeroColors.success
-                          : AeroColors.grey,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(isActive ? 'Active' : 'Offline',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: isActive
-                              ? AeroColors.success
-                              : AeroColors.grey)),
-                ],
-              ),
-            ),
+  );
+
+  Widget _availabilityControl() {
+    final active =
+        _activeJob != null &&
+        [
+          'active',
+          'en_route',
+          'arrived',
+          'boarding',
+        ].contains(_activeJob!['status']);
+    final label = active
+        ? 'On Active Trip'
+        : _acceptingJobs
+        ? 'Accepting Jobs'
+        : 'Unavailable';
+    final color = active
+        ? context.aero.information
+        : _acceptingJobs
+        ? context.aero.success
+        : context.aero.textSecondary;
+    return AeroCard(
+      onTap: active ? null : () => _open(const AvailabilityScreen()),
+      child: Row(
+        children: [
+          AeroStatusChip(
+            label: label,
+            color: color,
+            icon: active
+                ? Icons.navigation
+                : _acceptingJobs
+                ? Icons.check_circle_outline
+                : Icons.do_not_disturb_on_outlined,
           ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const OperatorNotificationsScreen())),
-            child: Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: AeroColors.navyCard,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AeroColors.divider, width: 0.5),
-              ),
-              child: const Icon(Icons.notifications_none,
-                  color: AeroColors.grey, size: 18),
-            ),
-          ),
+          const Spacer(),
+          if (!active) const Icon(Icons.chevron_right),
         ],
       ),
     );
   }
 
-  Widget _buildBody() {
-    if (jobsLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: AeroColors.amber),
-      );
-    }
-    return SingleChildScrollView(
+  Widget _priorityJob(Map<String, dynamic> job) {
+    final status = (job['status'] ?? 'confirmed').toString();
+    final crewCount =
+        (job['crewCount'] ??
+                (job['crew'] is List ? (job['crew'] as List).length : 0))
+            .toString();
+    final stops =
+        (job['pickupStopCount'] ??
+                (job['crew'] is List ? (job['crew'] as List).length : 0))
+            .toString();
+    final action = switch (status) {
+      'active' || 'en_route' => 'Continue trip',
+      'arrived' => 'Begin boarding',
+      'boarding' => 'Complete trip',
+      _ => 'Start route',
+    };
+    return AeroCard(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 4),
-          _buildStatsRow(),
+          Row(
+            children: [
+              Text(
+                status == 'active' ? 'ACTIVE JOB' : 'NEXT PICKUP',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const Spacer(),
+              AeroStatusChip(
+                label: _statusLabel(status),
+                color: _statusColor(status),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '${job['date'] ?? 'Date pending'} · ${job['pickupTime'] ?? 'Time pending'}',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${job['zone'] ?? 'Pickup zone'} → ${job['terminal'] ?? job['airport'] ?? 'Airport terminal'}',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
           const SizedBox(height: 20),
-          _buildTodaySection(),
+          Wrap(
+            spacing: 20,
+            runSpacing: 16,
+            children: [
+              _metric(Icons.groups_outlined, crewCount, 'Crew'),
+              _metric(Icons.pin_drop_outlined, stops, 'Pickup stops'),
+              _metric(
+                Icons.flight_land,
+                (job['airport'] ?? 'Pending').toString(),
+                'Destination',
+              ),
+              _metric(
+                Icons.schedule,
+                (job['arrivalTime'] ?? job['flightTime'] ?? 'Pending')
+                    .toString(),
+                'Required arrival',
+              ),
+            ],
+          ),
+          if (job['delayAlert'] != null) ...[
+            const SizedBox(height: 16),
+            AeroStatusChip(
+              label: job['delayAlert'].toString(),
+              color: context.aero.warning,
+              icon: Icons.warning_amber,
+            ),
+          ],
           const SizedBox(height: 20),
-          _buildUpcomingSection(),
+          AeroButton(
+            label: action,
+            icon: Icons.navigation_outlined,
+            expand: true,
+            onPressed: () => _openJob(job, status),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStatsRow() {
-    return Row(
+  Widget _metric(IconData icon, String value, String label) => SizedBox(
+    width: 132,
+    child: Row(
       children: [
+        Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 8),
         Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AeroColors.navyCard,
-              borderRadius: BorderRadius.circular(16),
-              border:
-                  Border.all(color: AeroColors.divider, width: 0.5),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('TODAY',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.grey,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.8)),
-                const SizedBox(height: 6),
-                Text('$todayJobs jobs',
-                    style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AeroColors.amber.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                  color: AeroColors.amber.withValues(alpha: 0.2),
-                  width: 0.5),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('EARNINGS',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.amber,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.8)),
-                const SizedBox(height: 6),
-                Text('RM${todayEarnings.toStringAsFixed(0)}',
-                    style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: AeroColors.amber)),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(label, style: Theme.of(context).textTheme.bodySmall),
+            ],
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
 
-  Widget _buildTodaySection() {
-    final todayJobsList =
-        jobs.where((j) => j['date'] == 'Mon 16 Jun').toList();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("TODAY'S JOBS",
-            style: TextStyle(
-                fontSize: 11,
-                color: AeroColors.grey,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.8)),
-        const SizedBox(height: 10),
-        ...todayJobsList.map((job) => _buildJobCard(job)),
-      ],
-    );
-  }
-
-  Widget _buildUpcomingSection() {
-    final upcomingJobsList =
-        jobs.where((j) => j['date'] != 'Mon 16 Jun').toList();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('UPCOMING',
-            style: TextStyle(
-                fontSize: 11,
-                color: AeroColors.grey,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.8)),
-        const SizedBox(height: 10),
-        ...upcomingJobsList.map((job) => _buildJobCard(job)),
-      ],
-    );
-  }
-
-  Widget _buildJobCard(Map<String, dynamic> job) {
-    final isConfirmed = job['status'] == 'confirmed';
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => RouteOptimizerScreen(job: job),
-        ),
-      ),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AeroColors.navyCard,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-              color: isConfirmed
-                  ? AeroColors.success.withValues(alpha: 0.2)
-                  : AeroColors.divider,
-              width: 0.5),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AeroColors.navy,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: AeroColors.divider, width: 0.5),
-                  ),
-                  child: Center(
-                    child: Text(job['pickupTime'] as String,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          '${job['crewCount']} crew · ${job['zone']} → ${job['airport']}',
-                          style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
-                      Text(
-                          '${job['date']} · Flight ${job['flightTime']}',
-                          style: const TextStyle(
-                              fontSize: 11, color: AeroColors.grey)),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                        'RM${(job['earnings'] as double).toStringAsFixed(0)}',
-                        style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AeroColors.amber)),
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: isConfirmed
-                            ? AeroColors.success.withValues(alpha: 0.12)
-                            : AeroColors.amber.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                          isConfirmed ? 'Confirmed' : 'Upcoming',
-                          style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w600,
-                              color: isConfirmed
-                                  ? AeroColors.success
-                                  : AeroColors.amber)),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavBar() {
-    final items = [
-      {'icon': Icons.home_outlined, 'label': 'Home'},
-      {'icon': Icons.calendar_month_outlined, 'label': 'Schedule'},
-      {'icon': Icons.bar_chart_outlined, 'label': 'Earnings'},
-      {'icon': Icons.person_outline, 'label': 'Profile'},
-    ];
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xFF111827),
-        border: Border(
-            top: BorderSide(color: AeroColors.divider, width: 0.5)),
-      ),
+  Widget _jobCard(Map<String, dynamic> job) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: AeroCard(
+      onTap: () => _open(ActiveJobScreen(job: job)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(items.length, (i) {
-          final isActive = currentIndex == i;
-          return GestureDetector(
-  onTap: () {
-    setState(() => currentIndex = i);
-
-    if (i == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const AvailabilityScreen(),
-        ),
-      );
-    } else if (i == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const EarningsScreen(),
-        ),
-      );
-    } else if (i == 3) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const OperatorProfileViewScreen(),
-        ),
-      );
-    }
-  }, // <-- missing
-  child: Column(
-    mainAxisSize: MainAxisSize.min,
         children: [
-      Icon(
-        items[i]['icon'] as IconData,
-        size: 22,
-        color: isActive
-            ? AeroColors.amber
-            : AeroColors.lightGrey,
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: context.aero.blueSurface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.route_outlined,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${job['pickupTime'] ?? 'Time pending'} · ${job['zone'] ?? 'Pickup'}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  '${job['crewCount'] ?? 0} crew · ${job['airport'] ?? 'Airport pending'}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right),
+        ],
       ),
-      const SizedBox(height: 3),
-      Text(
-        items[i]['label'] as String,
-        style: TextStyle(
-          fontSize: 10,
-          fontWeight:
-              isActive ? FontWeight.w600 : FontWeight.w400,
-          color: isActive
-              ? AeroColors.amber
-              : AeroColors.lightGrey,
+    ),
+  );
+
+  Widget _schedule() => _page(
+    title: 'Schedule',
+    child: ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        AeroCard(
+          onTap: () => _open(const AvailabilityScreen()),
+          child: const AeroListTile(
+            icon: Icons.event_available_outlined,
+            title: 'Availability',
+            subtitle: 'Set working days and blocked times',
+          ),
         ),
-      ),
-    ],
-  ),
-);
-        }),
-      ),
+        const SizedBox(height: 12),
+        AeroCard(
+          onTap: () => _open(const OperatorTripHistoryScreen()),
+          child: const AeroListTile(
+            icon: Icons.history,
+            title: 'Completed schedule',
+            subtitle: 'Review previous operator trips',
+          ),
+        ),
+        if (_jobs.isNotEmpty) ...[
+          const SizedBox(height: 24),
+          const AeroSectionHeader(title: 'Assigned jobs'),
+          const SizedBox(height: 12),
+          ..._jobs.map(_jobCard),
+        ],
+      ],
+    ),
+  );
+
+  Widget _live() {
+    final active = _activeJob;
+    return _page(
+      title: 'Live operations',
+      child: active == null
+          ? const AeroEmptyState(
+              icon: Icons.navigation_outlined,
+              title: 'No live trip',
+              message:
+                  'An active route will appear here with stop and incident status.',
+            )
+          : ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                _priorityJob(active),
+                const SizedBox(height: 12),
+                AeroCard(
+                  onTap: () => _open(RouteOptimizerScreen(job: active)),
+                  child: const AeroListTile(
+                    icon: Icons.alt_route,
+                    title: 'Review route and pickup stops',
+                  ),
+                ),
+              ],
+            ),
     );
   }
+
+  Widget _earnings() => _page(
+    title: 'Earnings',
+    child: ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        AeroCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Assigned job value',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'RM ${_dailyEarnings.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              const SizedBox(height: 20),
+              AeroButton(
+                label: 'View earnings',
+                expand: true,
+                onPressed: () => _open(const EarningsScreen()),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _account() => _page(
+    title: 'Account',
+    child: ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        AeroCard(
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 28,
+                backgroundColor: context.aero.blueSurface,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                child: Text(_firstName.characters.first.toUpperCase()),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  _operatorName,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        AeroCard(
+          onTap: () => _open(const OperatorProfileViewScreen()),
+          child: const AeroListTile(
+            icon: Icons.manage_accounts_outlined,
+            title: 'Operator account',
+            subtitle: 'Profile, vehicles, documents, and support',
+          ),
+        ),
+      ],
+    ),
+  );
+
+  String _statusLabel(String status) => switch (status) {
+    'active' || 'en_route' => 'On Active Trip',
+    'arrived' => 'At pickup',
+    'boarding' => 'Boarding',
+    _ => 'Confirmed',
+  };
+
+  Color _statusColor(String status) => switch (status) {
+    'active' ||
+    'en_route' ||
+    'arrived' ||
+    'boarding' => context.aero.information,
+    _ => context.aero.success,
+  };
+
+  void _openJob(Map<String, dynamic> job, String status) {
+    if (['active', 'en_route', 'arrived', 'boarding'].contains(status)) {
+      _open(OperatorLiveJobScreen(job: job));
+    } else {
+      _open(ActiveJobScreen(job: job));
+    }
+  }
+
+  Future<void> _open(Widget screen) =>
+      Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
 }

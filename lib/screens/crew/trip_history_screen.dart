@@ -61,8 +61,10 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
   List<Map<String, dynamic>> get filtered {
     if (selectedFilter == 'all') return trips;
     return trips
-        .where((t) => (t['product'] as String).toLowerCase().contains(
-            selectedFilter))
+        .where(
+          (t) =>
+              (t['product'] as String).toLowerCase().contains(selectedFilter),
+        )
         .toList();
   }
 
@@ -74,8 +76,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final totalSpent = trips.fold(
-        0.0, (sum, t) => sum + (t['fare'] as double));
+    final totalSpent = trips.fold(0.0, (sum, t) => sum + (t['fare'] as double));
 
     return Scaffold(
       backgroundColor: AeroColors.navy,
@@ -94,27 +95,38 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('TRIP HISTORY',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('All your trips',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'TRIP HISTORY',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'All your trips',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -132,23 +144,31 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('TOTAL TRIPS',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: AeroColors.grey,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.8)),
+                          const Text(
+                            'TOTAL TRIPS',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AeroColors.grey,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
                           const SizedBox(height: 4),
-                          Text('${trips.length}',
-                              style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white)),
+                          Text(
+                            '${trips.length}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -161,25 +181,31 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                         color: AeroColors.amber.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.amber.withValues(alpha: 0.2),
-                            width: 0.5),
+                          color: AeroColors.amber.withValues(alpha: 0.2),
+                          width: 0.5,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('TOTAL SAVED',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: AeroColors.amber,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.8)),
+                          const Text(
+                            'TOTAL SAVED',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AeroColors.amber,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           Text(
-                              'RM${(trips.length * 90 - totalSpent).toStringAsFixed(0)}',
-                              style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: AeroColors.amber)),
+                            'RM${(trips.length * 90 - totalSpent).toStringAsFixed(0)}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: AeroColors.amber,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -217,8 +243,7 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                     decoration: BoxDecoration(
                       color: AeroColors.navyCard,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                          color: AeroColors.divider, width: 0.5),
+                      border: Border.all(color: AeroColors.divider, width: 0.5),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,39 +252,50 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
                                 color: color.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                  trip['product'] as String,
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: color)),
+                                trip['product'] as String,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: color,
+                                ),
+                              ),
                             ),
                             const Spacer(),
                             Text(
-                                'RM${(trip['fare'] as double).toStringAsFixed(0)}',
-                                style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AeroColors.amber)),
+                              'RM${(trip['fare'] as double).toStringAsFixed(0)}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: AeroColors.amber,
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Text(
-                            '${trip['flight']} · ${trip['date']}',
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white)),
+                          '${trip['flight']} · ${trip['date']}',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                         const SizedBox(height: 3),
-                        Text(trip['route'] as String,
-                            style: const TextStyle(
-                                fontSize: 12,
-                                color: AeroColors.grey)),
+                        Text(
+                          trip['route'] as String,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AeroColors.grey,
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Row(
                           children: [
@@ -270,16 +306,21 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                                 color: AeroColors.amberLight,
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              child: const Icon(Icons.directions_car,
-                                  size: 14, color: AeroColors.amber),
+                              child: const Icon(
+                                Icons.directions_car,
+                                size: 14,
+                                color: AeroColors.amber,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                  '${trip['operator']} · ${trip['vehicle']}',
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AeroColors.greyLight)),
+                                '${trip['operator']} · ${trip['vehicle']}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AeroColors.greyLight,
+                                ),
+                              ),
                             ),
                             if ((trip['rating'] as int) > 0)
                               Row(
@@ -297,17 +338,23 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
                             else
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
                                 decoration: BoxDecoration(
-                                  color:
-                                      AeroColors.amber.withValues(alpha: 0.1),
+                                  color: AeroColors.amber.withValues(
+                                    alpha: 0.1,
+                                  ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: const Text('Rate trip',
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color: AeroColors.amber,
-                                        fontWeight: FontWeight.w600)),
+                                child: const Text(
+                                  'Rate trip',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: AeroColors.amber,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                           ],
                         ),
@@ -328,27 +375,23 @@ class _TripHistoryScreenState extends State<TripHistoryScreen> {
     return GestureDetector(
       onTap: () => setState(() => selectedFilter = id),
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AeroColors.amber
-              : AeroColors.navyCard,
+          color: isSelected ? AeroColors.amber : AeroColors.navyCard,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected
-                ? AeroColors.amber
-                : AeroColors.divider,
+            color: isSelected ? AeroColors.amber : AeroColors.divider,
             width: 0.5,
           ),
         ),
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: isSelected
-                    ? Colors.white
-                    : AeroColors.grey)),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: isSelected ? Colors.white : AeroColors.grey,
+          ),
+        ),
       ),
     );
   }

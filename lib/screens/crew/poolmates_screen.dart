@@ -73,40 +73,51 @@ class PoolmatesScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('POOLMATES',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('$flightNumber · $flightDate',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              const Text(
+                'POOLMATES',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                '$flightNumber · $flightDate',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const Spacer(),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text('${poolmates.length} crew',
-                style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: AeroColors.success)),
+            child: Text(
+              '${poolmates.length} crew',
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: AeroColors.success,
+              ),
+            ),
           ),
         ],
       ),
@@ -121,7 +132,9 @@ class PoolmatesScreen extends StatelessWidget {
         color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: const [
@@ -131,7 +144,10 @@ class PoolmatesScreen extends StatelessWidget {
             child: Text(
               'You\'re sharing a van with these crew members. Van picks you up first.',
               style: TextStyle(
-                  fontSize: 12, color: AeroColors.amber, height: 1.4),
+                fontSize: 12,
+                color: AeroColors.amber,
+                height: 1.4,
+              ),
             ),
           ),
         ],
@@ -139,8 +155,7 @@ class PoolmatesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPoolmateCard(
-      BuildContext context, Map<String, dynamic> mate) {
+  Widget _buildPoolmateCard(BuildContext context, Map<String, dynamic> mate) {
     final color = Color(mate['color'] as int);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -162,11 +177,14 @@ class PoolmatesScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
-                  child: Text(mate['initials'] as String,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: color)),
+                  child: Text(
+                    mate['initials'] as String,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: color,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -174,28 +192,42 @@ class PoolmatesScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(mate['name'] as String,
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                    Text('${mate['airline']} · ${mate['zone']}',
-                        style: const TextStyle(
-                            fontSize: 12, color: AeroColors.grey)),
+                    Text(
+                      mate['name'] as String,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '${mate['airline']} · ${mate['zone']}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AeroColors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('${mate['rating']} ★',
-                      style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AeroColors.amber)),
-                  Text('${mate['tripCount']} trips',
-                      style: const TextStyle(
-                          fontSize: 11, color: AeroColors.grey)),
+                  Text(
+                    '${mate['rating']} ★',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AeroColors.amber,
+                    ),
+                  ),
+                  Text(
+                    '${mate['tripCount']} trips',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: AeroColors.grey,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -213,14 +245,20 @@ class PoolmatesScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.access_time,
-                          size: 13, color: AeroColors.grey),
+                      const Icon(
+                        Icons.access_time,
+                        size: 13,
+                        color: AeroColors.grey,
+                      ),
                       const SizedBox(width: 5),
-                      Text('Pickup ${mate['pickupTime']}',
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: AeroColors.greyLight,
-                              fontWeight: FontWeight.w500)),
+                      Text(
+                        'Pickup ${mate['pickupTime']}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AeroColors.greyLight,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -228,33 +266,40 @@ class PoolmatesScreen extends StatelessWidget {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => InAppChatScreen(
-                              recipientName: mate['name'] as String,
-                              recipientInitials:
-                                  mate['initials'] as String,
-                              recipientColor: color,
-                            ))),
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => InAppChatScreen(
+                      recipientName: mate['name'] as String,
+                      recipientInitials: mate['initials'] as String,
+                      recipientColor: color,
+                    ),
+                  ),
+                ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 10),
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        color: color.withValues(alpha: 0.2), width: 0.5),
+                      color: color.withValues(alpha: 0.2),
+                      width: 0.5,
+                    ),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.chat_bubble_outline,
-                          size: 13, color: color),
+                      Icon(Icons.chat_bubble_outline, size: 13, color: color),
                       const SizedBox(width: 5),
-                      Text('Message',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: color)),
+                      Text(
+                        'Message',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: color,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -273,24 +318,28 @@ class PoolmatesScreen extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton.icon(
           onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => InAppChatScreen(
-                        recipientName: '$flightNumber Pool Group',
-                        recipientInitials: 'GP',
-                        recipientColor: AeroColors.amber,
-                        isGroup: true,
-                      ))),
+            context,
+            MaterialPageRoute(
+              builder: (_) => InAppChatScreen(
+                recipientName: '$flightNumber Pool Group',
+                recipientInitials: 'GP',
+                recipientColor: AeroColors.amber,
+                isGroup: true,
+              ),
+            ),
+          ),
           icon: const Icon(Icons.group, size: 18),
-          label: const Text('Open group chat',
-              style:
-                  TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+          label: const Text(
+            'Open group chat',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          ),
           style: ElevatedButton.styleFrom(
             backgroundColor: AeroColors.amber,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14)),
+              borderRadius: BorderRadius.circular(14),
+            ),
             elevation: 0,
           ),
         ),

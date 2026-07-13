@@ -40,8 +40,9 @@ class _OperatorEarningsAnalyticsScreenState
   double get totalEarnings =>
       monthlyData.fold(0, (s, m) => s + (m['earnings'] as double));
   double get thisMonthEarnings => monthlyData.last['earnings'] as double;
-  double get maxEarnings =>
-      monthlyData.map((m) => m['earnings'] as double).reduce((a, b) => a > b ? a : b);
+  double get maxEarnings => monthlyData
+      .map((m) => m['earnings'] as double)
+      .reduce((a, b) => a > b ? a : b);
 
   @override
   Widget build(BuildContext context) {
@@ -90,25 +91,34 @@ class _OperatorEarningsAnalyticsScreenState
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('EARNINGS ANALYTICS',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Income overview',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'EARNINGS ANALYTICS',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Income overview',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -126,25 +136,35 @@ class _OperatorEarningsAnalyticsScreenState
               color: AeroColors.amber.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                  color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+                color: AeroColors.amber.withValues(alpha: 0.2),
+                width: 0.5,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('THIS MONTH',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.amber,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.8)),
+                const Text(
+                  'THIS MONTH',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AeroColors.amber,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                  ),
+                ),
                 const SizedBox(height: 6),
-                Text('RM${thisMonthEarnings.toStringAsFixed(0)}',
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: AeroColors.amber)),
-                const Text('after 15% commission',
-                    style: TextStyle(fontSize: 10, color: AeroColors.grey)),
+                Text(
+                  'RM${thisMonthEarnings.toStringAsFixed(0)}',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: AeroColors.amber,
+                  ),
+                ),
+                const Text(
+                  'after 15% commission',
+                  style: TextStyle(fontSize: 10, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -161,20 +181,28 @@ class _OperatorEarningsAnalyticsScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('YTD TOTAL',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.grey,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.8)),
+                const Text(
+                  'YTD TOTAL',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AeroColors.grey,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                  ),
+                ),
                 const SizedBox(height: 6),
-                Text('RM${totalEarnings.toStringAsFixed(0)}',
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
-                const Text('year to date',
-                    style: TextStyle(fontSize: 10, color: AeroColors.grey)),
+                Text(
+                  'RM${totalEarnings.toStringAsFixed(0)}',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                const Text(
+                  'year to date',
+                  style: TextStyle(fontSize: 10, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -194,8 +222,7 @@ class _OperatorEarningsAnalyticsScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('MONTHLY EARNINGS',
-              style: AeroText.label),
+          const Text('MONTHLY EARNINGS', style: AeroText.label),
           const SizedBox(height: 16),
           SizedBox(
             height: 140,
@@ -215,11 +242,13 @@ class _OperatorEarningsAnalyticsScreenState
                           Padding(
                             padding: const EdgeInsets.only(bottom: 4),
                             child: Text(
-                                'RM${(earnings / 1000).toStringAsFixed(1)}k',
-                                style: const TextStyle(
-                                    fontSize: 9,
-                                    color: AeroColors.amber,
-                                    fontWeight: FontWeight.w600)),
+                              'RM${(earnings / 1000).toStringAsFixed(1)}k',
+                              style: const TextStyle(
+                                fontSize: 9,
+                                color: AeroColors.amber,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         Flexible(
                           flex: (ratio * 100).toInt(),
@@ -229,7 +258,8 @@ class _OperatorEarningsAnalyticsScreenState
                                   ? AeroColors.amber
                                   : AeroColors.amber.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(6)),
+                                top: Radius.circular(6),
+                              ),
                             ),
                           ),
                         ),
@@ -238,12 +268,13 @@ class _OperatorEarningsAnalyticsScreenState
                           child: const SizedBox(),
                         ),
                         const SizedBox(height: 6),
-                        Text(m['month'] as String,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: isLast
-                                    ? AeroColors.amber
-                                    : AeroColors.grey)),
+                        Text(
+                          m['month'] as String,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isLast ? AeroColors.amber : AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -267,8 +298,7 @@ class _OperatorEarningsAnalyticsScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('JUNE WEEKLY BREAKDOWN',
-              style: AeroText.label),
+          const Text('JUNE WEEKLY BREAKDOWN', style: AeroText.label),
           const SizedBox(height: 12),
           ...weeklyData.map((w) {
             final earnings = w['earnings'] as double;
@@ -282,11 +312,14 @@ class _OperatorEarningsAnalyticsScreenState
                 children: [
                   SizedBox(
                     width: 24,
-                    child: Text(w['week'] as String,
-                        style: const TextStyle(
-                            fontSize: 11,
-                            color: AeroColors.grey,
-                            fontWeight: FontWeight.w600)),
+                    child: Text(
+                      w['week'] as String,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AeroColors.grey,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -297,27 +330,35 @@ class _OperatorEarningsAnalyticsScreenState
                           borderRadius: BorderRadius.circular(4),
                           child: LinearProgressIndicator(
                             value: ratio,
-                            backgroundColor:
-                                AeroColors.amber.withValues(alpha: 0.1),
+                            backgroundColor: AeroColors.amber.withValues(
+                              alpha: 0.1,
+                            ),
                             valueColor: const AlwaysStoppedAnimation<Color>(
-                                AeroColors.amber),
+                              AeroColors.amber,
+                            ),
                             minHeight: 8,
                           ),
                         ),
                         const SizedBox(height: 3),
                         Text(
-                            '${w['trips']} trips · ${w['crew']} crew',
-                            style: const TextStyle(
-                                fontSize: 10, color: AeroColors.grey)),
+                          '${w['trips']} trips · ${w['crew']} crew',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text('RM${earnings.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white)),
+                  Text(
+                    'RM${earnings.toStringAsFixed(0)}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -338,8 +379,7 @@ class _OperatorEarningsAnalyticsScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('TOP ROUTES THIS MONTH',
-              style: AeroText.label),
+          const Text('TOP ROUTES THIS MONTH', style: AeroText.label),
           const SizedBox(height: 12),
           ...topRoutes.asMap().entries.map((entry) {
             final i = entry.key;
@@ -358,19 +398,18 @@ class _OperatorEarningsAnalyticsScreenState
                     width: 24,
                     height: 24,
                     decoration: BoxDecoration(
-                      color: i == 0
-                          ? AeroColors.amber
-                          : AeroColors.navyCard,
+                      color: i == 0 ? AeroColors.amber : AeroColors.navyCard,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Center(
-                      child: Text('${i + 1}',
-                          style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: i == 0
-                                  ? Colors.white
-                                  : AeroColors.grey)),
+                      child: Text(
+                        '${i + 1}',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: i == 0 ? Colors.white : AeroColors.grey,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -378,23 +417,32 @@ class _OperatorEarningsAnalyticsScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(route['route'] as String,
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white)),
-                        Text('${route['trips']} trips',
-                            style: const TextStyle(
-                                fontSize: 10, color: AeroColors.grey)),
+                        Text(
+                          route['route'] as String,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          '${route['trips']} trips',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Text(
-                      'RM${(route['earnings'] as double).toStringAsFixed(0)}',
-                      style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AeroColors.amber)),
+                    'RM${(route['earnings'] as double).toStringAsFixed(0)}',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AeroColors.amber,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -411,27 +459,38 @@ class _OperatorEarningsAnalyticsScreenState
         color: AeroColors.success.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.success.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
-              Icon(Icons.account_balance_outlined,
-                  color: AeroColors.success, size: 18),
+              Icon(
+                Icons.account_balance_outlined,
+                color: AeroColors.success,
+                size: 18,
+              ),
               SizedBox(width: 8),
-              Text('PAYOUT SCHEDULE',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.success,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.8)),
+              Text(
+                'PAYOUT SCHEDULE',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.success,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.8,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 10),
           _buildPayoutRow('Next payout', 'Mon 23 Jun 2026'),
-          _buildPayoutRow('Amount', 'RM${(thisMonthEarnings * 0.6).toStringAsFixed(0)} (partial)'),
+          _buildPayoutRow(
+            'Amount',
+            'RM${(thisMonthEarnings * 0.6).toStringAsFixed(0)} (partial)',
+          ),
           _buildPayoutRow('Bank', 'Registered bank account'),
           _buildPayoutRow('Frequency', 'Every Monday'),
         ],
@@ -445,14 +504,18 @@ class _OperatorEarningsAnalyticsScreenState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 12, color: AeroColors.grey)),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12, color: AeroColors.grey),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );

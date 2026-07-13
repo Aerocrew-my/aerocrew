@@ -122,25 +122,34 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('LIVE TRACKING',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Your van is on the way',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'LIVE TRACKING',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Your van is on the way',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const Spacer(),
@@ -150,7 +159,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               scale: _pulseAnimation.value,
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 5),
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: AeroColors.success.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
@@ -159,11 +170,14 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                   children: [
                     Icon(Icons.circle, size: 7, color: AeroColors.success),
                     SizedBox(width: 5),
-                    Text('Live',
-                        style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: AeroColors.success)),
+                    Text(
+                      'Live',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: AeroColors.success,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -216,8 +230,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                       height: 40 + (_pulseController.value * 20),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AeroColors.amber
-                            .withValues(alpha: 0.15 * (1 - _pulseController.value)),
+                        color: AeroColors.amber.withValues(
+                          alpha: 0.15 * (1 - _pulseController.value),
+                        ),
                       ),
                     ),
                     Container(
@@ -230,11 +245,14 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                           BoxShadow(
                             color: AeroColors.amber.withValues(alpha: 0.4),
                             blurRadius: 12,
-                          )
+                          ),
                         ],
                       ),
-                      child: const Icon(Icons.directions_car,
-                          color: Colors.white, size: 22),
+                      child: const Icon(
+                        Icons.directions_car,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                     ),
                   ],
                 );
@@ -245,8 +263,11 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
           const Positioned(
             right: 60,
             top: 40,
-            child: Icon(Icons.flight_takeoff,
-                color: AeroColors.success, size: 28),
+            child: Icon(
+              Icons.flight_takeoff,
+              color: AeroColors.success,
+              size: 28,
+            ),
           ),
           // Pickup pins
           Positioned(
@@ -267,24 +288,28 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
             top: 12,
             left: 12,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: AeroColors.navy.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.navigation,
-                      color: AeroColors.amber, size: 12),
+                  const Icon(
+                    Icons.navigation,
+                    color: AeroColors.amber,
+                    size: 12,
+                  ),
                   const SizedBox(width: 4),
-                  Text('$etaMinutes min away',
-                      style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
+                  Text(
+                    '$etaMinutes min away',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -293,8 +318,10 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
           const Positioned(
             bottom: 10,
             right: 10,
-            child: Text('Live GPS tracking',
-                style: TextStyle(fontSize: 10, color: AeroColors.grey)),
+            child: Text(
+              'Live GPS tracking',
+              style: TextStyle(fontSize: 10, color: AeroColors.grey),
+            ),
           ),
         ],
       ),
@@ -321,11 +348,14 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Center(
-                child: Text('AH',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AeroColors.amber)),
+                child: Text(
+                  'AH',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AeroColors.amber,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -333,28 +363,34 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Ahmad Hassan',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
-                  const Text('Toyota Hiace · WXY 1234',
-                      style: TextStyle(
-                          fontSize: 12, color: AeroColors.grey)),
+                  const Text(
+                    'Ahmad Hassan',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const Text(
+                    'Toyota Hiace · WXY 1234',
+                    style: TextStyle(fontSize: 12, color: AeroColors.grey),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
                       ...List.generate(
-                          5,
-                          (i) => Icon(Icons.star,
-                              size: 12,
-                              color: i < 5
-                                  ? AeroColors.amber
-                                  : AeroColors.divider)),
+                        5,
+                        (i) => Icon(
+                          Icons.star,
+                          size: 12,
+                          color: i < 5 ? AeroColors.amber : AeroColors.divider,
+                        ),
+                      ),
                       const SizedBox(width: 4),
-                      const Text('4.9 · 342 trips',
-                          style: TextStyle(
-                              fontSize: 10, color: AeroColors.grey)),
+                      const Text(
+                        '4.9 · 342 trips',
+                        style: TextStyle(fontSize: 10, color: AeroColors.grey),
+                      ),
                     ],
                   ),
                 ],
@@ -365,7 +401,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                 _buildContactBtn(Icons.phone, AeroColors.success),
                 const SizedBox(height: 6),
                 _buildContactBtn(
-                    Icons.chat_bubble_outline, AeroColors.infoText),
+                  Icons.chat_bubble_outline,
+                  AeroColors.infoText,
+                ),
               ],
             ),
           ],
@@ -396,7 +434,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
           color: AeroColors.amber.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+            color: AeroColors.amber.withValues(alpha: 0.2),
+            width: 0.5,
+          ),
         ),
         child: Row(
           children: [
@@ -404,17 +444,23 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('ETA TO YOUR LOCATION',
-                      style: AeroText.label),
+                  const Text('ETA TO YOUR LOCATION', style: AeroText.label),
                   const SizedBox(height: 4),
-                  Text('$etaMinutes minutes',
-                      style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: AeroColors.amber)),
-                  Text(driverStatus,
-                      style: const TextStyle(
-                          fontSize: 12, color: AeroColors.grey)),
+                  Text(
+                    '$etaMinutes minutes',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: AeroColors.amber,
+                    ),
+                  ),
+                  Text(
+                    driverStatus,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AeroColors.grey,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -424,8 +470,11 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                 color: AeroColors.amber.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(Icons.access_time,
-                  color: AeroColors.amber, size: 28),
+              child: const Icon(
+                Icons.access_time,
+                color: AeroColors.amber,
+                size: 28,
+              ),
             ),
           ],
         ),
@@ -490,7 +539,8 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                           color: dotColor.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                           border: Border.all(
-                              color: dotColor.withValues(alpha: 0.4)),
+                            color: dotColor.withValues(alpha: 0.4),
+                          ),
                         ),
                         child: Icon(dotIcon, size: 14, color: dotColor),
                       ),
@@ -506,33 +556,41 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
                   const SizedBox(width: 12),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: isLast ? 0 : 16, top: 4),
+                      padding: EdgeInsets.only(bottom: isLast ? 0 : 16, top: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Expanded(
-                                child: Text(stop['name'] as String,
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: status == 'upcoming'
-                                            ? AeroColors.greyLight
-                                            : Colors.white)),
-                              ),
-                              Text(stop['time'] as String,
+                                child: Text(
+                                  stop['name'] as String,
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: dotColor)),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: status == 'upcoming'
+                                        ? AeroColors.greyLight
+                                        : Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                stop['time'] as String,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: dotColor,
+                                ),
+                              ),
                             ],
                           ),
-                          Text(stop['address'] as String,
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.grey)),
+                          Text(
+                            stop['address'] as String,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.grey,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -554,28 +612,32 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
           Expanded(
             child: GestureDetector(
               onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const SosScreen())),
+                context,
+                MaterialPageRoute(builder: (_) => const SosScreen()),
+              ),
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: AeroColors.danger.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                      color: AeroColors.danger.withValues(alpha: 0.3),
-                      width: 0.5),
+                    color: AeroColors.danger.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.sos, color: AeroColors.danger, size: 18),
                     SizedBox(width: 6),
-                    Text('SOS',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: AeroColors.danger)),
+                    Text(
+                      'SOS',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AeroColors.danger,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -589,20 +651,25 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen>
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(14),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.share_location,
-                      color: AeroColors.infoText, size: 18),
+                  Icon(
+                    Icons.share_location,
+                    color: AeroColors.infoText,
+                    size: 18,
+                  ),
                   SizedBox(width: 6),
-                  Text('Share location',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
+                  Text(
+                    'Share location',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),

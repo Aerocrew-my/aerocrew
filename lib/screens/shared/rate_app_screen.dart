@@ -32,27 +32,38 @@ class _RateAppScreenState extends State<RateAppScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('RATE US',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('Your feedback matters',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'RATE US',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'Your feedback matters',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -64,22 +75,26 @@ class _RateAppScreenState extends State<RateAppScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('🙏',
-                              style: TextStyle(fontSize: 64)),
+                          const Text('🙏', style: TextStyle(fontSize: 64)),
                           const SizedBox(height: 16),
-                          const Text('Thank you!',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white)),
+                          const Text(
+                            'Thank you!',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
                           const SizedBox(height: 8),
                           const Text(
-                              'Your feedback helps us improve AeroCrew for all aviation crew.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: AeroColors.grey,
-                                  height: 1.5)),
+                            'Your feedback helps us improve AeroCrew for all aviation crew.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AeroColors.grey,
+                              height: 1.5,
+                            ),
+                          ),
                           const SizedBox(height: 32),
                           ElevatedButton(
                             onPressed: () => Navigator.pop(context),
@@ -87,10 +102,12 @@ class _RateAppScreenState extends State<RateAppScreen> {
                               backgroundColor: AeroColors.amber,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 14),
+                                horizontal: 32,
+                                vertical: 14,
+                              ),
                               shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(14)),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                               elevation: 0,
                             ),
                             child: const Text('Done'),
@@ -110,93 +127,102 @@ class _RateAppScreenState extends State<RateAppScreen> {
                               color: AeroColors.amber,
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            child: const Icon(Icons.flight,
-                                color: Colors.white, size: 36),
+                            child: const Icon(
+                              Icons.flight,
+                              color: Colors.white,
+                              size: 36,
+                            ),
                           ),
                           const SizedBox(height: 20),
                           const Text(
-                              'How would you rate\nAeroCrew?',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  height: 1.3)),
+                            'How would you rate\nAeroCrew?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                              height: 1.3,
+                            ),
+                          ),
                           const SizedBox(height: 32),
                           Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(
-                                5,
-                                (i) => GestureDetector(
-                                      onTap: () => setState(
-                                          () => selectedRating = i + 1),
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 6),
-                                        child: Icon(
-                                          Icons.star_rounded,
-                                          size: 52,
-                                          color: i < selectedRating
-                                              ? AeroColors.amber
-                                              : AeroColors.divider,
-                                        ),
-                                      ),
-                                    )),
+                              5,
+                              (i) => GestureDetector(
+                                onTap: () =>
+                                    setState(() => selectedRating = i + 1),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                  ),
+                                  child: Icon(
+                                    Icons.star_rounded,
+                                    size: 52,
+                                    color: i < selectedRating
+                                        ? AeroColors.amber
+                                        : AeroColors.divider,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 12),
                           Text(
                             selectedRating == 0
                                 ? 'Tap to rate'
                                 : selectedRating == 5
-                                    ? 'Love it!'
-                                    : selectedRating >= 4
-                                        ? 'Really good'
-                                        : selectedRating >= 3
-                                            ? 'It\'s okay'
-                                            : 'Needs work',
+                                ? 'Love it!'
+                                : selectedRating >= 4
+                                ? 'Really good'
+                                : selectedRating >= 3
+                                ? 'It\'s okay'
+                                : 'Needs work',
                             style: TextStyle(
-                                fontSize: 15,
-                                color: selectedRating == 0
-                                    ? AeroColors.grey
-                                    : AeroColors.amber,
-                                fontWeight: FontWeight.w600),
+                              fontSize: 15,
+                              color: selectedRating == 0
+                                  ? AeroColors.grey
+                                  : AeroColors.amber,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           const SizedBox(height: 28),
                           TextField(
                             controller: feedbackController,
                             maxLines: 4,
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 13),
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
                             decoration: InputDecoration(
                               hintText:
                                   'Tell us what you love or what we can improve...',
                               hintStyle: const TextStyle(
-                                  color: AeroColors.grey,
-                                  fontSize: 13),
+                                color: AeroColors.grey,
+                                fontSize: 13,
+                              ),
                               filled: true,
                               fillColor: AeroColors.navyCard,
                               border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(
-                                    color: AeroColors.divider,
-                                    width: 0.5),
+                                  color: AeroColors.divider,
+                                  width: 0.5,
+                                ),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(
-                                    color: AeroColors.divider,
-                                    width: 0.5),
+                                  color: AeroColors.divider,
+                                  width: 0.5,
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(
-                                    color: AeroColors.amber,
-                                    width: 1.5),
+                                  color: AeroColors.amber,
+                                  width: 1.5,
+                                ),
                               ),
                               contentPadding: const EdgeInsets.all(14),
                             ),
@@ -211,19 +237,22 @@ class _RateAppScreenState extends State<RateAppScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AeroColors.amber,
                                 foregroundColor: Colors.white,
-                                disabledBackgroundColor:
-                                    AeroColors.navyCard,
+                                disabledBackgroundColor: AeroColors.navyCard,
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 16),
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(14)),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                                 elevation: 0,
                               ),
-                              child: const Text('Submit review',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600)),
+                              child: const Text(
+                                'Submit review',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
                         ],

@@ -98,25 +98,34 @@ class _HelpScreenState extends State<HelpScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('HELP & SUPPORT',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Frequently asked questions',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'HELP & SUPPORT',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Frequently asked questions',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -132,7 +141,9 @@ class _HelpScreenState extends State<HelpScreen> {
         color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: [
@@ -142,27 +153,37 @@ class _HelpScreenState extends State<HelpScreen> {
               color: AeroColors.amber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.headset_mic,
-                color: AeroColors.amber, size: 18),
+            child: const Icon(
+              Icons.headset_mic,
+              color: AeroColors.amber,
+              size: 18,
+            ),
           ),
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Need more help?',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
-                Text('Email us at aerocrew.my@gmail.com',
-                    style:
-                        TextStyle(fontSize: 11, color: AeroColors.grey)),
+                Text(
+                  'Need more help?',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Email us at aerocrew.my@gmail.com',
+                  style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_ios,
-              size: 13, color: AeroColors.amber),
+          const Icon(
+            Icons.arrow_forward_ios,
+            size: 13,
+            color: AeroColors.amber,
+          ),
         ],
       ),
     );
@@ -173,8 +194,7 @@ class _HelpScreenState extends State<HelpScreen> {
     final isExpanded = expandedIndex == index;
 
     return GestureDetector(
-      onTap: () =>
-          setState(() => expandedIndex = isExpanded ? null : index),
+      onTap: () => setState(() => expandedIndex = isExpanded ? null : index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(bottom: 8),
@@ -196,35 +216,43 @@ class _HelpScreenState extends State<HelpScreen> {
           children: [
             Row(
               children: [
-                Icon(faq['icon'] as IconData,
-                    size: 16,
-                    color: isExpanded ? AeroColors.amber : AeroColors.grey),
+                Icon(
+                  faq['icon'] as IconData,
+                  size: 16,
+                  color: isExpanded ? AeroColors.amber : AeroColors.grey,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: Text(faq['q'] as String,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color:
-                              isExpanded ? Colors.white : AeroColors.greyLight)),
+                  child: Text(
+                    faq['q'] as String,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: isExpanded ? Colors.white : AeroColors.greyLight,
+                    ),
+                  ),
                 ),
                 Icon(
-                    isExpanded
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                    color: isExpanded ? AeroColors.amber : AeroColors.grey,
-                    size: 18),
+                  isExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: isExpanded ? AeroColors.amber : AeroColors.grey,
+                  size: 18,
+                ),
               ],
             ),
             if (isExpanded) ...[
               const SizedBox(height: 10),
               const Divider(color: AeroColors.divider, height: 1),
               const SizedBox(height: 10),
-              Text(faq['a'] as String,
-                  style: const TextStyle(
-                      fontSize: 13,
-                      color: AeroColors.greyLight,
-                      height: 1.6)),
+              Text(
+                faq['a'] as String,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AeroColors.greyLight,
+                  height: 1.6,
+                ),
+              ),
             ],
           ],
         ),

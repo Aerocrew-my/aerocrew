@@ -133,9 +133,7 @@ class MatchingService {
           .orderBy('createdAt', descending: false)
           .get();
 
-      return snapshot.docs
-          .map((doc) => {...doc.data(), 'id': doc.id})
-          .toList();
+      return snapshot.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList();
     } catch (e) {
       return [];
     }
@@ -150,9 +148,7 @@ class MatchingService {
           .where('status', isEqualTo: 'assigned')
           .get();
 
-      return snapshot.docs
-          .map((doc) => {...doc.data(), 'id': doc.id})
-          .toList();
+      return snapshot.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList();
     } catch (e) {
       return [];
     }

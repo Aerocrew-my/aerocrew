@@ -83,25 +83,34 @@ class _ReferralScreenState extends State<ReferralScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('REFERRAL PROGRAM',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Earn with AeroCrew',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'REFERRAL PROGRAM',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Earn with AeroCrew',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -125,38 +134,43 @@ class _ReferralScreenState extends State<ReferralScreen> {
         children: [
           const Icon(Icons.card_giftcard, color: Colors.white, size: 36),
           const SizedBox(height: 12),
-          const Text('Refer a crew member',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white)),
+          const Text(
+            'Refer a crew member',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
           const SizedBox(height: 6),
           const Text(
-              'Earn RM50 for every crew member who subscribes using your code.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.white70,
-                  height: 1.5)),
+            'Earn RM50 for every crew member who subscribes using your code.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 13, color: Colors.white70, height: 1.5),
+          ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildRewardStat(
-                  '${referrals.length}', 'Referred'),
+              _buildRewardStat('${referrals.length}', 'Referred'),
               Container(
-                  width: 1,
-                  height: 32,
-                  color: Colors.white.withValues(alpha: 0.3)),
+                width: 1,
+                height: 32,
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
               _buildRewardStat(
-                  '${referrals.where((r) => r['status'] == 'subscribed').length}',
-                  'Subscribed'),
+                '${referrals.where((r) => r['status'] == 'subscribed').length}',
+                'Subscribed',
+              ),
               Container(
-                  width: 1,
-                  height: 32,
-                  color: Colors.white.withValues(alpha: 0.3)),
+                width: 1,
+                height: 32,
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
               _buildRewardStat(
-                  'RM${totalRewards.toStringAsFixed(0)}', 'Earned'),
+                'RM${totalRewards.toStringAsFixed(0)}',
+                'Earned',
+              ),
             ],
           ),
         ],
@@ -167,14 +181,18 @@ class _ReferralScreenState extends State<ReferralScreen> {
   Widget _buildRewardStat(String value, String label) {
     return Column(
       children: [
-        Text(value,
-            style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Colors.white)),
-        Text(label,
-            style: const TextStyle(
-                fontSize: 11, color: Colors.white70)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 11, color: Colors.white70),
+        ),
       ],
     );
   }
@@ -197,17 +215,22 @@ class _ReferralScreenState extends State<ReferralScreen> {
               color: AeroColors.amber.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                  color: AeroColors.amber.withValues(alpha: 0.3), width: 1),
+                color: AeroColors.amber.withValues(alpha: 0.3),
+                width: 1,
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(referralCode,
-                    style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: AeroColors.amber,
-                        letterSpacing: 2)),
+                Text(
+                  referralCode,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: AeroColors.amber,
+                    letterSpacing: 2,
+                  ),
+                ),
               ],
             ),
           ),
@@ -217,11 +240,12 @@ class _ReferralScreenState extends State<ReferralScreen> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    Clipboard.setData(
-                        const ClipboardData(text: referralCode));
+                    Clipboard.setData(const ClipboardData(text: referralCode));
                     setState(() => codeCopied = true);
-                    Future.delayed(const Duration(seconds: 2),
-                        () => setState(() => codeCopied = false));
+                    Future.delayed(
+                      const Duration(seconds: 2),
+                      () => setState(() => codeCopied = false),
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -240,22 +264,23 @@ class _ReferralScreenState extends State<ReferralScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                            codeCopied
-                                ? Icons.check
-                                : Icons.copy_outlined,
-                            size: 16,
-                            color: codeCopied
-                                ? AeroColors.success
-                                : AeroColors.amber),
+                          codeCopied ? Icons.check : Icons.copy_outlined,
+                          size: 16,
+                          color: codeCopied
+                              ? AeroColors.success
+                              : AeroColors.amber,
+                        ),
                         const SizedBox(width: 6),
                         Text(
-                            codeCopied ? 'Copied!' : 'Copy code',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: codeCopied
-                                    ? AeroColors.success
-                                    : AeroColors.amber)),
+                          codeCopied ? 'Copied!' : 'Copy code',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: codeCopied
+                                ? AeroColors.success
+                                : AeroColors.amber,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -304,45 +329,56 @@ class _ReferralScreenState extends State<ReferralScreen> {
         children: [
           const Text('HOW IT WORKS', style: AeroText.label),
           const SizedBox(height: 12),
-          ...steps.map((s) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: AeroColors.amber.withValues(alpha: 0.12),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(s['step']!,
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: AeroColors.amber)),
+          ...steps.map(
+            (s) => Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: AeroColors.amber.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        s['step']!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AeroColors.amber,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(s['title']!,
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                          Text(s['desc']!,
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.grey)),
-                        ],
-                      ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          s['title']!,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          s['desc']!,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AeroColors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -354,88 +390,103 @@ class _ReferralScreenState extends State<ReferralScreen> {
       children: [
         const Text('MY REFERRALS', style: AeroText.label),
         const SizedBox(height: 10),
-        ...referrals.map((r) => Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: AeroColors.navyCard,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                    color: AeroColors.divider, width: 0.5),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AeroColors.amber.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        (r['name'] as String).substring(0, 1),
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AeroColors.amber),
+        ...referrals.map(
+          (r) => Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AeroColors.navyCard,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AeroColors.divider, width: 0.5),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AeroColors.amber.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      (r['name'] as String).substring(0, 1),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AeroColors.amber,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(r['name'] as String,
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                        Text(r['date'] as String,
-                            style: const TextStyle(
-                                fontSize: 11, color: AeroColors.grey)),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: r['status'] == 'subscribed'
-                              ? AeroColors.success.withValues(alpha: 0.1)
-                              : AeroColors.amber.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(6),
+                      Text(
+                        r['name'] as String,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
                         ),
-                        child: Text(
-                            r['status'] == 'subscribed'
-                                ? 'Subscribed'
-                                : 'Signed up',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                color: r['status'] == 'subscribed'
-                                    ? AeroColors.success
-                                    : AeroColors.amber)),
                       ),
-                      if ((r['reward'] as double) > 0)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 3),
-                          child: Text(
-                              '+RM${(r['reward'] as double).toStringAsFixed(0)}',
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                  color: AeroColors.success)),
+                      Text(
+                        r['date'] as String,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
                         ),
+                      ),
                     ],
                   ),
-                ],
-              ),
-            )),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: r['status'] == 'subscribed'
+                            ? AeroColors.success.withValues(alpha: 0.1)
+                            : AeroColors.amber.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        r['status'] == 'subscribed'
+                            ? 'Subscribed'
+                            : 'Signed up',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: r['status'] == 'subscribed'
+                              ? AeroColors.success
+                              : AeroColors.amber,
+                        ),
+                      ),
+                    ),
+                    if ((r['reward'] as double) > 0)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Text(
+                          '+RM${(r['reward'] as double).toStringAsFixed(0)}',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: AeroColors.success,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -446,15 +497,17 @@ class _ReferralScreenState extends State<ReferralScreen> {
       child: ElevatedButton.icon(
         onPressed: () {},
         icon: const Icon(Icons.share, size: 18),
-        label: const Text('Share my referral code',
-            style:
-                TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+        label: const Text(
+          'Share my referral code',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: AeroColors.amber,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14)),
+            borderRadius: BorderRadius.circular(14),
+          ),
           elevation: 0,
         ),
       ),

@@ -54,19 +54,27 @@ class WalletScreen extends StatelessWidget {
 
   IconData _txIcon(String type) {
     switch (type) {
-      case 'cashback': return Icons.percent;
-      case 'referral': return Icons.people_outline;
-      case 'redemption': return Icons.redeem;
-      default: return Icons.account_balance_wallet;
+      case 'cashback':
+        return Icons.percent;
+      case 'referral':
+        return Icons.people_outline;
+      case 'redemption':
+        return Icons.redeem;
+      default:
+        return Icons.account_balance_wallet;
     }
   }
 
   Color _txColor(String type) {
     switch (type) {
-      case 'cashback': return AeroColors.infoText;
-      case 'referral': return AeroColors.success;
-      case 'redemption': return AeroColors.amber;
-      default: return AeroColors.grey;
+      case 'cashback':
+        return AeroColors.infoText;
+      case 'referral':
+        return AeroColors.success;
+      case 'redemption':
+        return AeroColors.amber;
+      default:
+        return AeroColors.grey;
     }
   }
 
@@ -89,27 +97,38 @@ class WalletScreen extends StatelessWidget {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('AEROCREW WALLET',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('Credits & cashback',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'AEROCREW WALLET',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'Credits & cashback',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -143,30 +162,38 @@ class WalletScreen extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             AeroColors.navyCard,
-            AeroColors.amber.withValues(alpha: 0.15)
+            AeroColors.amber.withValues(alpha: 0.15),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('AVAILABLE BALANCE',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: AeroColors.amber,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1)),
+          const Text(
+            'AVAILABLE BALANCE',
+            style: TextStyle(
+              fontSize: 11,
+              color: AeroColors.amber,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1,
+            ),
+          ),
           const SizedBox(height: 8),
-          Text('RM${balance.toStringAsFixed(2)}',
-              style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white)),
+          Text(
+            'RM${balance.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+            ),
+          ),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -182,21 +209,30 @@ class WalletScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: const [
-                          Icon(Icons.percent,
-                              size: 12, color: AeroColors.infoText),
+                          Icon(
+                            Icons.percent,
+                            size: 12,
+                            color: AeroColors.infoText,
+                          ),
                           SizedBox(width: 4),
-                          Text('Cashback',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: AeroColors.grey)),
+                          Text(
+                            'Cashback',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AeroColors.grey,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 3),
-                      Text('RM${cashback.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white)),
+                      Text(
+                        'RM${cashback.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -214,21 +250,30 @@ class WalletScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: const [
-                          Icon(Icons.people_outline,
-                              size: 12, color: AeroColors.success),
+                          Icon(
+                            Icons.people_outline,
+                            size: 12,
+                            color: AeroColors.success,
+                          ),
                           SizedBox(width: 4),
-                          Text('Referrals',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: AeroColors.grey)),
+                          Text(
+                            'Referrals',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AeroColors.grey,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 3),
-                      Text('RM${(balance - cashback).toStringAsFixed(2)}',
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white)),
+                      Text(
+                        'RM${(balance - cashback).toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -255,14 +300,18 @@ class WalletScreen extends StatelessWidget {
               children: [
                 Icon(Icons.redeem, color: AeroColors.amber, size: 22),
                 SizedBox(height: 6),
-                Text('Redeem',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-                Text('Apply to next bill',
-                    style: TextStyle(
-                        fontSize: 10, color: AeroColors.grey)),
+                Text(
+                  'Redeem',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Apply to next bill',
+                  style: TextStyle(fontSize: 10, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -280,14 +329,18 @@ class WalletScreen extends StatelessWidget {
               children: [
                 Icon(Icons.share, color: AeroColors.success, size: 22),
                 SizedBox(height: 6),
-                Text('Refer friends',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-                Text('Earn RM50 each',
-                    style: TextStyle(
-                        fontSize: 10, color: AeroColors.grey)),
+                Text(
+                  'Refer friends',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Earn RM50 each',
+                  style: TextStyle(fontSize: 10, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -305,14 +358,18 @@ class WalletScreen extends StatelessWidget {
               children: [
                 Icon(Icons.history, color: AeroColors.infoText, size: 22),
                 SizedBox(height: 6),
-                Text('History',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-                Text('All transactions',
-                    style: TextStyle(
-                        fontSize: 10, color: AeroColors.grey)),
+                Text(
+                  'History',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'All transactions',
+                  style: TextStyle(fontSize: 10, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -347,33 +404,43 @@ class WalletScreen extends StatelessWidget {
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(_txIcon(tx['type'] as String),
-                      color: color, size: 18),
+                  child: Icon(
+                    _txIcon(tx['type'] as String),
+                    color: color,
+                    size: 18,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(tx['desc'] as String,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white)),
-                      Text(tx['date'] as String,
-                          style: const TextStyle(
-                              fontSize: 11, color: AeroColors.grey)),
+                      Text(
+                        tx['desc'] as String,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        tx['date'] as String,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Text(
-                    '${isCredit ? '+' : '-'}RM${(tx['amount'] as double).toStringAsFixed(2)}',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: isCredit
-                            ? AeroColors.success
-                            : AeroColors.danger)),
+                  '${isCredit ? '+' : '-'}RM${(tx['amount'] as double).toStringAsFixed(2)}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: isCredit ? AeroColors.success : AeroColors.danger,
+                  ),
+                ),
               ],
             ),
           );

@@ -4,10 +4,9 @@ import 'package:aerocrew/config/app_config.dart';
 
 class ChipService {
   static Map<String, String> get _headers => {
-        'Content-Type': 'application/json',
-        'Authorization':
-            'Bearer ${AppConfig.chipApiKey}',
-      };
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ${AppConfig.chipApiKey}',
+  };
 
   /// Create a purchase/payment link for subscription
   static Future<Map<String, dynamic>> createPurchase({
@@ -18,17 +17,19 @@ class ChipService {
     required String description,
     required String reference,
   }) async {
+    if (AppConfig.chipApiKey.isEmpty) {
+      return {
+        'success': false,
+        'error': 'Payments are not configured for this build.',
+      };
+    }
     try {
       final response = await http.post(
         Uri.parse('${AppConfig.chipBaseUrl}/purchases/'),
         headers: _headers,
         body: jsonEncode({
           'brand_id': AppConfig.chipBrandId,
-          'client': {
-            'email': email,
-            'full_name': name,
-            'phone': phone,
-          },
+          'client': {'email': email, 'full_name': name, 'phone': phone},
           'purchase': {
             'currency': 'MYR',
             'products': [
@@ -36,16 +37,13 @@ class ChipService {
                 'name': description,
                 'price': (amount * 100).toInt(), // CHIP uses cents
                 'quantity': 1,
-              }
+              },
             ],
           },
           'reference': reference,
-          'success_redirect':
-              '${AppConfig.appWebUrl}/payment-success',
-          'failure_redirect':
-              '${AppConfig.appWebUrl}/payment-failed',
-          'cancel_redirect':
-              '${AppConfig.appWebUrl}/payment-cancelled',
+          'success_redirect': '${AppConfig.appWebUrl}/payment-success',
+          'failure_redirect': '${AppConfig.appWebUrl}/payment-failed',
+          'cancel_redirect': '${AppConfig.appWebUrl}/payment-cancelled',
           'send_receipt': true,
         }),
       );
@@ -66,16 +64,20 @@ class ChipService {
         };
       }
     } catch (e) {
-      return {
-        'success': false,
-        'error': 'Network error: $e',
-      };
+      return {'success': false, 'error': 'Network error: $e'};
     }
   }
 
   /// Get purchase status
   static Future<Map<String, dynamic>> getPurchaseStatus(
-      String purchaseId) async {
+    String purchaseId,
+  ) async {
+    if (AppConfig.chipApiKey.isEmpty) {
+      return {
+        'success': false,
+        'error': 'Payments are not configured for this build.',
+      };
+    }
     try {
       final response = await http.get(
         Uri.parse('${AppConfig.chipBaseUrl}/purchases/$purchaseId/'),

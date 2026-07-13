@@ -27,7 +27,11 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
       'borderColor': Color(0xFFBA7517),
       'badge': 'Most popular',
       'icon': Icons.people,
-      'features': ['AI-matched car-pooling', 'Guaranteed seat', 'Zone-based routing'],
+      'features': [
+        'AI-matched car-pooling',
+        'Guaranteed seat',
+        'Zone-based routing',
+      ],
     },
     {
       'id': 'aeroflex',
@@ -40,7 +44,11 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
       'borderColor': Color(0xFF2A3347),
       'badge': '',
       'icon': Icons.bolt,
-      'features': ['No monthly commitment', 'Book anytime', 'Ideal for standby crew'],
+      'features': [
+        'No monthly commitment',
+        'Book anytime',
+        'Ideal for standby crew',
+      ],
     },
     {
       'id': 'aerosolo',
@@ -72,9 +80,9 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
     }
     setState(() => isLoading = false);
   }
@@ -113,24 +121,33 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                           color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.local_taxi,
-                            color: AeroColors.amber, size: 22),
+                        child: const Icon(
+                          Icons.local_taxi,
+                          color: AeroColors.amber,
+                          size: 22,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('STEP 2 OF 3',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.amber,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1)),
-                          Text('Choose your plan',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
+                          Text(
+                            'STEP 2 OF 3',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.amber,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          Text(
+                            'Choose your plan',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -139,19 +156,24 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                 const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Text('Transport that\nfits your schedule.',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: -0.5,
-                          height: 1.2)),
+                  child: Text(
+                    'Transport that\nfits your schedule.',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                      height: 1.2,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 6),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Text('You can change this anytime.',
-                      style: TextStyle(fontSize: 13, color: AeroColors.grey)),
+                  child: Text(
+                    'You can change this anytime.',
+                    style: TextStyle(fontSize: 13, color: AeroColors.grey),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Expanded(
@@ -167,7 +189,8 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
 
                           return GestureDetector(
                             onTap: () => setState(
-                                () => selectedProduct = product['id'] as String),
+                              () => selectedProduct = product['id'] as String,
+                            ),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
                               margin: const EdgeInsets.only(bottom: 12),
@@ -193,46 +216,61 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           color: color.withValues(alpha: 0.15),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Icon(
-                                            product['icon'] as IconData,
-                                            color: color,
-                                            size: 18),
+                                          product['icon'] as IconData,
+                                          color: color,
+                                          size: 18,
+                                        ),
                                       ),
                                       const SizedBox(width: 10),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(product['name'] as String,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: color)),
                                           Text(
-                                              product['tagline'] as String,
-                                              style: const TextStyle(
-                                                  fontSize: 11,
-                                                  color: AeroColors.grey)),
+                                            product['name'] as String,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: color,
+                                            ),
+                                          ),
+                                          Text(
+                                            product['tagline'] as String,
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              color: AeroColors.grey,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       const Spacer(),
                                       if (badge.isNotEmpty)
                                         Container(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 3),
-                                          decoration: BoxDecoration(
-                                            color: color.withValues(alpha: 0.15),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                            horizontal: 8,
+                                            vertical: 3,
                                           ),
-                                          child: Text(badge,
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: color)),
+                                          decoration: BoxDecoration(
+                                            color: color.withValues(
+                                              alpha: 0.15,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            badge,
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                              color: color,
+                                            ),
+                                          ),
                                         ),
                                     ],
                                   ),
@@ -242,39 +280,54 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                         CrossAxisAlignment.baseline,
                                     textBaseline: TextBaseline.alphabetic,
                                     children: [
-                                      Text(product['price'] as String,
-                                          style: const TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white)),
-                                      Text(product['period'] as String,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: AeroColors.grey)),
+                                      Text(
+                                        product['price'] as String,
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        product['period'] as String,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: AeroColors.grey,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   if (isSelected) ...[
                                     const SizedBox(height: 12),
                                     const Divider(
-                                        color: AeroColors.divider,
-                                        height: 1),
+                                      color: AeroColors.divider,
+                                      height: 1,
+                                    ),
                                     const SizedBox(height: 10),
-                                    ...features.map((f) => Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 6),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.check_circle,
-                                                  size: 14, color: color),
-                                              const SizedBox(width: 8),
-                                              Text(f,
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: AeroColors
-                                                          .greyLight)),
-                                            ],
-                                          ),
-                                        )),
+                                    ...features.map(
+                                      (f) => Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 6,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle,
+                                              size: 14,
+                                              color: color,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              f,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: AeroColors.greyLight,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ],
                               ),
@@ -289,10 +342,10 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AeroColors.amber,
                               foregroundColor: Colors.white,
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 16),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14)),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                               elevation: 0,
                             ),
                             child: isLoading
@@ -300,18 +353,22 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                     height: 20,
                                     width: 20,
                                     child: CircularProgressIndicator(
-                                        color: Colors.white, strokeWidth: 2))
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                          'Continue with ${(selected['name'] as String)}',
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600)),
+                                        'Continue with ${(selected['name'] as String)}',
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                       const SizedBox(width: 8),
-                                      const Icon(Icons.arrow_forward,
-                                          size: 18),
+                                      const Icon(Icons.arrow_forward, size: 18),
                                     ],
                                   ),
                           ),

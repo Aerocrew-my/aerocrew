@@ -7,8 +7,7 @@ class PreTripChecklistScreen extends StatefulWidget {
   const PreTripChecklistScreen({super.key, required this.trip});
 
   @override
-  State<PreTripChecklistScreen> createState() =>
-      _PreTripChecklistScreenState();
+  State<PreTripChecklistScreen> createState() => _PreTripChecklistScreenState();
 }
 
 class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
@@ -57,8 +56,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
     },
   ];
 
-  int get checkedCount =>
-      checklist.where((c) => c['checked'] == true).length;
+  int get checkedCount => checklist.where((c) => c['checked'] == true).length;
 
   bool get requiredComplete => checklist
       .where((c) => c['required'] == true)
@@ -111,25 +109,34 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('PRE-TRIP CHECKLIST',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Before your pickup',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'PRE-TRIP CHECKLIST',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Before your pickup',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -144,7 +151,9 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
         color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: [
@@ -154,8 +163,11 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
               color: AeroColors.amber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.flight_takeoff,
-                color: AeroColors.amber, size: 20),
+            child: const Icon(
+              Icons.flight_takeoff,
+              color: AeroColors.amber,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -163,15 +175,17 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    '${widget.trip['flight'] ?? 'AK6101'} · ${widget.trip['departure'] ?? '05:30'} departure',
-                    style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
+                  '${widget.trip['flight'] ?? 'AK6101'} · ${widget.trip['departure'] ?? '05:30'} departure',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
                 Text(
-                    'Pickup at ${widget.trip['pickupTime'] ?? '03:00'} · ${widget.trip['airport'] ?? 'SZB'}',
-                    style: const TextStyle(
-                        fontSize: 12, color: AeroColors.grey)),
+                  'Pickup at ${widget.trip['pickupTime'] ?? '03:00'} · ${widget.trip['airport'] ?? 'SZB'}',
+                  style: const TextStyle(fontSize: 12, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -193,16 +207,22 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('$checkedCount/${checklist.length} complete',
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
-              Text('${(progress * 100).toInt()}%',
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AeroColors.amber)),
+              Text(
+                '$checkedCount/${checklist.length} complete',
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '${(progress * 100).toInt()}%',
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AeroColors.amber,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -211,8 +231,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: AeroColors.divider,
-              valueColor:
-                  const AlwaysStoppedAnimation<Color>(AeroColors.amber),
+              valueColor: const AlwaysStoppedAnimation<Color>(AeroColors.amber),
               minHeight: 8,
             ),
           ),
@@ -229,8 +248,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
         final isRequired = item['required'] as bool;
 
         return GestureDetector(
-          onTap: () =>
-              setState(() => item['checked'] = !isChecked),
+          onTap: () => setState(() => item['checked'] = !isChecked),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             margin: const EdgeInsets.only(bottom: 8),
@@ -271,37 +289,51 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
                     children: [
                       Row(
                         children: [
-                          Text(item['title'] as String,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: isChecked
-                                      ? AeroColors.greyLight
-                                      : Colors.white,
-                                  decoration: isChecked
-                                      ? TextDecoration.lineThrough
-                                      : null)),
+                          Text(
+                            item['title'] as String,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: isChecked
+                                  ? AeroColors.greyLight
+                                  : Colors.white,
+                              decoration: isChecked
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                            ),
+                          ),
                           if (isRequired && !isChecked) ...[
                             const SizedBox(width: 6),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 1),
+                                horizontal: 5,
+                                vertical: 1,
+                              ),
                               decoration: BoxDecoration(
-                                color: AeroColors.danger.withValues(alpha: 0.12),
+                                color: AeroColors.danger.withValues(
+                                  alpha: 0.12,
+                                ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child: const Text('Required',
-                                  style: TextStyle(
-                                      fontSize: 9,
-                                      color: AeroColors.danger,
-                                      fontWeight: FontWeight.w600)),
+                              child: const Text(
+                                'Required',
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  color: AeroColors.danger,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ],
                         ],
                       ),
-                      Text(item['desc'] as String,
-                          style: const TextStyle(
-                              fontSize: 11, color: AeroColors.grey)),
+                      Text(
+                        item['desc'] as String,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.grey,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -309,9 +341,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
-                    color: isChecked
-                        ? AeroColors.success
-                        : AeroColors.navy,
+                    color: isChecked ? AeroColors.success : AeroColors.navy,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: isChecked
@@ -321,8 +351,7 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
                     ),
                   ),
                   child: isChecked
-                      ? const Icon(Icons.check,
-                          size: 14, color: Colors.white)
+                      ? const Icon(Icons.check, size: 14, color: Colors.white)
                       : null,
                 ),
               ],
@@ -341,8 +370,9 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
             ? () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (_) =>
-                        LiveTrackingScreen(trip: widget.trip)))
+                  builder: (_) => LiveTrackingScreen(trip: widget.trip),
+                ),
+              )
             : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: AeroColors.success,
@@ -351,24 +381,24 @@ class _PreTripChecklistScreenState extends State<PreTripChecklistScreen> {
           disabledForegroundColor: AeroColors.grey,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14)),
+            borderRadius: BorderRadius.circular(14),
+          ),
           elevation: 0,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-                requiredComplete
-                    ? Icons.check_circle
-                    : Icons.lock_outline,
-                size: 18),
+              requiredComplete ? Icons.check_circle : Icons.lock_outline,
+              size: 18,
+            ),
             const SizedBox(width: 8),
             Text(
-                requiredComplete
-                    ? 'I\'m ready — track my van'
-                    : 'Complete required items first',
-                style: const TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w600)),
+              requiredComplete
+                  ? 'I\'m ready — track my van'
+                  : 'Complete required items first',
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
           ],
         ),
       ),

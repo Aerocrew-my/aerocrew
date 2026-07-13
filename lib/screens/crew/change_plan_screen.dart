@@ -56,11 +56,7 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
       'color': Color(0xFFEF9F27),
       'icon': Icons.star,
       'badge': 'Premium',
-      'features': [
-        'No sharing',
-        'Sedan, MPV or Alphard',
-        'Priority matching',
-      ],
+      'features': ['No sharing', 'Sedan, MPV or Alphard', 'Priority matching'],
     },
   ];
 
@@ -111,28 +107,39 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                       decoration: BoxDecoration(
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
-                        border:
-                            Border.all(color: AeroColors.divider, width: 0.5),
+                        border: Border.all(
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('CHANGE PLAN',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('Choose your transport plan',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'CHANGE PLAN',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'Choose your transport plan',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -181,97 +188,130 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                                       color: planColor.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: Icon(plan['icon'] as IconData,
-                                        color: planColor, size: 18),
+                                    child: Icon(
+                                      plan['icon'] as IconData,
+                                      color: planColor,
+                                      size: 18,
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(plan['name'] as String,
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                              color: planColor)),
-                                      Text(plan['tagline'] as String,
-                                          style: const TextStyle(
-                                              fontSize: 11,
-                                              color: AeroColors.grey)),
+                                      Text(
+                                        plan['name'] as String,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: planColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        plan['tagline'] as String,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          color: AeroColors.grey,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   const Spacer(),
                                   if (isCurrent)
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 3),
-                                      decoration: BoxDecoration(
-                                        color: AeroColors.success
-                                            .withValues(alpha: 0.12),
-                                        borderRadius:
-                                            BorderRadius.circular(20),
+                                        horizontal: 8,
+                                        vertical: 3,
                                       ),
-                                      child: const Text('Current',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w600,
-                                              color: AeroColors.success)),
+                                      decoration: BoxDecoration(
+                                        color: AeroColors.success.withValues(
+                                          alpha: 0.12,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Text(
+                                        'Current',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                          color: AeroColors.success,
+                                        ),
+                                      ),
                                     )
                                   else if (badge.isNotEmpty)
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 3),
-                                      decoration: BoxDecoration(
-                                        color: planColor.withValues(alpha: 0.12),
-                                        borderRadius:
-                                            BorderRadius.circular(20),
+                                        horizontal: 8,
+                                        vertical: 3,
                                       ),
-                                      child: Text(badge,
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w600,
-                                              color: planColor)),
+                                      decoration: BoxDecoration(
+                                        color: planColor.withValues(
+                                          alpha: 0.12,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        badge,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                          color: planColor,
+                                        ),
+                                      ),
                                     ),
                                 ],
                               ),
                               const SizedBox(height: 10),
                               Row(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.baseline,
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
                                 textBaseline: TextBaseline.alphabetic,
                                 children: [
-                                  Text(plan['price'] as String,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white)),
-                                  Text(plan['period'] as String,
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          color: AeroColors.grey)),
+                                  Text(
+                                    plan['price'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    plan['period'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: AeroColors.grey,
+                                    ),
+                                  ),
                                 ],
                               ),
                               if (isSelected) ...[
                                 const SizedBox(height: 10),
                                 const Divider(
-                                    color: AeroColors.divider, height: 1),
+                                  color: AeroColors.divider,
+                                  height: 1,
+                                ),
                                 const SizedBox(height: 8),
-                                ...features.map((f) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 5),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.check_circle,
-                                              size: 13, color: planColor),
-                                          const SizedBox(width: 8),
-                                          Text(f,
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color:
-                                                      AeroColors.greyLight)),
-                                        ],
-                                      ),
-                                    )),
+                                ...features.map(
+                                  (f) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle,
+                                          size: 13,
+                                          color: planColor,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          f,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: AeroColors.greyLight,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ],
                           ),
@@ -285,22 +325,21 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                         onPressed: isCurrentPlan || isLoading
                             ? null
                             : () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) =>
-                                        SubscriptionScreen(plan: selectedPlan),
-                                  ),
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      SubscriptionScreen(plan: selectedPlan),
                                 ),
+                              ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: color,
                           foregroundColor: Colors.white,
-                          disabledBackgroundColor:
-                              AeroColors.navyCard,
+                          disabledBackgroundColor: AeroColors.navyCard,
                           disabledForegroundColor: AeroColors.grey,
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14)),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           elevation: 0,
                         ),
                         child: Text(
@@ -308,8 +347,9 @@ class _ChangePlanScreenState extends State<ChangePlanScreen> {
                               ? 'Current plan'
                               : 'Switch to ${selected['name']}',
                           style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),

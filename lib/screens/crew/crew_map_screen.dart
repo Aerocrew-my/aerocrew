@@ -4,10 +4,7 @@ import 'package:aerocrew/constants.dart';
 class CrewMapScreen extends StatelessWidget {
   final Map<String, dynamic> trip;
 
-  const CrewMapScreen({
-    super.key,
-    required this.trip,
-  });
+  const CrewMapScreen({super.key, required this.trip});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +17,7 @@ class CrewMapScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Trip Map',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
       body: SingleChildScrollView(
@@ -129,10 +123,7 @@ class CrewMapScreen extends StatelessWidget {
                       color: AeroColors.amber.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
-                      Icons.schedule,
-                      color: AeroColors.amber,
-                    ),
+                    child: const Icon(Icons.schedule, color: AeroColors.amber),
                   ),
 
                   const SizedBox(width: 12),
@@ -191,27 +182,15 @@ class CrewMapScreen extends StatelessWidget {
 
                   const SizedBox(height: 14),
 
-                  _infoRow(
-                    Icons.location_city,
-                    "Status",
-                    "Pending Dispatch",
-                  ),
+                  _infoRow(Icons.location_city, "Status", "Pending Dispatch"),
 
                   const SizedBox(height: 14),
 
-                  _infoRow(
-                    Icons.directions_car,
-                    "Driver",
-                    "Not Assigned",
-                  ),
+                  _infoRow(Icons.directions_car, "Driver", "Not Assigned"),
 
                   const SizedBox(height: 14),
 
-                  _infoRow(
-                    Icons.access_time,
-                    "ETA",
-                    "-- min",
-                  ),
+                  _infoRow(Icons.access_time, "ETA", "-- min"),
                 ],
               ),
             ),
@@ -221,27 +200,14 @@ class CrewMapScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoRow(
-    IconData icon,
-    String label,
-    String value,
-  ) {
+  Widget _infoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(
-          icon,
-          color: AeroColors.amber,
-          size: 18,
-        ),
+        Icon(icon, color: AeroColors.amber, size: 18),
 
         const SizedBox(width: 10),
 
-        Text(
-          "$label:",
-          style: const TextStyle(
-            color: AeroColors.grey,
-          ),
-        ),
+        Text("$label:", style: const TextStyle(color: AeroColors.grey)),
 
         const Spacer(),
 

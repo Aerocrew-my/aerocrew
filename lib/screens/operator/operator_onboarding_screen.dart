@@ -11,8 +11,7 @@ class OperatorOnboardingScreen extends StatefulWidget {
       _OperatorOnboardingScreenState();
 }
 
-class _OperatorOnboardingScreenState
-    extends State<OperatorOnboardingScreen> {
+class _OperatorOnboardingScreenState extends State<OperatorOnboardingScreen> {
   final PageController _controller = PageController();
   int currentPage = 0;
 
@@ -72,25 +71,32 @@ class _OperatorOnboardingScreenState
                           color: AeroColors.amber,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.directions_car,
-                            color: Colors.white, size: 16),
+                        child: const Icon(
+                          Icons.directions_car,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                       const SizedBox(width: 8),
-                      const Text('AeroCrew Operators',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      const Text(
+                        'AeroCrew Operators',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                   GestureDetector(
                     onTap: () => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const LoginScreen())),
-                    child: const Text('Skip',
-                        style: TextStyle(
-                            fontSize: 14, color: AeroColors.grey)),
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    ),
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(fontSize: 14, color: AeroColors.grey),
+                    ),
                   ),
                 ],
               ),
@@ -115,41 +121,56 @@ class _OperatorOnboardingScreenState
                             color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(28),
                           ),
-                          child: Icon(page['icon'] as IconData,
-                              color: color, size: 48),
+                          child: Icon(
+                            page['icon'] as IconData,
+                            color: color,
+                            size: 48,
+                          ),
                         ),
                         const SizedBox(height: 40),
-                        Text(page['title'] as String,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                letterSpacing: -0.5,
-                                height: 1.2)),
+                        Text(
+                          page['title'] as String,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            letterSpacing: -0.5,
+                            height: 1.2,
+                          ),
+                        ),
                         const SizedBox(height: 16),
-                        Text(page['subtitle'] as String,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                color: AeroColors.grey,
-                                height: 1.6)),
+                        Text(
+                          page['subtitle'] as String,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AeroColors.grey,
+                            height: 1.6,
+                          ),
+                        ),
                         const SizedBox(height: 20),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           decoration: BoxDecoration(
                             color: color.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                                color: color.withValues(alpha: 0.3),
-                                width: 0.5),
+                              color: color.withValues(alpha: 0.3),
+                              width: 0.5,
+                            ),
                           ),
-                          child: Text(page['highlight'] as String,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: color)),
+                          child: Text(
+                            page['highlight'] as String,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: color,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -191,39 +212,43 @@ class _OperatorOnboardingScreenState
                           );
                         } else {
                           Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const SignupScreen()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SignupScreen(),
+                            ),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AeroColors.amber,
                         foregroundColor: Colors.white,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                         elevation: 0,
                       ),
                       child: Text(
-                          currentPage < pages.length - 1
-                              ? 'Next'
-                              : 'Join as operator',
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600)),
+                        currentPage < pages.length - 1
+                            ? 'Next'
+                            : 'Join as operator',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
                     onTap: () => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const LoginScreen())),
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    ),
                     child: const Text(
-                        'Already registered? Sign in',
-                        style: TextStyle(
-                            fontSize: 13, color: AeroColors.grey)),
+                      'Already registered? Sign in',
+                      style: TextStyle(fontSize: 13, color: AeroColors.grey),
+                    ),
                   ),
                 ],
               ),

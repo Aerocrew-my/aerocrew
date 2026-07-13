@@ -18,8 +18,20 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
   final zoneController = TextEditingController();
   final staffIdController = TextEditingController();
 
-  final airlines = ['AirAsia', 'Malaysia Airlines', 'Batik Air', 'FireFly', 'Berjaya Air', 'Other'];
-  final airports = ['Subang Airport (SZB)', 'Kuala Lumpur International Airport (KLIA)', 'Kuala Lumpur International Airport 2 (KLIA2)', 'Penang International Airport (PEN)'];
+  final airlines = [
+    'AirAsia',
+    'Malaysia Airlines',
+    'Batik Air',
+    'FireFly',
+    'Berjaya Air',
+    'Other',
+  ];
+  final airports = [
+    'Subang Airport (SZB)',
+    'Kuala Lumpur International Airport (KLIA)',
+    'Kuala Lumpur International Airport 2 (KLIA2)',
+    'Penang International Airport (PEN)',
+  ];
 
   Future<void> _saveProfile() async {
     if (zoneController.text.isEmpty || staffIdController.text.isEmpty) {
@@ -45,9 +57,9 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
     }
     setState(() => isLoading = false);
   }
@@ -100,12 +112,20 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AeroColors.amber, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
       ),
     );
   }
 
-  Widget _buildDropdown(String label, String value, List<String> items, Function(String) onChanged) {
+  Widget _buildDropdown(
+    String label,
+    String value,
+    List<String> items,
+    Function(String) onChanged,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -122,11 +142,18 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down, color: AeroColors.grey),
-              items: items.map((a) => DropdownMenuItem(
-                value: a,
-                child: Text(a, style: const TextStyle(fontSize: 14)),
-              )).toList(),
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                color: AeroColors.grey,
+              ),
+              items: items
+                  .map(
+                    (a) => DropdownMenuItem(
+                      value: a,
+                      child: Text(a, style: const TextStyle(fontSize: 14)),
+                    ),
+                  )
+                  .toList(),
               onChanged: (val) => onChanged(val!),
             ),
           ),
@@ -167,24 +194,33 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                           color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.flight_takeoff,
-                            color: AeroColors.amber, size: 22),
+                        child: const Icon(
+                          Icons.flight_takeoff,
+                          color: AeroColors.amber,
+                          size: 22,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('STEP 1 OF 2',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.amber,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1)),
-                          Text('Crew profile',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
+                          Text(
+                            'STEP 1 OF 2',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.amber,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          Text(
+                            'Crew profile',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -196,15 +232,20 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Complete your profile',
-                          style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              letterSpacing: -0.5)),
+                      const Text(
+                        'Complete your profile',
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      const Text('Tell us about your flying schedule',
-                          style: TextStyle(fontSize: 14, color: AeroColors.grey)),
+                      const Text(
+                        'Tell us about your flying schedule',
+                        style: TextStyle(fontSize: 14, color: AeroColors.grey),
+                      ),
                       const SizedBox(height: 16),
                       Row(
                         children: [
@@ -221,7 +262,9 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                   child: Container(
                     decoration: const BoxDecoration(
                       color: AeroColors.background,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(28),
+                      ),
                     ),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(24),
@@ -229,11 +272,19 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 8),
-                          _buildDropdown('AIRLINE', selectedAirline, airlines,
-                              (val) => setState(() => selectedAirline = val)),
+                          _buildDropdown(
+                            'AIRLINE',
+                            selectedAirline,
+                            airlines,
+                            (val) => setState(() => selectedAirline = val),
+                          ),
                           const SizedBox(height: 16),
-                          _buildDropdown('BASE AIRPORT', selectedAirport, airports,
-                              (val) => setState(() => selectedAirport = val)),
+                          _buildDropdown(
+                            'BASE AIRPORT',
+                            selectedAirport,
+                            airports,
+                            (val) => setState(() => selectedAirport = val),
+                          ),
                           const SizedBox(height: 16),
                           const Text('HOME AREA / ZONE', style: AeroText.label),
                           const SizedBox(height: 8),
@@ -260,16 +311,20 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.info_outline,
-                                    color: AeroColors.amber, size: 18),
+                                Icon(
+                                  Icons.info_outline,
+                                  color: AeroColors.amber,
+                                  size: 18,
+                                ),
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     'You\'ll upload your staff ID photo on the next step for verification.',
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        color: AeroColors.amber,
-                                        height: 1.4),
+                                      fontSize: 12,
+                                      color: AeroColors.amber,
+                                      height: 1.4,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -283,9 +338,12 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AeroColors.amber,
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14)),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                                 elevation: 0,
                               ),
                               child: isLoading
@@ -293,14 +351,21 @@ class _CrewProfileScreenState extends State<CrewProfileScreen> {
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator(
-                                          color: Colors.white, strokeWidth: 2))
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
                                   : const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text('Continue',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600)),
+                                        Text(
+                                          'Continue',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                         SizedBox(width: 8),
                                         Icon(Icons.arrow_forward, size: 18),
                                       ],

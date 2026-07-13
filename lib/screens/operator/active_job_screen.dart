@@ -15,8 +15,7 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
   bool jobCompleted = false;
 
   List<Map<String, dynamic>> get crew =>
-      (widget.job['crew'] as List<dynamic>?)
-          ?.cast<Map<String, dynamic>>() ??
+      (widget.job['crew'] as List<dynamic>?)?.cast<Map<String, dynamic>>() ??
       [];
 
   @override
@@ -29,9 +28,7 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             _buildHeader(),
             _buildProgressBar(),
             Expanded(
-              child: jobCompleted
-                  ? _buildCompletedView()
-                  : _buildActiveView(),
+              child: jobCompleted ? _buildCompletedView() : _buildActiveView(),
             ),
           ],
         ),
@@ -53,8 +50,11 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -62,29 +62,35 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('ACTIVE JOB',
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: AeroColors.amber,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1)),
+                const Text(
+                  'ACTIVE JOB',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: AeroColors.amber,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                  ),
+                ),
                 Text(
-                    '${widget.job['date'] ?? 'Mon 16 Jun'} · ${widget.job['airport'] ?? 'SZB'}',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
+                  '${widget.job['date'] ?? 'Mon 16 Jun'} · ${widget.job['airport'] ?? 'SZB'}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           ),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
+                color: AeroColors.success.withValues(alpha: 0.3),
+                width: 0.5,
+              ),
             ),
             child: Row(
               children: [
@@ -97,11 +103,14 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
                   ),
                 ),
                 const SizedBox(width: 5),
-                const Text('Live',
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AeroColors.success)),
+                const Text(
+                  'Live',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AeroColors.success,
+                  ),
+                ),
               ],
             ),
           ),
@@ -122,17 +131,22 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('$completedPickups of ${crew.length} pickups done',
-                  style: const TextStyle(
-                      fontSize: 12,
-                      color: AeroColors.grey,
-                      fontWeight: FontWeight.w500)),
               Text(
-                  '${(progress * 100).toInt()}%',
-                  style: const TextStyle(
-                      fontSize: 12,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600)),
+                '$completedPickups of ${crew.length} pickups done',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AeroColors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                '${(progress * 100).toInt()}%',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -141,8 +155,7 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: AeroColors.divider,
-              valueColor:
-                  const AlwaysStoppedAnimation<Color>(AeroColors.amber),
+              valueColor: const AlwaysStoppedAnimation<Color>(AeroColors.amber),
               minHeight: 6,
             ),
           ),
@@ -174,7 +187,9 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
           color: AeroColors.success.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
+            color: AeroColors.success.withValues(alpha: 0.3),
+            width: 0.5,
+          ),
         ),
         child: const Row(
           children: [
@@ -184,9 +199,10 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
               child: Text(
                 'All crew picked up! Head to the airport.',
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
@@ -201,17 +217,22 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
         color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.3), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.3),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('NEXT PICKUP',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: AeroColors.amber,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.8)),
+          const Text(
+            'NEXT PICKUP',
+            style: TextStyle(
+              fontSize: 11,
+              color: AeroColors.amber,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.8,
+            ),
+          ),
           const SizedBox(height: 10),
           Row(
             children: [
@@ -222,37 +243,52 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
                   color: AeroColors.amber.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.person,
-                    color: AeroColors.amber, size: 22),
+                child: const Icon(
+                  Icons.person,
+                  color: AeroColors.amber,
+                  size: 22,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(next['name'] as String,
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                    Text(next['zone'] as String,
-                        style: const TextStyle(
-                            fontSize: 12, color: AeroColors.grey)),
+                    Text(
+                      next['name'] as String,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      next['zone'] as String,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AeroColors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 5),
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: AeroColors.amber,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(next['time'] as String,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                child: Text(
+                  next['time'] as String,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),
@@ -261,17 +297,16 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () => setState(
-                      () => completedPickups++),
+                  onPressed: () => setState(() => completedPickups++),
                   icon: const Icon(Icons.check, size: 16),
                   label: const Text('Mark picked up'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AeroColors.amber,
                     foregroundColor: Colors.white,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     elevation: 0,
                   ),
                 ),
@@ -279,26 +314,29 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => InAppChatScreen(
-                              recipientName: next['name'] as String,
-                              recipientInitials:
-                                  (next['name'] as String)
-                                      .substring(0, 2)
-                                      .toUpperCase(),
-                              recipientColor: AeroColors.amber,
-                            ))),
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => InAppChatScreen(
+                      recipientName: next['name'] as String,
+                      recipientInitials: (next['name'] as String)
+                          .substring(0, 2)
+                          .toUpperCase(),
+                      recipientColor: AeroColors.amber,
+                    ),
+                  ),
+                ),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AeroColors.navyCard,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: AeroColors.divider, width: 0.5),
+                    border: Border.all(color: AeroColors.divider, width: 0.5),
                   ),
-                  child: const Icon(Icons.chat_bubble_outline,
-                      color: AeroColors.grey, size: 18),
+                  child: const Icon(
+                    Icons.chat_bubble_outline,
+                    color: AeroColors.grey,
+                    size: 18,
+                  ),
                 ),
               ),
             ],
@@ -319,12 +357,15 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('ALL CREW',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: AeroColors.grey,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.8)),
+          const Text(
+            'ALL CREW',
+            style: TextStyle(
+              fontSize: 11,
+              color: AeroColors.grey,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.8,
+            ),
+          ),
           const SizedBox(height: 10),
           ...crew.asMap().entries.map((entry) {
             final i = entry.key;
@@ -343,43 +384,47 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
                       color: isDone
                           ? AeroColors.success
                           : isCurrent
-                              ? AeroColors.amber
-                              : AeroColors.divider,
+                          ? AeroColors.amber
+                          : AeroColors.divider,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
                       child: isDone
-                          ? const Icon(Icons.check,
-                              size: 14, color: Colors.white)
-                          : Text('${i + 1}',
+                          ? const Icon(
+                              Icons.check,
+                              size: 14,
+                              color: Colors.white,
+                            )
+                          : Text(
+                              '${i + 1}',
                               style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white)),
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Text(member['name'] as String,
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: isDone
-                                ? AeroColors.grey
-                                : Colors.white,
-                            decoration: isDone
-                                ? TextDecoration.lineThrough
-                                : null)),
-                  ),
-                  Text(member['time'] as String,
+                    child: Text(
+                      member['name'] as String,
                       style: TextStyle(
-                          fontSize: 11,
-                          color: isCurrent
-                              ? AeroColors.amber
-                              : AeroColors.grey,
-                          fontWeight: isCurrent
-                              ? FontWeight.w600
-                              : FontWeight.w400)),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: isDone ? AeroColors.grey : Colors.white,
+                        decoration: isDone ? TextDecoration.lineThrough : null,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    member['time'] as String,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: isCurrent ? AeroColors.amber : AeroColors.grey,
+                      fontWeight: isCurrent ? FontWeight.w600 : FontWeight.w400,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -403,25 +448,31 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('JOB EARNINGS',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.grey,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.8)),
+                Text(
+                  'JOB EARNINGS',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AeroColors.grey,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.8,
+                  ),
+                ),
                 SizedBox(height: 4),
-                Text('After 15% commission',
-                    style:
-                        TextStyle(fontSize: 11, color: AeroColors.grey)),
+                Text(
+                  'After 15% commission',
+                  style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
           Text(
-              'RM${((widget.job['earnings'] as double? ?? 90.0) * 0.85).toStringAsFixed(0)}',
-              style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  color: AeroColors.amber)),
+            'RM${((widget.job['earnings'] as double? ?? 90.0) * 0.85).toStringAsFixed(0)}',
+            style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w700,
+              color: AeroColors.amber,
+            ),
+          ),
         ],
       ),
     );
@@ -440,18 +491,26 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.emoji_events,
-                color: AeroColors.success, size: 40),
+            child: const Icon(
+              Icons.emoji_events,
+              color: AeroColors.success,
+              size: 40,
+            ),
           ),
           const SizedBox(height: 20),
-          const Text('Job completed!',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white)),
+          const Text(
+            'Job completed!',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
           const SizedBox(height: 8),
-          const Text('All crew dropped off successfully.',
-              style: TextStyle(fontSize: 14, color: AeroColors.grey)),
+          const Text(
+            'All crew dropped off successfully.',
+            style: TextStyle(fontSize: 14, color: AeroColors.grey),
+          ),
           const SizedBox(height: 32),
           Container(
             padding: const EdgeInsets.all(20),
@@ -462,15 +521,18 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
             ),
             child: Column(
               children: [
-                _buildSummaryRow('Crew transported',
-                    '${crew.length} crew members'),
+                _buildSummaryRow(
+                  'Crew transported',
+                  '${crew.length} crew members',
+                ),
                 _buildSummaryRow('Trip duration', '1h 20min'),
                 _buildSummaryRow('Distance', '~35 km'),
                 const Divider(color: AeroColors.divider, height: 20),
                 _buildSummaryRow(
-                    'Earnings',
-                    'RM${((widget.job['earnings'] as double? ?? 90.0) * 0.85).toStringAsFixed(0)}',
-                    valueColor: AeroColors.amber),
+                  'Earnings',
+                  'RM${((widget.job['earnings'] as double? ?? 90.0) * 0.85).toStringAsFixed(0)}',
+                  valueColor: AeroColors.amber,
+                ),
               ],
             ),
           ),
@@ -484,12 +546,14 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 elevation: 0,
               ),
-              child: const Text('Back to dashboard',
-                  style: TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Back to dashboard',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],
@@ -497,21 +561,24 @@ class _ActiveJobScreenState extends State<ActiveJobScreen> {
     );
   }
 
-  Widget _buildSummaryRow(String label, String value,
-      {Color? valueColor}) {
+  Widget _buildSummaryRow(String label, String value, {Color? valueColor}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 13, color: AeroColors.grey)),
-          Text(value,
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: valueColor ?? Colors.white)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 13, color: AeroColors.grey),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: valueColor ?? Colors.white,
+            ),
+          ),
         ],
       ),
     );

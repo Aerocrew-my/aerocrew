@@ -1,5 +1,7 @@
+import 'package:aerocrew/theme/aero_theme.dart';
+import 'package:aerocrew/theme/appearance_controller.dart';
+import 'package:aerocrew/widgets/aero_components.dart';
 import 'package:flutter/material.dart';
-import 'package:aerocrew/constants.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,312 +11,239 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool tripReminders = true;
-  bool vanMatched = true;
-  bool rosterReminder = true;
-  bool marketingEmails = false;
-  bool shareLocation = true;
-  bool biometricLogin = false;
-  bool darkMode = true;
-  bool poolChat = true;
-  String selectedLanguage = 'English';
-  String reminderTiming = '2 hours before pickup';
+  bool _tripReminders = true;
+  bool _assignmentUpdates = true;
+  bool _rosterReminder = true;
+  bool _shareLocation = true;
+  bool _poolChat = true;
+  String _reminderTiming = '2 hours before pickup';
+  String _language = 'English';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AeroColors.navy,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AeroColors.navyCard,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
-                      ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+      appBar: const AeroAppBar(
+        title: 'Settings',
+        subtitle: 'App and trip preferences',
+      ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+            children: [
+              _sectionTitle('Appearance'),
+              AnimatedBuilder(
+                animation: AppearanceController.instance,
+                builder: (context, _) => AeroCard(
+                  padding: EdgeInsets.zero,
+                  child: RadioGroup<ThemeMode>(
+                    groupValue: AppearanceController.instance.themeMode,
+                    onChanged: (mode) {
+                      if (mode != null) {
+                        AppearanceController.instance.setThemeMode(mode);
+                      }
+                    },
+                    child: const Column(
+                      children: [
+                        _AppearanceTile(
+                          mode: ThemeMode.system,
+                          icon: Icons.brightness_auto_outlined,
+                          title: 'Use device setting',
+                          subtitle: 'Follow Android or system appearance',
+                        ),
+                        Divider(height: 1),
+                        _AppearanceTile(
+                          mode: ThemeMode.light,
+                          icon: Icons.light_mode_outlined,
+                          title: 'Light',
+                          subtitle: 'Use the light Skyline Blue theme',
+                        ),
+                        Divider(height: 1),
+                        _AppearanceTile(
+                          mode: ThemeMode.dark,
+                          icon: Icons.dark_mode_outlined,
+                          title: 'Dark',
+                          subtitle: 'Use the dark operational theme',
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('SETTINGS',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('Preferences',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+              _sectionTitle('Notifications'),
+              AeroCard(
+                padding: EdgeInsets.zero,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSection('NOTIFICATIONS', [
-                      _buildToggle('Trip reminders', 'Notify before pickup',
-                          tripReminders, Icons.alarm_outlined,
-                          (v) => setState(() => tripReminders = v)),
-                      _buildToggle('Van matched', 'When your van is assigned',
-                          vanMatched, Icons.directions_car_outlined,
-                          (v) => setState(() => vanMatched = v)),
-                      _buildToggle(
-                          'Roster reminder',
-                          'Remind to upload monthly roster',
-                          rosterReminder,
-                          Icons.calendar_month_outlined,
-                          (v) => setState(() => rosterReminder = v)),
-                      _buildToggle(
-                          'Marketing',
-                          'Promotions and announcements',
-                          marketingEmails,
-                          Icons.mail_outline,
-                          (v) => setState(() => marketingEmails = v)),
-                    ]),
-                    _buildSection('PRIVACY & SECURITY', [
-                      _buildToggle(
-                          'Share location',
-                          'Allow van tracking during trips',
-                          shareLocation,
-                          Icons.location_on_outlined,
-                          (v) => setState(() => shareLocation = v)),
-                      _buildToggle(
-                          'Biometric login',
-                          'Use Face ID or fingerprint',
-                          biometricLogin,
-                          Icons.fingerprint,
-                          (v) => setState(() => biometricLogin = v)),
-                    ]),
-                    _buildSection('TRIP PREFERENCES', [
-                      _buildToggle(
-                          'Pool group chat',
-                          'Enable messaging with poolmates',
-                          poolChat,
-                          Icons.chat_bubble_outline,
-                          (v) => setState(() => poolChat = v)),
-                      _buildDropdownTile(
-                          'Reminder timing',
-                          reminderTiming,
-                          Icons.schedule,
-                          [
-                            '30 min before pickup',
-                            '1 hour before pickup',
-                            '2 hours before pickup',
-                            '3 hours before pickup',
-                          ],
-                          (v) => setState(() => reminderTiming = v!)),
-                    ]),
-                    _buildSection('APP', [
-                      _buildToggle(
-                          'Dark mode',
-                          'Dark theme (recommended)',
-                          darkMode,
-                          Icons.dark_mode_outlined,
-                          (v) => setState(() => darkMode = v)),
-                      _buildDropdownTile(
-                          'Language',
-                          selectedLanguage,
-                          Icons.language,
-                          ['English', 'Bahasa Malaysia'],
-                          (v) =>
-                              setState(() => selectedLanguage = v!)),
-                    ]),
-                    _buildSection('ACCOUNT', [
-                      _buildActionTile('Change password',
-                          Icons.lock_outline, AeroColors.grey, () {}),
-                      _buildActionTile('Delete account',
-                          Icons.delete_outline, AeroColors.danger, () {}),
-                    ]),
-                    const SizedBox(height: 8),
-                    Center(
-                      child: Text('AeroCrew v1.0.0 · Malaysia',
-                          style: const TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.lightGrey)),
+                    _toggle(
+                      icon: Icons.alarm_outlined,
+                      title: 'Trip reminders',
+                      subtitle: 'Notify before pickup',
+                      value: _tripReminders,
+                      onChanged: (value) =>
+                          setState(() => _tripReminders = value),
                     ),
-                    const SizedBox(height: 20),
+                    const Divider(height: 1),
+                    _toggle(
+                      icon: Icons.directions_car_outlined,
+                      title: 'Assignment updates',
+                      subtitle: 'Operator, driver, and vehicle changes',
+                      value: _assignmentUpdates,
+                      onChanged: (value) =>
+                          setState(() => _assignmentUpdates = value),
+                    ),
+                    const Divider(height: 1),
+                    _toggle(
+                      icon: Icons.calendar_month_outlined,
+                      title: 'Roster reminder',
+                      subtitle: 'Remind me to upload a new roster',
+                      value: _rosterReminder,
+                      onChanged: (value) =>
+                          setState(() => _rosterReminder = value),
+                    ),
                   ],
                 ),
               ),
-            ),
-          ],
+              _sectionTitle('Trips and privacy'),
+              AeroCard(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    _toggle(
+                      icon: Icons.location_on_outlined,
+                      title: 'Share trip location',
+                      subtitle: 'Only while a transport trip is active',
+                      value: _shareLocation,
+                      onChanged: (value) =>
+                          setState(() => _shareLocation = value),
+                    ),
+                    const Divider(height: 1),
+                    _toggle(
+                      icon: Icons.chat_bubble_outline,
+                      title: 'Pool group chat',
+                      subtitle: 'Message confirmed pool members',
+                      value: _poolChat,
+                      onChanged: (value) => setState(() => _poolChat = value),
+                    ),
+                    const Divider(height: 1),
+                    _dropdown(
+                      icon: Icons.schedule,
+                      title: 'Reminder timing',
+                      value: _reminderTiming,
+                      options: const [
+                        '30 minutes before pickup',
+                        '1 hour before pickup',
+                        '2 hours before pickup',
+                        '3 hours before pickup',
+                      ],
+                      onChanged: (value) =>
+                          setState(() => _reminderTiming = value),
+                    ),
+                  ],
+                ),
+              ),
+              _sectionTitle('App'),
+              AeroCard(
+                padding: EdgeInsets.zero,
+                child: _dropdown(
+                  icon: Icons.language,
+                  title: 'Language',
+                  value: _language,
+                  options: const ['English', 'Bahasa Malaysia'],
+                  onChanged: (value) => setState(() => _language = value),
+                ),
+              ),
+              const SizedBox(height: AeroSpacing.section),
+              Center(
+                child: Text(
+                  'AeroCrew 1.0.0 · Malaysia',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Text(title, style: AeroText.label),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: AeroColors.navyCard,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AeroColors.divider, width: 0.5),
-          ),
-          child: Column(
-            children: children.asMap().entries.map((e) {
-              final isLast = e.key == children.length - 1;
-              return Column(
-                children: [
-                  e.value,
-                  if (!isLast)
-                    Container(
-                        height: 0.5,
-                        margin:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        color: AeroColors.divider),
-                ],
-              );
-            }).toList(),
-          ),
-        ),
-      ],
+  Widget _sectionTitle(String title) => Padding(
+    padding: const EdgeInsets.only(top: 24, bottom: 10),
+    child: Text(title, style: Theme.of(context).textTheme.titleMedium),
+  );
+
+  Widget _toggle({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return SwitchListTile(
+      secondary: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      value: value,
+      onChanged: onChanged,
     );
   }
 
-  Widget _buildToggle(String title, String subtitle, bool value,
-      IconData icon, Function(bool) onChanged) {
+  Widget _dropdown({
+    required IconData icon,
+    required String title,
+    required String value,
+    required List<String> options,
+    required ValueChanged<String> onChanged,
+  }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AeroColors.navy,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, size: 16, color: AeroColors.grey),
-          ),
+          Icon(icon, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 16),
+          Expanded(child: Text(title)),
           const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-                Text(subtitle,
-                    style: const TextStyle(
-                        fontSize: 11, color: AeroColors.grey)),
-              ],
-            ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeThumbColor: AeroColors.amber,
-            activeTrackColor: AeroColors.amber.withValues(alpha: 0.3),
-            inactiveThumbColor: AeroColors.grey,
-            inactiveTrackColor: AeroColors.divider,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDropdownTile(String title, String value, IconData icon,
-      List<String> options, Function(String?) onChanged) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AeroColors.navy,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, size: 16, color: AeroColors.grey),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(title,
-                style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white)),
-          ),
           DropdownButton<String>(
             value: value,
-            dropdownColor: AeroColors.navyCard,
-            style: const TextStyle(
-                color: AeroColors.amber, fontSize: 12),
-            underline: const SizedBox(),
-            icon: const Icon(Icons.keyboard_arrow_down,
-                color: AeroColors.grey, size: 16),
+            underline: const SizedBox.shrink(),
+            borderRadius: BorderRadius.circular(AeroRadius.input),
             items: options
-                .map((o) =>
-                    DropdownMenuItem(value: o, child: Text(o)))
+                .map(
+                  (option) =>
+                      DropdownMenuItem(value: option, child: Text(option)),
+                )
                 .toList(),
-            onChanged: onChanged,
+            onChanged: (next) {
+              if (next != null) onChanged(next);
+            },
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildActionTile(
-      String title, IconData icon, Color color, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(icon, size: 16, color: color),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(title,
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: color)),
-            ),
-            Icon(Icons.arrow_forward_ios,
-                size: 13, color: color.withValues(alpha: 0.5)),
-          ],
-        ),
-      ),
+class _AppearanceTile extends StatelessWidget {
+  const _AppearanceTile({
+    required this.mode,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
+
+  final ThemeMode mode;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return RadioListTile<ThemeMode>(
+      value: mode,
+      secondary: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(title),
+      subtitle: Text(subtitle),
     );
   }
 }

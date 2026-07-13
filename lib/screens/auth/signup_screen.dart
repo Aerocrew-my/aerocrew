@@ -33,37 +33,35 @@ class _SignupScreenState extends State<SignupScreen> {
     }
     setState(() => isLoading = true);
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
       await FirebaseFirestore.instance
           .collection('users')
           .doc(credential.user!.uid)
           .set({
-        'name': nameController.text.trim(),
-        'email': emailController.text.trim(),
-        'phone': phoneController.text.trim(),
-        'role': selectedRole,
-        'status': 'pending',
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+            'name': nameController.text.trim(),
+            'email': emailController.text.trim(),
+            'phone': phoneController.text.trim(),
+            'role': selectedRole,
+            'status': 'pending',
+            'createdAt': FieldValue.serverTimestamp(),
+          });
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => OtpScreen(
-            phone: phoneController.text.trim(),
-            role: selectedRole,
-          ),
+          builder: (_) =>
+              OtpScreen(phone: phoneController.text.trim(), role: selectedRole),
         ),
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signup failed: ${e.toString()}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Signup failed: ${e.toString()}')));
     }
     setState(() => isLoading = false);
   }
@@ -102,21 +100,32 @@ class _SignupScreenState extends State<SignupScreen> {
                             color: AeroColors.navyCard,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                                color: AeroColors.divider, width: 0.5),
+                              color: AeroColors.divider,
+                              width: 0.5,
+                            ),
                           ),
-                          child: const Icon(Icons.arrow_back_ios_new,
-                              color: Colors.white, size: 16),
+                          child: const Icon(
+                            Icons.arrow_back_ios_new,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Icon(Icons.flight,
-                          color: AeroColors.amber, size: 18),
+                      const Icon(
+                        Icons.flight,
+                        color: AeroColors.amber,
+                        size: 18,
+                      ),
                       const SizedBox(width: 6),
-                      const Text('AeroCrew',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      const Text(
+                        'AeroCrew',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -126,16 +135,20 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Create account',
-                          style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              letterSpacing: -0.5)),
+                      Text(
+                        'Create account',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
                       SizedBox(height: 4),
-                      Text('Join the AeroCrew community',
-                          style: TextStyle(
-                              fontSize: 15, color: AeroColors.grey)),
+                      Text(
+                        'Join the AeroCrew community',
+                        style: TextStyle(fontSize: 15, color: AeroColors.grey),
+                      ),
                     ],
                   ),
                 ),
@@ -144,8 +157,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Container(
                     decoration: const BoxDecoration(
                       color: AeroColors.background,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(28)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(28),
+                      ),
                     ),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(24),
@@ -157,12 +171,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              _buildRoleCard('crew', 'Flight Crew',
-                                  Icons.flight_takeoff),
+                              _buildRoleCard(
+                                'crew',
+                                'Flight Crew',
+                                Icons.flight_takeoff,
+                              ),
                               const SizedBox(width: 10),
-                              _buildRoleCard('operator', 'Operator',
-                              
-                                  Icons.directions_car),
+                              _buildRoleCard(
+                                'operator',
+                                'Operator',
+
+                                Icons.directions_car,
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -199,39 +219,51 @@ class _SignupScreenState extends State<SignupScreen> {
                             obscureText: obscurePassword,
                             decoration: InputDecoration(
                               hintText: 'Min. 8 characters',
-                              hintStyle:
-                                  const TextStyle(color: AeroColors.grey),
-                              prefixIcon: const Icon(Icons.lock_outline,
-                                  color: AeroColors.grey, size: 20),
+                              hintStyle: const TextStyle(
+                                color: AeroColors.grey,
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.lock_outline,
+                                color: AeroColors.grey,
+                                size: 20,
+                              ),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                    obscurePassword
-                                        ? Icons.visibility_off_outlined
-                                        : Icons.visibility_outlined,
-                                    color: AeroColors.grey,
-                                    size: 20),
-                                onPressed: () => setState(() =>
-                                    obscurePassword = !obscurePassword),
+                                  obscurePassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                  color: AeroColors.grey,
+                                  size: 20,
+                                ),
+                                onPressed: () => setState(
+                                  () => obscurePassword = !obscurePassword,
+                                ),
                               ),
                               filled: true,
                               fillColor: AeroColors.cardWhite,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(
-                                    color: AeroColors.cardBorder),
+                                  color: AeroColors.cardBorder,
+                                ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(
-                                    color: AeroColors.cardBorder),
+                                  color: AeroColors.cardBorder,
+                                ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(
-                                    color: AeroColors.amber, width: 1.5),
+                                  color: AeroColors.amber,
+                                  width: 1.5,
+                                ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 14),
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -243,10 +275,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 backgroundColor: AeroColors.amber,
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 16),
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(14)),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                                 elevation: 0,
                               ),
                               child: isLoading
@@ -254,34 +287,46 @@ class _SignupScreenState extends State<SignupScreen> {
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2))
-                                  : const Text('Create account',
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'Create account',
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.2)),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
                             ),
                           ),
                           const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('Already have an account? ',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: AeroColors.grey)),
+                              const Text(
+                                'Already have an account? ',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: AeroColors.grey,
+                                ),
+                              ),
                               GestureDetector(
                                 onTap: () => Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            const LoginScreen())),
-                                child: const Text('Sign in',
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        color: AeroColors.amber,
-                                        fontWeight: FontWeight.w600)),
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const LoginScreen(),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Sign in',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: AeroColors.amber,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -291,7 +336,9 @@ class _SignupScreenState extends State<SignupScreen> {
                               'By signing up you agree to our\nTerms of Service and Privacy Policy',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 11, color: AeroColors.grey),
+                                fontSize: 11,
+                                color: AeroColors.grey,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -329,22 +376,26 @@ class _SignupScreenState extends State<SignupScreen> {
                       color: AeroColors.amber.withValues(alpha: 0.15),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
-                    )
+                    ),
                   ]
                 : [],
           ),
           child: Column(
             children: [
-              Icon(icon,
-                  size: 22,
-                  color: isSelected ? AeroColors.amber : AeroColors.grey),
+              Icon(
+                icon,
+                size: 22,
+                color: isSelected ? AeroColors.amber : AeroColors.grey,
+              ),
               const SizedBox(height: 6),
-              Text(label,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color:
-                          isSelected ? AeroColors.amber : AeroColors.grey)),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? AeroColors.amber : AeroColors.grey,
+                ),
+              ),
             ],
           ),
         ),
@@ -377,11 +428,12 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              const BorderSide(color: AeroColors.amber, width: 1.5),
+          borderSide: const BorderSide(color: AeroColors.amber, width: 1.5),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
       ),
     );
   }

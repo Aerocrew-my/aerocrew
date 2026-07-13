@@ -93,25 +93,34 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('MY STATS',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Your AeroCrew journey',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'MY STATS',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Your AeroCrew journey',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -130,16 +139,33 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
       children: [
         _buildStatCard('Total trips', '102', Icons.flight, AeroColors.amber),
         _buildStatCard(
-            'On time', '98%', Icons.check_circle_outline, AeroColors.success),
-        _buildStatCard('Avg rating', '4.9', Icons.star, const Color(0xFFEF9F27)),
-        _buildStatCard('Money saved', 'RM4,200',
-            Icons.savings_outlined, AeroColors.infoText),
+          'On time',
+          '98%',
+          Icons.check_circle_outline,
+          AeroColors.success,
+        ),
+        _buildStatCard(
+          'Avg rating',
+          '4.9',
+          Icons.star,
+          const Color(0xFFEF9F27),
+        ),
+        _buildStatCard(
+          'Money saved',
+          'RM4,200',
+          Icons.savings_outlined,
+          AeroColors.infoText,
+        ),
       ],
     );
   }
 
   Widget _buildStatCard(
-      String label, String value, IconData icon, Color color) {
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -155,14 +181,18 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(value,
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: color)),
-              Text(label,
-                  style: const TextStyle(
-                      fontSize: 11, color: AeroColors.grey)),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: color,
+                ),
+              ),
+              Text(
+                label,
+                style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+              ),
             ],
           ),
         ],
@@ -171,8 +201,7 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
   }
 
   Widget _buildTripChart() {
-    final maxTrips =
-        monthlyTrips.reduce((a, b) => a > b ? a : b).toDouble();
+    final maxTrips = monthlyTrips.reduce((a, b) => a > b ? a : b).toDouble();
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -196,20 +225,23 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                     child: Container(
                       margin: const EdgeInsets.only(left: 4),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AeroColors.amber
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: Text(p,
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: isSelected
-                                  ? Colors.white
-                                  : AeroColors.grey)),
+                      child: Text(
+                        p,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: isSelected ? Colors.white : AeroColors.grey,
+                        ),
+                      ),
                     ),
                   );
                 }).toList(),
@@ -233,11 +265,14 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                         if (isLast)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 2),
-                            child: Text('${e.value}',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: AeroColors.amber)),
+                            child: Text(
+                              '${e.value}',
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: AeroColors.amber,
+                              ),
+                            ),
                           ),
                         Flexible(
                           flex: (ratio * 100).toInt(),
@@ -247,22 +282,23 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                                   ? AeroColors.amber
                                   : AeroColors.amber.withValues(alpha: 0.3),
                               borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(5)),
+                                top: Radius.circular(5),
+                              ),
                             ),
                           ),
                         ),
                         Flexible(
-                          flex:
-                              ((1 - ratio) * 100).toInt().clamp(1, 100),
+                          flex: ((1 - ratio) * 100).toInt().clamp(1, 100),
                           child: const SizedBox(),
                         ),
                         const SizedBox(height: 6),
-                        Text(monthLabels[e.key],
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: isLast
-                                    ? AeroColors.amber
-                                    : AeroColors.grey)),
+                        Text(
+                          monthLabels[e.key],
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isLast ? AeroColors.amber : AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -282,7 +318,9 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
         color: AeroColors.success.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.success.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,37 +333,46 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('You paid',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
-                    Text('RM7,650',
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                    Text('with AeroCrew',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
+                    Text(
+                      'You paid',
+                      style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                    ),
+                    Text(
+                      'RM7,650',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'with AeroCrew',
+                      style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                    ),
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_forward,
-                  color: AeroColors.grey, size: 18),
+              const Icon(Icons.arrow_forward, color: AeroColors.grey, size: 18),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: const [
-                    Text('Grab would cost',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
-                    Text('RM11,850',
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                            color: AeroColors.danger)),
-                    Text('estimated',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.grey)),
+                    Text(
+                      'Grab would cost',
+                      style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                    ),
+                    Text(
+                      'RM11,850',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: AeroColors.danger,
+                      ),
+                    ),
+                    Text(
+                      'estimated',
+                      style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                    ),
                   ],
                 ),
               ),
@@ -344,11 +391,14 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
               children: [
                 Icon(Icons.savings, color: AeroColors.success, size: 18),
                 SizedBox(width: 8),
-                Text('You saved RM4,200 with AeroCrew!',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AeroColors.success)),
+                Text(
+                  'You saved RM4,200 with AeroCrew!',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AeroColors.success,
+                  ),
+                ),
               ],
             ),
           ),
@@ -390,20 +440,29 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(a['icon'] as IconData,
-                      color: earned ? color : AeroColors.divider,
-                      size: 22),
+                  Icon(
+                    a['icon'] as IconData,
+                    color: earned ? color : AeroColors.divider,
+                    size: 22,
+                  ),
                   const Spacer(),
-                  Text(a['title'] as String,
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: earned ? Colors.white : AeroColors.grey)),
-                  Text(a['desc'] as String,
-                      style: const TextStyle(
-                          fontSize: 10, color: AeroColors.grey),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
+                  Text(
+                    a['title'] as String,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: earned ? Colors.white : AeroColors.grey,
+                    ),
+                  ),
+                  Text(
+                    a['desc'] as String,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: AeroColors.grey,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             );
@@ -416,7 +475,11 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
   Widget _buildAirlineBreakdown() {
     final airlines = [
       {'name': 'AirAsia', 'trips': 68, 'color': const Color(0xFFBA7517)},
-      {'name': 'Malaysia Airlines', 'trips': 22, 'color': const Color(0xFF378ADD)},
+      {
+        'name': 'Malaysia Airlines',
+        'trips': 22,
+        'color': const Color(0xFF378ADD),
+      },
       {'name': 'Batik Air', 'trips': 12, 'color': const Color(0xFF1D9E75)},
     ];
     final total = airlines.fold(0, (s, a) => s + (a['trips'] as int));
@@ -442,9 +505,13 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                 children: [
                   SizedBox(
                     width: 80,
-                    child: Text(a['name'] as String,
-                        style: const TextStyle(
-                            fontSize: 11, color: AeroColors.greyLight)),
+                    child: Text(
+                      a['name'] as String,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AeroColors.greyLight,
+                      ),
+                    ),
                   ),
                   Expanded(
                     child: ClipRRect(
@@ -452,18 +519,20 @@ class _CrewStatsScreenState extends State<CrewStatsScreen> {
                       child: LinearProgressIndicator(
                         value: ratio,
                         backgroundColor: color.withValues(alpha: 0.1),
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(color),
+                        valueColor: AlwaysStoppedAnimation<Color>(color),
                         minHeight: 8,
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text('${a['trips']}',
-                      style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white)),
+                  Text(
+                    '${a['trips']}',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             );

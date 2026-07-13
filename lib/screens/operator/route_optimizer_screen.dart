@@ -7,8 +7,7 @@ class RouteOptimizerScreen extends StatefulWidget {
   const RouteOptimizerScreen({super.key, required this.job});
 
   @override
-  State<RouteOptimizerScreen> createState() =>
-      _RouteOptimizerScreenState();
+  State<RouteOptimizerScreen> createState() => _RouteOptimizerScreenState();
 }
 
 class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
@@ -115,25 +114,34 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('ROUTE OPTIMIZER',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('AI-optimized pickup order',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'ROUTE OPTIMIZER',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'AI-optimized pickup order',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -157,8 +165,11 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
               color: AeroColors.success.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.flight_takeoff,
-                color: AeroColors.success, size: 20),
+            child: const Icon(
+              Icons.flight_takeoff,
+              color: AeroColors.success,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -166,24 +177,28 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    '${widget.job['date'] ?? 'Mon 16 Jun'} · ${widget.job['airport'] ?? 'SZB'}',
-                    style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
+                  '${widget.job['date'] ?? 'Mon 16 Jun'} · ${widget.job['airport'] ?? 'SZB'}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
                 Text(
-                    '${displayOrder.length} crew · Flight ${widget.job['flightTime'] ?? '05:30'}',
-                    style: const TextStyle(
-                        fontSize: 11, color: AeroColors.grey)),
+                  '${displayOrder.length} crew · Flight ${widget.job['flightTime'] ?? '05:30'}',
+                  style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
           Text(
-              'RM${(widget.job['earnings'] ?? 90.0).toStringAsFixed(0)}',
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AeroColors.amber)),
+            'RM${(widget.job['earnings'] ?? 90.0).toStringAsFixed(0)}',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: AeroColors.amber,
+            ),
+          ),
         ],
       ),
     );
@@ -199,48 +214,63 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
           color: AeroColors.amber.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: AeroColors.amber.withValues(alpha: 0.3), width: 1),
+            color: AeroColors.amber.withValues(alpha: 0.3),
+            width: 1,
+          ),
         ),
         child: isOptimizing
             ? const Column(
                 children: [
                   CircularProgressIndicator(
-                      color: AeroColors.amber, strokeWidth: 2),
+                    color: AeroColors.amber,
+                    strokeWidth: 2,
+                  ),
                   SizedBox(height: 12),
-                  Text('AI optimizing your route...',
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: AeroColors.amber,
-                          fontWeight: FontWeight.w600)),
-                  Text('Calculating shortest path',
-                      style: TextStyle(
-                          fontSize: 11, color: AeroColors.grey)),
+                  Text(
+                    'AI optimizing your route...',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AeroColors.amber,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    'Calculating shortest path',
+                    style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                  ),
                 ],
               )
             : const Column(
                 children: [
-                  Icon(Icons.auto_awesome,
-                      color: AeroColors.amber, size: 32),
+                  Icon(Icons.auto_awesome, color: AeroColors.amber, size: 32),
                   SizedBox(height: 10),
-                  Text('Optimize pickup route',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
+                  Text(
+                    'Optimize pickup route',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
                   SizedBox(height: 4),
                   Text(
-                      'AI calculates the most efficient order to pick up all crew',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: AeroColors.grey,
-                          height: 1.4)),
+                    'AI calculates the most efficient order to pick up all crew',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AeroColors.grey,
+                      height: 1.4,
+                    ),
+                  ),
                   SizedBox(height: 12),
-                  Text('Tap to optimize →',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: AeroColors.amber,
-                          fontWeight: FontWeight.w600)),
+                  Text(
+                    'Tap to optimize →',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AeroColors.amber,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
       ),
@@ -254,39 +284,48 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
         color: AeroColors.success.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.success.withValues(alpha: 0.3), width: 0.5),
+          color: AeroColors.success.withValues(alpha: 0.3),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: [
-          const Icon(Icons.check_circle,
-              color: AeroColors.success, size: 24),
+          const Icon(Icons.check_circle, color: AeroColors.success, size: 24),
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Route optimized!',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AeroColors.success)),
-                Text('Saves 12 min · 3.2 km shorter',
-                    style:
-                        TextStyle(fontSize: 11, color: AeroColors.grey)),
+                Text(
+                  'Route optimized!',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AeroColors.success,
+                  ),
+                ),
+                Text(
+                  'Saves 12 min · 3.2 km shorter',
+                  style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: const [
-              Text('−12 min',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: AeroColors.success)),
-              Text('time saved',
-                  style: TextStyle(
-                      fontSize: 10, color: AeroColors.grey)),
+              Text(
+                '−12 min',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: AeroColors.success,
+                ),
+              ),
+              Text(
+                'time saved',
+                style: TextStyle(fontSize: 10, color: AeroColors.grey),
+              ),
             ],
           ),
         ],
@@ -308,22 +347,28 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
           Row(
             children: [
               Text(
-                  isOptimized ? 'OPTIMIZED ORDER' : 'CURRENT ORDER',
-                  style: AeroText.label),
+                isOptimized ? 'OPTIMIZED ORDER' : 'CURRENT ORDER',
+                style: AeroText.label,
+              ),
               const Spacer(),
               if (isOptimized)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 3),
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AeroColors.success.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text('AI optimized',
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: AeroColors.success,
-                          fontWeight: FontWeight.w600)),
+                  child: const Text(
+                    'AI optimized',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: AeroColors.success,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
             ],
           ),
@@ -345,19 +390,21 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
                         borderRadius: BorderRadius.circular(7),
                       ),
                       child: Center(
-                        child: Text('${i + 1}',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white)),
+                        child: Text(
+                          '${i + 1}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                     if (!isLast)
                       Container(
                         width: 2,
                         height: 36,
-                        margin:
-                            const EdgeInsets.symmetric(vertical: 3),
+                        margin: const EdgeInsets.symmetric(vertical: 3),
                         color: AeroColors.divider,
                       ),
                   ],
@@ -365,41 +412,49 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(bottom: isLast ? 0 : 8, top: 3),
+                    padding: EdgeInsets.only(bottom: isLast ? 0 : 8, top: 3),
                     child: Row(
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(stop['name'] as String,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
-                              Text(stop['zone'] as String,
-                                  style: const TextStyle(
-                                      fontSize: 10,
-                                      color: AeroColors.grey)),
+                              Text(
+                                stop['name'] as String,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                stop['zone'] as String,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AeroColors.grey,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text(stop['eta'] as String,
-                                style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: AeroColors.amber)),
                             Text(
-                                '${(stop['distance'] as double).toStringAsFixed(1)} km',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    color: AeroColors.grey)),
+                              stop['eta'] as String,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: AeroColors.amber,
+                              ),
+                            ),
+                            Text(
+                              '${(stop['distance'] as double).toStringAsFixed(1)} km',
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: AeroColors.grey,
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -421,19 +476,21 @@ class _RouteOptimizerScreenState extends State<RouteOptimizerScreen> {
         onPressed: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (_) =>
-                  OperatorLiveJobScreen(job: widget.job)),
+            builder: (_) => OperatorLiveJobScreen(job: widget.job),
+          ),
         ),
         icon: const Icon(Icons.play_arrow_rounded, size: 22),
-        label: const Text('Start job',
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600)),
+        label: const Text(
+          'Start job',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: AeroColors.amber,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14)),
+            borderRadius: BorderRadius.circular(14),
+          ),
           elevation: 0,
         ),
       ),

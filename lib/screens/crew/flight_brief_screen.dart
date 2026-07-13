@@ -52,40 +52,51 @@ class FlightBriefScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('FLIGHT BRIEF',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text(flight['flight'] as String? ?? 'AK6101',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              const Text(
+                'FLIGHT BRIEF',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                flight['flight'] as String? ?? 'AK6101',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const Spacer(),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text('All confirmed',
-                style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: AeroColors.success)),
+            child: const Text(
+              'All confirmed',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: AeroColors.success,
+              ),
+            ),
           ),
         ],
       ),
@@ -97,13 +108,18 @@ class FlightBriefScreen extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AeroColors.navyCard, AeroColors.amber.withValues(alpha: 0.1)],
+          colors: [
+            AeroColors.navyCard,
+            AeroColors.amber.withValues(alpha: 0.1),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Column(
         children: [
@@ -113,57 +129,72 @@ class FlightBriefScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(flight['airport'] as String? ?? 'SZB',
-                      style: const TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          letterSpacing: -1)),
-                  const Text('Subang Airport',
-                      style: TextStyle(
-                          fontSize: 11, color: AeroColors.grey)),
+                  Text(
+                    flight['airport'] as String? ?? 'SZB',
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: -1,
+                    ),
+                  ),
+                  const Text(
+                    'Subang Airport',
+                    style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                  ),
                 ],
               ),
               Column(
                 children: [
-                  const Icon(Icons.flight_takeoff,
-                      color: AeroColors.amber, size: 28),
-                  Text(flight['departure'] as String? ?? '05:30',
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AeroColors.amber)),
+                  const Icon(
+                    Icons.flight_takeoff,
+                    color: AeroColors.amber,
+                    size: 28,
+                  ),
+                  Text(
+                    flight['departure'] as String? ?? '05:30',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AeroColors.amber,
+                    ),
+                  ),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text('KCH',
-                      style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          letterSpacing: -1)),
-                  const Text('Kuching Airport',
-                      style: TextStyle(
-                          fontSize: 11, color: AeroColors.grey)),
+                  const Text(
+                    'KCH',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: -1,
+                    ),
+                  ),
+                  const Text(
+                    'Kuching Airport',
+                    style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                  ),
                 ],
               ),
             ],
           ),
           const SizedBox(height: 16),
-          Container(
-            height: 1,
-            color: AeroColors.divider,
-          ),
+          Container(height: 1, color: AeroColors.divider),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildFlightStat('Flight',
-                  flight['flight'] as String? ?? 'AK6101'),
-              _buildFlightStat('Date',
-                  flight['date'] as String? ?? 'Mon 16 Jun'),
+              _buildFlightStat(
+                'Flight',
+                flight['flight'] as String? ?? 'AK6101',
+              ),
+              _buildFlightStat(
+                'Date',
+                flight['date'] as String? ?? 'Mon 16 Jun',
+              ),
               _buildFlightStat('Reporting', '04:30'),
               _buildFlightStat('Duration', '1h 45m'),
             ],
@@ -176,14 +207,19 @@ class FlightBriefScreen extends StatelessWidget {
   Widget _buildFlightStat(String label, String value) {
     return Column(
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 10, color: AeroColors.grey)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 10, color: AeroColors.grey),
+        ),
         const SizedBox(height: 3),
-        Text(value,
-            style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Colors.white)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
       ],
     );
   }
@@ -210,28 +246,39 @@ class FlightBriefScreen extends StatelessWidget {
                   color: AeroColors.amberLight,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.directions_car,
-                    color: AeroColors.amber, size: 24),
+                child: const Icon(
+                  Icons.directions_car,
+                  color: AeroColors.amber,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Ahmad Hassan',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
-                    const Text('Toyota Hiace · WXY 1234',
-                        style: TextStyle(
-                            fontSize: 12, color: AeroColors.grey)),
+                    const Text(
+                      'Ahmad Hassan',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Text(
+                      'Toyota Hiace · WXY 1234',
+                      style: TextStyle(fontSize: 12, color: AeroColors.grey),
+                    ),
                     const SizedBox(height: 4),
                     Row(
                       children: List.generate(
-                          5,
-                          (i) => const Icon(Icons.star,
-                              size: 12, color: AeroColors.amber)),
+                        5,
+                        (i) => const Icon(
+                          Icons.star,
+                          size: 12,
+                          color: AeroColors.amber,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -242,14 +289,26 @@ class FlightBriefScreen extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: _buildTransportDetail(Icons.access_time,
-                      'Pickup', flight['pickupTime'] as String? ?? '03:00')),
+                child: _buildTransportDetail(
+                  Icons.access_time,
+                  'Pickup',
+                  flight['pickupTime'] as String? ?? '03:00',
+                ),
+              ),
               Expanded(
-                  child: _buildTransportDetail(
-                      Icons.location_on_outlined, 'From', 'Your home zone')),
+                child: _buildTransportDetail(
+                  Icons.location_on_outlined,
+                  'From',
+                  'Your home zone',
+                ),
+              ),
               Expanded(
-                  child: _buildTransportDetail(
-                      Icons.people, 'Poolmates', '2 crew')),
+                child: _buildTransportDetail(
+                  Icons.people,
+                  'Poolmates',
+                  '2 crew',
+                ),
+              ),
             ],
           ),
         ],
@@ -257,20 +316,24 @@ class FlightBriefScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTransportDetail(
-      IconData icon, String label, String value) {
+  Widget _buildTransportDetail(IconData icon, String label, String value) {
     return Column(
       children: [
         Icon(icon, size: 16, color: AeroColors.amber),
         const SizedBox(height: 3),
-        Text(value,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.white)),
-        Text(label,
-            style: const TextStyle(fontSize: 10, color: AeroColors.grey)),
+        Text(
+          value,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 10, color: AeroColors.grey),
+        ),
       ],
     );
   }
@@ -293,52 +356,64 @@ class FlightBriefScreen extends StatelessWidget {
         children: [
           const Text('POOLMATES', style: AeroText.label),
           const SizedBox(height: 12),
-          ...poolmates.map((p) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: AeroColors.infoLight,
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      child: Center(
-                        child: Text(
-                          (p['name'] ?? '').substring(0, 1),
-                          style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AeroColors.infoText),
+          ...poolmates.map(
+            (p) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: AeroColors.infoLight,
+                      borderRadius: BorderRadius.circular(9),
+                    ),
+                    child: Center(
+                      child: Text(
+                        (p['name'] ?? '').substring(0, 1),
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AeroColors.infoText,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(p['name'] ?? '',
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white)),
-                          Text(p['zone'] ?? '',
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.grey)),
-                        ],
-                      ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          p['name'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          p['zone'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AeroColors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(p['pickup'] ?? '',
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AeroColors.amber)),
-                  ],
-                ),
-              )),
+                  ),
+                  Text(
+                    p['pickup'] ?? '',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AeroColors.amber,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -379,9 +454,7 @@ class FlightBriefScreen extends StatelessWidget {
                       width: 10,
                       height: 10,
                       decoration: BoxDecoration(
-                        color: isDone
-                            ? AeroColors.success
-                            : AeroColors.amber,
+                        color: isDone ? AeroColors.success : AeroColors.amber,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -389,8 +462,7 @@ class FlightBriefScreen extends StatelessWidget {
                       Container(
                         width: 1,
                         height: 32,
-                        margin:
-                            const EdgeInsets.symmetric(vertical: 2),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
                         color: AeroColors.divider,
                       ),
                   ],
@@ -398,23 +470,28 @@ class FlightBriefScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: isLast ? 0 : 12),
+                    padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
                     child: Row(
                       children: [
                         Expanded(
-                          child: Text(event['event'] as String,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: isDone
-                                      ? AeroColors.greyLight
-                                      : Colors.white,
-                                  fontWeight: FontWeight.w500)),
+                          child: Text(
+                            event['event'] as String,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDone
+                                  ? AeroColors.greyLight
+                                  : Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
-                        Text(event['time'] as String,
-                            style: const TextStyle(
-                                fontSize: 11,
-                                color: AeroColors.grey)),
+                        Text(
+                          event['time'] as String,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -434,7 +511,9 @@ class FlightBriefScreen extends StatelessWidget {
         color: AeroColors.amber.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -452,24 +531,28 @@ class FlightBriefScreen extends StatelessWidget {
             'Van cannot wait more than 3 minutes per stop',
             'Contact operator directly if you need to reschedule',
             'Cancellations within 2 hours may incur a fee',
-          ].map((note) => Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.circle,
-                        size: 5, color: AeroColors.amber),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(note,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: AeroColors.greyLight,
-                              height: 1.4)),
+          ].map(
+            (note) => Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.circle, size: 5, color: AeroColors.amber),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      note,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AeroColors.greyLight,
+                        height: 1.4,
+                      ),
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -47,53 +47,70 @@ class OperatorPendingScreen extends StatelessWidget {
                       color: AeroColors.amber.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Icon(Icons.access_time_rounded,
-                        color: AeroColors.amber, size: 40),
+                    child: const Icon(
+                      Icons.access_time_rounded,
+                      color: AeroColors.amber,
+                      size: 40,
+                    ),
                   ),
                   const SizedBox(height: 24),
-                  const Text('Under review',
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: -0.5)),
+                  const Text(
+                    'Under review',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
                   const SizedBox(height: 10),
                   const Text(
                     'Our team is verifying your documents.\nYou\'ll be notified within 24–48 hours.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 14,
-                        color: AeroColors.grey,
-                        height: 1.6),
+                      fontSize: 14,
+                      color: AeroColors.grey,
+                      height: 1.6,
+                    ),
                   ),
                   const SizedBox(height: 32),
                   _buildStatusRow(
-                      'SSM Certificate', true, Icons.verified_outlined),
+                    'SSM Certificate',
+                    true,
+                    Icons.verified_outlined,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatusRow('PSV Licence', true, Icons.badge_outlined),
                   const SizedBox(height: 8),
                   _buildStatusRow(
-                      'PSV Licence', true, Icons.badge_outlined),
-                  const SizedBox(height: 8),
-                  _buildStatusRow(
-                      'Operator Permit', false, Icons.article_outlined),
+                    'Operator Permit',
+                    false,
+                    Icons.article_outlined,
+                  ),
                   const SizedBox(height: 32),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AeroColors.navyCard,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                          color: AeroColors.divider, width: 0.5),
+                      border: Border.all(color: AeroColors.divider, width: 0.5),
                     ),
                     child: Column(
                       children: [
-                        _buildInfoRow(Icons.notifications_outlined,
-                            'We\'ll notify you by email and in-app when approved'),
+                        _buildInfoRow(
+                          Icons.notifications_outlined,
+                          'We\'ll notify you by email and in-app when approved',
+                        ),
                         const SizedBox(height: 12),
-                        _buildInfoRow(Icons.people_outline,
-                            'You\'ll be matched with crew immediately after approval'),
+                        _buildInfoRow(
+                          Icons.people_outline,
+                          'You\'ll be matched with crew immediately after approval',
+                        ),
                         const SizedBox(height: 12),
-                        _buildInfoRow(Icons.payments_outlined,
-                            'First earnings within 7 days of going live'),
+                        _buildInfoRow(
+                          Icons.payments_outlined,
+                          'First earnings within 7 days of going live',
+                        ),
                       ],
                     ),
                   ),
@@ -105,20 +122,27 @@ class OperatorPendingScreen extends StatelessWidget {
                       color: AeroColors.amber.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                          color: AeroColors.amber.withValues(alpha: 0.2),
-                          width: 0.5),
+                        color: AeroColors.amber.withValues(alpha: 0.2),
+                        width: 0.5,
+                      ),
                     ),
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.mail_outline,
-                            color: AeroColors.amber, size: 16),
+                        Icon(
+                          Icons.mail_outline,
+                          color: AeroColors.amber,
+                          size: 16,
+                        ),
                         SizedBox(width: 8),
-                        Text('aerocrew.my@gmail.com',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: AeroColors.amber,
-                                fontWeight: FontWeight.w500)),
+                        Text(
+                          'aerocrew.my@gmail.com',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AeroColors.amber,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -141,20 +165,24 @@ class OperatorPendingScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon,
-              color: approved ? AeroColors.infoText : AeroColors.grey,
-              size: 18),
+          Icon(
+            icon,
+            color: approved ? AeroColors.infoText : AeroColors.grey,
+            size: 18,
+          ),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(label,
-                style: const TextStyle(
-                    fontSize: 13,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500)),
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: approved
                   ? AeroColors.success.withValues(alpha: 0.12)
@@ -165,22 +193,19 @@ class OperatorPendingScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                    approved
-                        ? Icons.check_circle_outline
-                        : Icons.sync,
-                    size: 11,
-                    color: approved
-                        ? AeroColors.success
-                        : AeroColors.amber),
+                  approved ? Icons.check_circle_outline : Icons.sync,
+                  size: 11,
+                  color: approved ? AeroColors.success : AeroColors.amber,
+                ),
                 const SizedBox(width: 4),
                 Text(
-                    approved ? 'Received' : 'In review',
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: approved
-                            ? AeroColors.success
-                            : AeroColors.amber)),
+                  approved ? 'Received' : 'In review',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: approved ? AeroColors.success : AeroColors.amber,
+                  ),
+                ),
               ],
             ),
           ),
@@ -195,11 +220,14 @@ class OperatorPendingScreen extends StatelessWidget {
         Icon(icon, color: AeroColors.grey, size: 16),
         const SizedBox(width: 10),
         Expanded(
-          child: Text(text,
-              style: const TextStyle(
-                  fontSize: 12,
-                  color: AeroColors.grey,
-                  height: 1.4)),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AeroColors.grey,
+              height: 1.4,
+            ),
+          ),
         ),
       ],
     );

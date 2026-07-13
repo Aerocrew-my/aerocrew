@@ -78,10 +78,15 @@ class _EarningsScreenState extends State<EarningsScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -89,28 +94,35 @@ class _EarningsScreenState extends State<EarningsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('EARNINGS',
-                            style: TextStyle(
-                                fontSize: 11,
-                                color: AeroColors.amber,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1)),
-                        Text('Income breakdown',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white)),
+                        Text(
+                          'EARNINGS',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AeroColors.amber,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        Text(
+                          'Income breakdown',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: AeroColors.navyCard,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: AeroColors.divider, width: 0.5),
+                      border: Border.all(color: AeroColors.divider, width: 0.5),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
@@ -118,14 +130,19 @@ class _EarningsScreenState extends State<EarningsScreen> {
                         isDense: true,
                         dropdownColor: AeroColors.navyCard,
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),
-                        icon: const Icon(Icons.keyboard_arrow_down,
-                            color: AeroColors.grey, size: 16),
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: AeroColors.grey,
+                          size: 16,
+                        ),
                         items: months
-                            .map((m) => DropdownMenuItem(
-                                value: m, child: Text(m)))
+                            .map(
+                              (m) => DropdownMenuItem(value: m, child: Text(m)),
+                            )
                             .toList(),
                         onChanged: (val) =>
                             setState(() => selectedMonth = val!),
@@ -148,34 +165,42 @@ class _EarningsScreenState extends State<EarningsScreen> {
                         color: AeroColors.amber.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                            color: AeroColors.amber.withValues(alpha: 0.2),
-                            width: 0.5),
+                          color: AeroColors.amber.withValues(alpha: 0.2),
+                          width: 0.5,
+                        ),
                       ),
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('NET EARNINGS',
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      color: AeroColors.amber,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.8)),
-                              Text(selectedMonth,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AeroColors.grey)),
+                              const Text(
+                                'NET EARNINGS',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AeroColors.amber,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.8,
+                                ),
+                              ),
+                              Text(
+                                selectedMonth,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AeroColors.grey,
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           Text(
-                              'RM${totalNet.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.w700,
-                                  color: AeroColors.amber)),
+                            'RM${totalNet.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w700,
+                              color: AeroColors.amber,
+                            ),
+                          ),
                           const SizedBox(height: 16),
                           Row(
                             children: [
@@ -208,78 +233,91 @@ class _EarningsScreenState extends State<EarningsScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const Text('TRANSACTION DETAILS',
-                        style: AeroText.label),
+                    const Text('TRANSACTION DETAILS', style: AeroText.label),
                     const SizedBox(height: 10),
-                    ...transactions.map((t) => Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color: AeroColors.navyCard,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                                color: AeroColors.divider, width: 0.5),
+                    ...transactions.map(
+                      (t) => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: AeroColors.navyCard,
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: AeroColors.divider,
+                            width: 0.5,
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: AeroColors.navy,
-                                  borderRadius:
-                                      BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: AeroColors.divider,
-                                      width: 0.5),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                      '${t['crew']}px',
-                                      style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white)),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: AeroColors.navy,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: AeroColors.divider,
+                                  width: 0.5,
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text(t['route'] as String,
-                                        style: const TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white)),
-                                    Text(t['date'] as String,
-                                        style: const TextStyle(
-                                            fontSize: 11,
-                                            color: AeroColors.grey)),
-                                  ],
+                              child: Center(
+                                child: Text(
+                                  '${t['crew']}px',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                              Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.end,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      'RM${(t['net'] as double).toStringAsFixed(0)}',
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: AeroColors.amber)),
+                                    t['route'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                   Text(
-                                      '−RM${(t['commission'] as double).toStringAsFixed(0)} fee',
-                                      style: const TextStyle(
-                                          fontSize: 10,
-                                          color: AeroColors.grey)),
+                                    t['date'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: AeroColors.grey,
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                        )),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'RM${(t['net'] as double).toStringAsFixed(0)}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: AeroColors.amber,
+                                  ),
+                                ),
+                                Text(
+                                  '−RM${(t['commission'] as double).toStringAsFixed(0)} fee',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: AeroColors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.all(14),
@@ -287,20 +325,26 @@ class _EarningsScreenState extends State<EarningsScreen> {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
                       child: Row(
                         children: const [
-                          Icon(Icons.info_outline,
-                              color: AeroColors.grey, size: 16),
+                          Icon(
+                            Icons.info_outline,
+                            color: AeroColors.grey,
+                            size: 16,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Earnings are paid out every Monday via bank transfer. Commission is 15% for AeroPool and 20% for AeroFlex.',
                               style: TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.grey,
-                                  height: 1.4),
+                                fontSize: 11,
+                                color: AeroColors.grey,
+                                height: 1.4,
+                              ),
                             ),
                           ),
                         ],
@@ -326,15 +370,19 @@ class _EarningsScreenState extends State<EarningsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 10, color: AeroColors.grey)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 10, color: AeroColors.grey),
+          ),
           const SizedBox(height: 4),
-          Text(value,
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: color)),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
         ],
       ),
     );

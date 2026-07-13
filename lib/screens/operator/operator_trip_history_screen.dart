@@ -47,27 +47,38 @@ class OperatorTripHistoryScreen extends StatelessWidget {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('TRIP HISTORY',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('Completed jobs',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'TRIP HISTORY',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'Completed jobs',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -85,8 +96,7 @@ class OperatorTripHistoryScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AeroColors.navyCard,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                          color: AeroColors.divider, width: 0.5),
+                      border: Border.all(color: AeroColors.divider, width: 0.5),
                     ),
                     child: Row(
                       children: [
@@ -97,45 +107,56 @@ class OperatorTripHistoryScreen extends StatelessWidget {
                             color: AeroColors.success.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(Icons.check_circle_outline,
-                              color: AeroColors.success, size: 20),
+                          child: const Icon(
+                            Icons.check_circle_outline,
+                            color: AeroColors.success,
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(trip['route'] as String,
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
                               Text(
-                                  '${trip['date']} · ${trip['crew']} crew',
-                                  style: const TextStyle(
-                                      fontSize: 11,
-                                      color: AeroColors.grey)),
+                                trip['route'] as String,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                '${trip['date']} · ${trip['crew']} crew',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: AeroColors.grey,
+                                ),
+                              ),
                               const SizedBox(height: 4),
                               Row(
                                 children: List.generate(
                                   5,
-                                  (s) => Icon(Icons.star,
-                                      size: 11,
-                                      color: s < (trip['rating'] as int)
-                                          ? AeroColors.amber
-                                          : AeroColors.divider),
+                                  (s) => Icon(
+                                    Icons.star,
+                                    size: 11,
+                                    color: s < (trip['rating'] as int)
+                                        ? AeroColors.amber
+                                        : AeroColors.divider,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         Text(
-                            'RM${(trip['earnings'] as double).toStringAsFixed(0)}',
-                            style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: AeroColors.amber)),
+                          'RM${(trip['earnings'] as double).toStringAsFixed(0)}',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: AeroColors.amber,
+                          ),
+                        ),
                       ],
                     ),
                   );

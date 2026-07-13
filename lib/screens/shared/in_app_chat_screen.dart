@@ -93,7 +93,8 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
       decoration: BoxDecoration(
         color: AeroColors.navyCard,
         border: Border(
-            bottom: BorderSide(color: AeroColors.divider, width: 0.5)),
+          bottom: BorderSide(color: AeroColors.divider, width: 0.5),
+        ),
       ),
       child: Row(
         children: [
@@ -106,8 +107,11 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -120,13 +124,15 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
             ),
             child: Center(
               child: widget.isGroup
-                  ? Icon(Icons.group,
-                      color: widget.recipientColor, size: 18)
-                  : Text(widget.recipientInitials,
+                  ? Icon(Icons.group, color: widget.recipientColor, size: 18)
+                  : Text(
+                      widget.recipientInitials,
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: widget.recipientColor)),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: widget.recipientColor,
+                      ),
+                    ),
             ),
           ),
           const SizedBox(width: 10),
@@ -134,11 +140,14 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.recipientName,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
+                Text(
+                  widget.recipientName,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
                 Row(
                   children: [
                     Container(
@@ -150,9 +159,10 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                       ),
                     ),
                     const SizedBox(width: 4),
-                    const Text('Active now',
-                        style: TextStyle(
-                            fontSize: 11, color: AeroColors.success)),
+                    const Text(
+                      'Active now',
+                      style: TextStyle(fontSize: 11, color: AeroColors.success),
+                    ),
                   ],
                 ),
               ],
@@ -166,8 +176,11 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                 color: AeroColors.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.phone,
-                  color: AeroColors.success, size: 18),
+              child: const Icon(
+                Icons.phone,
+                color: AeroColors.success,
+                size: 18,
+              ),
             ),
           ),
         ],
@@ -186,8 +199,9 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Row(
-            mainAxisAlignment:
-                isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+            mainAxisAlignment: isMe
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (!isMe) ...[
@@ -199,11 +213,14 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: Center(
-                    child: Text(widget.recipientInitials.substring(0, 1),
-                        style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: widget.recipientColor)),
+                    child: Text(
+                      widget.recipientInitials.substring(0, 1),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: widget.recipientColor,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -215,10 +232,12 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                        maxWidth:
-                            MediaQuery.of(context).size.width * 0.65),
+                      maxWidth: MediaQuery.of(context).size.width * 0.65,
+                    ),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: isMe ? AeroColors.amber : AeroColors.navyCard,
                       borderRadius: BorderRadius.only(
@@ -229,33 +248,37 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                       ),
                       border: isMe
                           ? null
-                          : Border.all(
-                              color: AeroColors.divider, width: 0.5),
+                          : Border.all(color: AeroColors.divider, width: 0.5),
                     ),
-                    child: Text(msg['text'] as String,
-                        style: TextStyle(
-                            fontSize: 13,
-                            color:
-                                isMe ? Colors.white : AeroColors.greyLight,
-                            height: 1.4)),
+                    child: Text(
+                      msg['text'] as String,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: isMe ? Colors.white : AeroColors.greyLight,
+                        height: 1.4,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 3),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(msg['time'] as String,
-                          style: const TextStyle(
-                              fontSize: 10, color: AeroColors.lightGrey)),
+                      Text(
+                        msg['time'] as String,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: AeroColors.lightGrey,
+                        ),
+                      ),
                       if (isMe) ...[
                         const SizedBox(width: 4),
                         Icon(
-                            msg['read'] == true
-                                ? Icons.done_all
-                                : Icons.done,
-                            size: 12,
-                            color: msg['read'] == true
-                                ? AeroColors.infoText
-                                : AeroColors.grey),
+                          msg['read'] == true ? Icons.done_all : Icons.done,
+                          size: 12,
+                          color: msg['read'] == true
+                              ? AeroColors.infoText
+                              : AeroColors.grey,
+                        ),
                       ],
                     ],
                   ),
@@ -273,39 +296,44 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
       decoration: BoxDecoration(
         color: AeroColors.navyCard,
-        border: Border(
-            top: BorderSide(color: AeroColors.divider, width: 0.5)),
+        border: Border(top: BorderSide(color: AeroColors.divider, width: 0.5)),
       ),
       child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: _controller,
-              style:
-                  const TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
               decoration: InputDecoration(
                 hintText: 'Type a message...',
                 hintStyle: const TextStyle(
-                    color: AeroColors.grey, fontSize: 14),
+                  color: AeroColors.grey,
+                  fontSize: 14,
+                ),
                 filled: true,
                 fillColor: AeroColors.navy,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide:
-                      const BorderSide(color: AeroColors.divider),
+                  borderSide: const BorderSide(color: AeroColors.divider),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                   borderSide: const BorderSide(
-                      color: AeroColors.divider, width: 0.5),
+                    color: AeroColors.divider,
+                    width: 0.5,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                   borderSide: const BorderSide(
-                      color: AeroColors.amber, width: 1.5),
+                    color: AeroColors.amber,
+                    width: 1.5,
+                  ),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 10),
+                  horizontal: 16,
+                  vertical: 10,
+                ),
               ),
               onSubmitted: (_) => _sendMessage(),
             ),
@@ -320,8 +348,11 @@ class _InAppChatScreenState extends State<InAppChatScreen> {
                 color: AeroColors.amber,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.send_rounded,
-                  color: Colors.white, size: 18),
+              child: const Icon(
+                Icons.send_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
             ),
           ),
         ],

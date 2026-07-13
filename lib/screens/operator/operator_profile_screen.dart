@@ -54,14 +54,13 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (_) => const OperatorDocumentsScreen()),
+        MaterialPageRoute(builder: (_) => const OperatorDocumentsScreen()),
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
     }
     setState(() => isLoading = false);
   }
@@ -98,24 +97,33 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                           color: AeroColors.amber.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.directions_car,
-                            color: AeroColors.amber, size: 22),
+                        child: const Icon(
+                          Icons.directions_car,
+                          color: AeroColors.amber,
+                          size: 22,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('STEP 1 OF 2',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.amber,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1)),
-                          Text('Operator profile',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
+                          Text(
+                            'STEP 1 OF 2',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.amber,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          Text(
+                            'Operator profile',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -124,21 +132,25 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                 const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Text('Tell us about\nyour vehicle.',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: -0.5,
-                          height: 1.2)),
+                  child: Text(
+                    'Tell us about\nyour vehicle.',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                      height: 1.2,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
                       color: AeroColors.background,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(28)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(28),
+                      ),
                     ),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(24),
@@ -146,8 +158,10 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 8),
-                          const Text('COMPANY / FULL NAME',
-                              style: AeroText.label),
+                          const Text(
+                            'COMPANY / FULL NAME',
+                            style: AeroText.label,
+                          ),
                           const SizedBox(height: 8),
                           _buildTextField(
                             controller: nameController,
@@ -155,40 +169,41 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                             icon: Icons.business_outlined,
                           ),
                           const SizedBox(height: 16),
-                          const Text('VEHICLE TYPE',
-                              style: AeroText.label),
+                          const Text('VEHICLE TYPE', style: AeroText.label),
                           const SizedBox(height: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
                               color: AeroColors.cardWhite,
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                  color: AeroColors.cardBorder),
+                              border: Border.all(color: AeroColors.cardBorder),
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 value: selectedVehicle,
                                 isExpanded: true,
                                 icon: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: AeroColors.grey),
+                                  Icons.keyboard_arrow_down,
+                                  color: AeroColors.grey,
+                                ),
                                 items: vehicles
-                                    .map((v) => DropdownMenuItem(
+                                    .map(
+                                      (v) => DropdownMenuItem(
                                         value: v,
-                                        child: Text(v,
-                                            style: const TextStyle(
-                                                fontSize: 14))))
+                                        child: Text(
+                                          v,
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    )
                                     .toList(),
-                                onChanged: (val) => setState(
-                                    () => selectedVehicle = val!),
+                                onChanged: (val) =>
+                                    setState(() => selectedVehicle = val!),
                               ),
                             ),
                           ),
                           const SizedBox(height: 16),
-                          const Text('PLATE NUMBER',
-                              style: AeroText.label),
+                          const Text('PLATE NUMBER', style: AeroText.label),
                           const SizedBox(height: 8),
                           _buildTextField(
                             controller: plateController,
@@ -196,8 +211,7 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                             icon: Icons.confirmation_number_outlined,
                           ),
                           const SizedBox(height: 16),
-                          const Text('COVERAGE ZONES',
-                              style: AeroText.label),
+                          const Text('COVERAGE ZONES', style: AeroText.label),
                           const SizedBox(height: 8),
                           _buildTextField(
                             controller: zonesController,
@@ -205,8 +219,7 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                             icon: Icons.location_on_outlined,
                           ),
                           const SizedBox(height: 16),
-                          const Text('MAX PASSENGERS',
-                              style: AeroText.label),
+                          const Text('MAX PASSENGERS', style: AeroText.label),
                           const SizedBox(height: 8),
                           _buildTextField(
                             controller: capacityController,
@@ -221,22 +234,27 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                               color: AeroColors.infoLight,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: AeroColors.infoText
-                                      .withValues(alpha: 0.2)),
+                                color: AeroColors.infoText.withValues(
+                                  alpha: 0.2,
+                                ),
+                              ),
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.info_outline,
-                                    color: AeroColors.infoText,
-                                    size: 18),
+                                Icon(
+                                  Icons.info_outline,
+                                  color: AeroColors.infoText,
+                                  size: 18,
+                                ),
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     'You\'ll upload SSM, PSV licence and operator permit on the next step.',
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        color: AeroColors.infoText,
-                                        height: 1.4),
+                                      fontSize: 12,
+                                      color: AeroColors.infoText,
+                                      height: 1.4,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -246,16 +264,16 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed:
-                                  isLoading ? null : _saveProfile,
+                              onPressed: isLoading ? null : _saveProfile,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AeroColors.amber,
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 16),
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(14)),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                                 elevation: 0,
                               ),
                               child: isLoading
@@ -263,20 +281,23 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2))
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
                                   : const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text('Continue to documents',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight:
-                                                    FontWeight.w600)),
+                                        Text(
+                                          'Continue to documents',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                         SizedBox(width: 8),
-                                        Icon(Icons.arrow_forward,
-                                            size: 18),
+                                        Icon(Icons.arrow_forward, size: 18),
                                       ],
                                     ),
                             ),
@@ -312,21 +333,20 @@ class _OperatorProfileScreenState extends State<OperatorProfileScreen> {
         fillColor: AeroColors.cardWhite,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              const BorderSide(color: AeroColors.cardBorder),
+          borderSide: const BorderSide(color: AeroColors.cardBorder),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              const BorderSide(color: AeroColors.cardBorder),
+          borderSide: const BorderSide(color: AeroColors.cardBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-              color: AeroColors.amber, width: 1.5),
+          borderSide: const BorderSide(color: AeroColors.amber, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16, vertical: 14),
+          horizontal: 16,
+          vertical: 14,
+        ),
       ),
     );
   }

@@ -7,8 +7,7 @@ class OperatorLiveJobScreen extends StatefulWidget {
   const OperatorLiveJobScreen({super.key, required this.job});
 
   @override
-  State<OperatorLiveJobScreen> createState() =>
-      _OperatorLiveJobScreenState();
+  State<OperatorLiveJobScreen> createState() => _OperatorLiveJobScreenState();
 }
 
 class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
@@ -50,8 +49,10 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 1),
-        (_) => setState(() => elapsedSeconds++));
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => setState(() => elapsedSeconds++),
+    );
   }
 
   @override
@@ -78,8 +79,9 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final completedStops =
-        stops.where((s) => s['status'] == 'completed').length;
+    final completedStops = stops
+        .where((s) => s['status'] == 'completed')
+        .length;
 
     return Scaffold(
       backgroundColor: AeroColors.navy,
@@ -124,31 +126,39 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('LIVE JOB',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Active trip',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'LIVE JOB',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Active trip',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const Spacer(),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
@@ -164,11 +174,14 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                   ),
                 ),
                 const SizedBox(width: 5),
-                Text(elapsedTime,
-                    style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: AeroColors.success)),
+                Text(
+                  elapsedTime,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AeroColors.success,
+                  ),
+                ),
               ],
             ),
           ),
@@ -186,26 +199,36 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
           color: AeroColors.success.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-              color: AeroColors.success.withValues(alpha: 0.2), width: 0.5),
+            color: AeroColors.success.withValues(alpha: 0.2),
+            width: 0.5,
+          ),
         ),
         child: Row(
           children: [
-            const Icon(Icons.flight_takeoff,
-                color: AeroColors.success, size: 18),
+            const Icon(
+              Icons.flight_takeoff,
+              color: AeroColors.success,
+              size: 18,
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                  '${widget.job['date'] ?? 'Mon 16 Jun'} · Flight ${widget.job['flightTime'] ?? '05:30'} ${widget.job['airport'] ?? 'SZB'}',
-                  style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
-            ),
-            Text('RM${(widget.job['earnings'] ?? 90.0).toStringAsFixed(0)}',
+                '${widget.job['date'] ?? 'Mon 16 Jun'} · Flight ${widget.job['flightTime'] ?? '05:30'} ${widget.job['airport'] ?? 'SZB'}',
                 style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AeroColors.amber)),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Text(
+              'RM${(widget.job['earnings'] ?? 90.0).toStringAsFixed(0)}',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: AeroColors.amber,
+              ),
+            ),
           ],
         ),
       ),
@@ -221,14 +244,18 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('$completed of $total stops completed',
-                  style: const TextStyle(
-                      fontSize: 11, color: AeroColors.grey)),
-              Text('${((completed / total) * 100).toInt()}%',
-                  style: const TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600)),
+              Text(
+                '$completed of $total stops completed',
+                style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+              ),
+              Text(
+                '${((completed / total) * 100).toInt()}%',
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
@@ -237,8 +264,7 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
             child: LinearProgressIndicator(
               value: completed / total,
               backgroundColor: AeroColors.divider,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                  AeroColors.amber),
+              valueColor: const AlwaysStoppedAnimation<Color>(AeroColors.amber),
               minHeight: 6,
             ),
           ),
@@ -263,30 +289,37 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
               children: [
                 const Text('TRIP DURATION', style: AeroText.label),
                 const SizedBox(height: 4),
-                Text(elapsedTime,
-                    style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        letterSpacing: -1)),
+                Text(
+                  elapsedTime,
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    letterSpacing: -1,
+                  ),
+                ),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text('Next stop',
-                  style: TextStyle(
-                      fontSize: 10, color: AeroColors.grey)),
+              const Text(
+                'Next stop',
+                style: TextStyle(fontSize: 10, color: AeroColors.grey),
+              ),
               Text(
-                  stops.firstWhere(
-                          (s) => s['status'] == 'current',
-                          orElse: () =>
-                              {'name': 'Airport'})['name'] as String,
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AeroColors.amber)),
+                stops.firstWhere(
+                      (s) => s['status'] == 'current',
+                      orElse: () => {'name': 'Airport'},
+                    )['name']
+                    as String,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AeroColors.amber,
+                ),
+              ),
             ],
           ),
         ],
@@ -340,14 +373,15 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                         color: dotColor.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: dotColor.withValues(alpha: 0.5)),
+                          color: dotColor.withValues(alpha: 0.5),
+                        ),
                       ),
                       child: Icon(
                         status == 'completed'
                             ? Icons.check
                             : status == 'destination'
-                                ? Icons.flight_takeoff
-                                : Icons.person,
+                            ? Icons.flight_takeoff
+                            : Icons.person,
                         size: 12,
                         color: dotColor,
                       ),
@@ -356,8 +390,7 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                       Container(
                         width: 2,
                         height: 40,
-                        margin:
-                            const EdgeInsets.symmetric(vertical: 3),
+                        margin: const EdgeInsets.symmetric(vertical: 3),
                         color: dotColor.withValues(alpha: 0.3),
                       ),
                   ],
@@ -365,69 +398,76 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: isLast ? 0 : 12, top: 3),
+                    padding: EdgeInsets.only(bottom: isLast ? 0 : 12, top: 3),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(stop['name'] as String,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: status == 'upcoming'
-                                          ? AeroColors.greyLight
-                                          : Colors.white)),
-                              Text(stop['address'] as String,
-                                  style: const TextStyle(
-                                      fontSize: 10,
-                                      color: AeroColors.grey)),
+                              Text(
+                                stop['name'] as String,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: status == 'upcoming'
+                                      ? AeroColors.greyLight
+                                      : Colors.white,
+                                ),
+                              ),
+                              Text(
+                                stop['address'] as String,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AeroColors.grey,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text(stop['time'] as String,
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: dotColor)),
-                            if (status == 'current' &&
-                                stop['phone'] != null)
+                            Text(
+                              stop['time'] as String,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: dotColor,
+                              ),
+                            ),
+                            if (status == 'current' && stop['phone'] != null)
                               GestureDetector(
                                 onTap: () {},
                                 child: Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 3),
-                                  padding:
-                                      const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 3),
+                                  margin: const EdgeInsets.only(top: 3),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: AeroColors.success
-                                        .withValues(alpha: 0.1),
-                                    borderRadius:
-                                        BorderRadius.circular(6),
+                                    color: AeroColors.success.withValues(
+                                      alpha: 0.1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: const Row(
                                     children: [
-                                      Icon(Icons.phone,
-                                          size: 10,
-                                          color: AeroColors.success),
+                                      Icon(
+                                        Icons.phone,
+                                        size: 10,
+                                        color: AeroColors.success,
+                                      ),
                                       SizedBox(width: 3),
-                                      Text('Call',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color:
-                                                  AeroColors.success,
-                                              fontWeight:
-                                                  FontWeight.w600)),
+                                      Text(
+                                        'Call',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: AeroColors.success,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -454,15 +494,17 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
           child: ElevatedButton.icon(
             onPressed: _markStopComplete,
             icon: const Icon(Icons.check_circle_outline, size: 18),
-            label: const Text('Mark stop as completed',
-                style: TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w600)),
+            label: const Text(
+              'Mark stop as completed',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AeroColors.success,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),
+              ),
               elevation: 0,
             ),
           ),
@@ -479,7 +521,8 @@ class _OperatorLiveJobScreenState extends State<OperatorLiveJobScreen> {
               padding: const EdgeInsets.symmetric(vertical: 14),
               side: const BorderSide(color: AeroColors.amber, width: 1),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
           ),
         ),

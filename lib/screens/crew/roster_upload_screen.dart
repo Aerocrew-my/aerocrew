@@ -1,10 +1,15 @@
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import 'package:aerocrew/constants.dart';
+
 import 'package:aerocrew/services/anthropic_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aerocrew/services/matching_service.dart';
+import 'package:aerocrew/theme/aero_theme.dart';
+import 'package:aerocrew/widgets/aero_components.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_selector/file_selector.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+enum _RosterStage { upload, processing, review }
 
 class RosterUploadScreen extends StatefulWidget {
   const RosterUploadScreen({super.key});
@@ -14,584 +19,381 @@ class RosterUploadScreen extends StatefulWidget {
 }
 
 class _RosterUploadScreenState extends State<RosterUploadScreen> {
-  bool isScanning = false;
-  bool isConfirming = false;
-  List<Map<String, dynamic>> extractedFlights = [];
-  String? errorMessage;
-  Uint8List? selectedImageBytes;
+  _RosterStage _stage = _RosterStage.upload;
+  List<Map<String, dynamic>> _duties = const [];
+  String? _fileName;
+  String? _error;
+  bool _confirming = false;
 
-  Future<void> _pickAndScanImage() async {
-    setState(() {
-      isScanning = true;
-      errorMessage = null;
-      extractedFlights = [];
-    });
-
-    try {
-      final demoImageBytes = Uint8List.fromList([]);
-      final flights = await AnthropicService.extractRosterFromImage(
-        demoImageBytes,
-        'image/jpeg',
+  Future<void> _selectAndExtract() async {
+    setState(() => _error = null);
+    const rosterFiles = XTypeGroup(
+      label: 'Roster files',
+      extensions: ['jpg', 'jpeg', 'png', 'pdf'],
+      mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+    );
+    final file = await openFile(acceptedTypeGroups: const [rosterFiles]);
+    if (file == null || !mounted) return;
+    final bytes = await file.readAsBytes();
+    if (bytes.isEmpty || bytes.length > 12 * 1024 * 1024) {
+      setState(
+        () => _error = 'Choose a non-empty roster file smaller than 12 MB.',
       );
-      setState(() {
-        extractedFlights = flights;
-        isScanning = false;
-      });
-    } catch (e) {
-      setState(() {
-        isScanning = false;
-        extractedFlights = _demoFlights();
-        errorMessage = null;
-      });
+      return;
     }
-  }
-
-  List<Map<String, dynamic>> _demoFlights() {
-    return [
-      {
-        'flightNumber': 'AK6101',
-        'date': 'Mon 16 Jun',
-        'departureTime': '05:30',
-        'airport': 'SZB',
-        'dutyType': 'outbound',
-        'confirmed': true,
-      },
-      {
-        'flightNumber': 'AK6204',
-        'date': 'Wed 18 Jun',
-        'departureTime': '07:15',
-        'airport': 'SZB',
-        'dutyType': 'outbound',
-        'confirmed': true,
-      },
-      {
-        'flightNumber': 'AK6310',
-        'date': 'Fri 20 Jun',
-        'departureTime': '05:45',
-        'airport': 'SZB',
-        'dutyType': 'outbound',
-        'confirmed': true,
-      },
-      {
-        'flightNumber': 'AK6415',
-        'date': 'Sun 22 Jun',
-        'departureTime': '09:00',
-        'airport': 'KLIA',
-        'dutyType': 'outbound',
-        'confirmed': true,
-      },
-    ];
-  }
-
-  Future<void> _confirmFlights() async {
-  setState(() => isConfirming = true);
-  try {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    final confirmed =
-        extractedFlights.where((f) => f['confirmed'] == true).toList();
-
-    // Get user's zone
-    final userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
-    final zone = userDoc.data()?['homeZone'] ?? 'Petaling Jaya';
-
-    // Save roster
-    await FirebaseFirestore.instance.collection('rosters').add({
-      'userId': uid,
-      'flights': confirmed,
-      'uploadedAt': FieldValue.serverTimestamp(),
-      'status': 'processing',
+    final extension = file.name.split('.').last.toLowerCase();
+    final mediaType = switch (extension) {
+      'png' => 'image/png',
+      'pdf' => 'application/pdf',
+      _ => 'image/jpeg',
+    };
+    setState(() {
+      _fileName = file.name;
+      _stage = _RosterStage.processing;
     });
-
-    // Match each flight
-    int matchedCount = 0;
-    for (final flight in confirmed) {
-      try {
-        // delete dateParts
-        final now = DateTime.now();
-        final flightDate = DateTime(now.year, now.month, now.day);
-
-        await MatchingService.matchCrewToPool(
-          flightNumber: flight['flightNumber'] as String,
-          flightDate: flightDate,
-          departureTime: flight['departureTime'] as String,
-          airport: flight['airport'] as String,
-          zone: zone,
-        );
-        matchedCount++;
-      } catch (e) {
-        debugPrint('Match error for ${flight['flightNumber']}: $e');
-      }
-    }
-
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle, color: Colors.white, size: 16),
-            const SizedBox(width: 8),
-            Text('$matchedCount flights matched! Finding your van...'),
-          ],
-        ),
-        backgroundColor: AeroColors.success,
-        behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-    await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
-    Navigator.pop(context);
-  } catch (e) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error: $e')),
-    );
+    await _extract(bytes, mediaType);
   }
-  setState(() => isConfirming = false);
-}
+
+  Future<void> _extract(Uint8List bytes, String mediaType) async {
+    try {
+      final duties = await AnthropicService.extractRoster(bytes, mediaType);
+      if (!mounted) return;
+      if (duties.isEmpty) {
+        setState(() {
+          _stage = _RosterStage.upload;
+          _error =
+              'No duties were detected. Use a clearer roster file or contact support.';
+        });
+        return;
+      }
+      setState(() {
+        _duties = duties.map((duty) {
+          final next = Map<String, dynamic>.from(duty);
+          next['confirmed'] = duty['confirmed'] != false;
+          next['uncertain'] =
+              duty['uncertain'] == true ||
+              duty['confidence'] is num && (duty['confidence'] as num) < 0.8;
+          return next;
+        }).toList();
+        _stage = _RosterStage.review;
+      });
+    } on RosterExtractionException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _stage = _RosterStage.upload;
+        _error = error.message;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _stage = _RosterStage.upload;
+        _error = 'The roster could not be processed. Try again later.';
+      });
+    }
+  }
+
+  Future<void> _confirm() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final confirmed = _duties
+        .where((duty) => duty['confirmed'] == true)
+        .toList();
+    if (user == null || confirmed.isEmpty) return;
+    setState(() => _confirming = true);
+    try {
+      final profile = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      final zone = profile.data()?['homeZone'] as String? ?? 'Petaling Jaya';
+      final roster = await FirebaseFirestore.instance
+          .collection('rosters')
+          .add({
+            'userId': user.uid,
+            'sourceFileName': _fileName,
+            'flights': confirmed,
+            'uploadedAt': FieldValue.serverTimestamp(),
+            'status': 'confirmed',
+          });
+
+      var generated = 0;
+      for (final duty in confirmed) {
+        final date = _parseDutyDate(duty['date']?.toString());
+        if (date == null) continue;
+        try {
+          await MatchingService.matchCrewToPool(
+            flightNumber: duty['flightNumber']?.toString() ?? '',
+            flightDate: date,
+            departureTime: duty['departureTime']?.toString() ?? '',
+            airport: duty['airport']?.toString() ?? '',
+            zone: zone,
+          );
+          generated++;
+        } catch (_) {
+          // The confirmed roster remains saved for server-side recovery.
+        }
+      }
+      await roster.update({
+        'status': generated == confirmed.length
+            ? 'transport_generated'
+            : 'requires_processing',
+        'transportRequirementsGenerated': generated,
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '$generated of ${confirmed.length} transport requirements generated.',
+          ),
+        ),
+      );
+      Navigator.pop(context);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('The roster could not be confirmed. Try again.'),
+        ),
+      );
+      setState(() => _confirming = false);
+    }
+  }
+
+  DateTime? _parseDutyDate(String? value) {
+    if (value == null) return null;
+    final match = RegExp(
+      r'(\d{1,2})\s+([A-Za-z]{3})(?:\s+(\d{4}))?',
+    ).firstMatch(value);
+    if (match == null) return null;
+    const months = {
+      'jan': 1,
+      'feb': 2,
+      'mar': 3,
+      'apr': 4,
+      'may': 5,
+      'jun': 6,
+      'jul': 7,
+      'aug': 8,
+      'sep': 9,
+      'oct': 10,
+      'nov': 11,
+      'dec': 12,
+    };
+    final month = months[match.group(2)!.toLowerCase()];
+    if (month == null) return null;
+    final now = DateTime.now();
+    var year = int.tryParse(match.group(3) ?? '') ?? now.year;
+    var date = DateTime(year, month, int.parse(match.group(1)!));
+    if (match.group(3) == null &&
+        date.isBefore(now.subtract(const Duration(days: 60)))) {
+      year++;
+      date = DateTime(year, month, int.parse(match.group(1)!));
+    }
+    return date;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AeroColors.navy,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: extractedFlights.isEmpty
-                  ? _buildUploadView()
-                  : _buildReviewView(),
-            ),
-          ],
+      appBar: const AeroAppBar(
+        title: 'Upload roster',
+        subtitle: 'Validate, review, and confirm duties',
+      ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: switch (_stage) {
+            _RosterStage.upload => _uploadView(),
+            _RosterStage.processing => _processingView(),
+            _RosterStage.review => _reviewView(),
+          },
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              padding: const EdgeInsets.all(8),
+  Widget _uploadView() => ListView(
+    padding: const EdgeInsets.all(20),
+    children: [
+      AeroCard(
+        child: Column(
+          children: [
+            Container(
+              width: 64,
+              height: 64,
               decoration: BoxDecoration(
-                color: AeroColors.navyCard,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AeroColors.divider, width: 0.5),
+                color: context.aero.blueSurface,
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: Icon(
+                Icons.document_scanner_outlined,
+                size: 32,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
-          ),
-          const SizedBox(width: 12),
-          const Column(
+            const SizedBox(height: 16),
+            Text(
+              'Select a roster image or PDF',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'We validate the file before extracting duties. You will review every detected entry before transport is generated.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: context.aero.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 20),
+            AeroButton(
+              label: 'Choose roster file',
+              icon: Icons.upload_file,
+              expand: true,
+              onPressed: _selectAndExtract,
+            ),
+          ],
+        ),
+      ),
+      if (_error != null) ...[
+        const SizedBox(height: 16),
+        AeroCard(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('AI ROSTER SCAN',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Upload your roster',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Icon(Icons.info_outline, color: context.aero.information),
+              const SizedBox(width: 12),
+              Expanded(child: Text(_error!)),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildUploadView() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: AeroColors.amber.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                  color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
-            ),
-            child: Row(
-              children: const [
-                Icon(Icons.auto_awesome,
-                    color: AeroColors.amber, size: 18),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Take a photo or screenshot of your roster — Claude AI will extract all your flights automatically.',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: AeroColors.amber,
-                        height: 1.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          if (isScanning) ...[
-            Container(
-              height: 160,
-              decoration: BoxDecoration(
-                color: AeroColors.navyCard,
-                borderRadius: BorderRadius.circular(16),
-                border:
-                    Border.all(color: AeroColors.amber, width: 1.5),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 36,
-                    height: 36,
-                    child: CircularProgressIndicator(
-                      color: AeroColors.amber,
-                      strokeWidth: 2.5,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const Text('Claude is reading your roster...',
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 4),
-                  const Text('Extracting flight details',
-                      style: TextStyle(
-                          fontSize: 11, color: AeroColors.grey)),
-                ],
-              ),
-            ),
-          ] else ...[
-            GestureDetector(
-              onTap: _pickAndScanImage,
-              child: Container(
-                height: 160,
-                decoration: BoxDecoration(
-                  color: AeroColors.navyCard,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                      color: AeroColors.divider,
-                      width: 1.5,
-                      style: BorderStyle.solid),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AeroColors.amber.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.camera_alt_outlined,
-                          color: AeroColors.amber, size: 28),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text('Tap to upload roster',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
-                    const SizedBox(height: 4),
-                    const Text('Photo, screenshot or PDF',
-                        style: TextStyle(
-                            fontSize: 12, color: AeroColors.grey)),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                    child: Divider(
-                        color: AeroColors.divider, height: 1)),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('or try with demo roster',
-                      style: TextStyle(
-                          fontSize: 11, color: AeroColors.grey)),
-                ),
-                Expanded(
-                    child: Divider(
-                        color: AeroColors.divider, height: 1)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  setState(() {
-                    extractedFlights = _demoFlights();
-                  });
-                },
-                icon: const Icon(Icons.play_circle_outline,
-                    size: 18, color: AeroColors.amber),
-                label: const Text('Load demo roster',
-                    style: TextStyle(
-                        color: AeroColors.amber,
-                        fontWeight: FontWeight.w500)),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  side: const BorderSide(
-                      color: AeroColors.amber, width: 1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-            ),
-          ],
-          const SizedBox(height: 24),
-          const Text('SUPPORTED FORMATS',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: AeroColors.grey,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.8)),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              _buildFormatChip('AirAsia', Icons.check),
-              const SizedBox(width: 8),
-              _buildFormatChip('MAS', Icons.check),
-              const SizedBox(width: 8),
-              _buildFormatChip('Batik', Icons.check),
-              const SizedBox(width: 8),
-              _buildFormatChip('FireFly', Icons.check),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFormatChip(String label, IconData icon) {
-    return Container(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: AeroColors.navyCard,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AeroColors.divider, width: 0.5),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 11, color: AeroColors.success),
-          const SizedBox(width: 4),
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 11, color: AeroColors.greyLight)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReviewView() {
-    final confirmedCount =
-        extractedFlights.where((f) => f['confirmed'] == true).length;
-
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: AeroColors.success.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                        color: AeroColors.success.withValues(alpha: 0.2),
-                        width: 0.5),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle_outline,
-                          color: AeroColors.success, size: 18),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Found ${extractedFlights.length} flights. Review and deselect any errors.',
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: AeroColors.success,
-                              height: 1.5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text('EXTRACTED FLIGHTS',
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: AeroColors.grey,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.8)),
-                const SizedBox(height: 10),
-                ...List.generate(extractedFlights.length, (i) {
-                  final flight = extractedFlights[i];
-                  final isConfirmed = flight['confirmed'] == true;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        extractedFlights[i]['confirmed'] = !isConfirmed;
-                      });
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 150),
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: isConfirmed
-                            ? AeroColors.navyCard
-                            : AeroColors.navy,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: isConfirmed
-                              ? AeroColors.success.withValues(alpha: 0.4)
-                              : AeroColors.divider,
-                          width: isConfirmed ? 1 : 0.5,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: isConfirmed
-                                  ? AeroColors.amber.withValues(alpha: 0.12)
-                                  : AeroColors.navyCard,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                flight['departureTime'] as String,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: isConfirmed
-                                        ? AeroColors.amber
-                                        : AeroColors.grey),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    '${flight['flightNumber']} · ${flight['airport']}',
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: isConfirmed
-                                            ? Colors.white
-                                            : AeroColors.grey)),
-                                Text(flight['date'] as String,
-                                    style: const TextStyle(
-                                        fontSize: 11,
-                                        color: AeroColors.grey)),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              color: isConfirmed
-                                  ? AeroColors.success
-                                  : AeroColors.navyCard,
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: isConfirmed
-                                    ? AeroColors.success
-                                    : AeroColors.divider,
-                                width: 0.5,
-                              ),
-                            ),
-                            child: isConfirmed
-                                ? const Icon(Icons.check,
-                                    size: 14, color: Colors.white)
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () => setState(() => extractedFlights = []),
-                  child: const Center(
-                    child: Text('Scan again',
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: AeroColors.amber,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed:
-                  confirmedCount == 0 || isConfirming ? null : _confirmFlights,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AeroColors.amber,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
-                elevation: 0,
-              ),
-              child: isConfirming
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                          color: Colors.white, strokeWidth: 2))
-                  : Text(
-                      'Confirm $confirmedCount flight${confirmedCount != 1 ? 's' : ''} & match me',
-                      style: const TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w600)),
-            ),
           ),
         ),
       ],
+      const SizedBox(height: 24),
+      const AeroSectionHeader(title: 'What happens next'),
+      const SizedBox(height: 12),
+      const AeroCard(
+        padding: EdgeInsets.zero,
+        child: Column(
+          children: [
+            AeroListTile(
+              icon: Icons.verified_outlined,
+              title: '1. Validate file',
+            ),
+            Divider(height: 1),
+            AeroListTile(
+              icon: Icons.manage_search_outlined,
+              title: '2. Extract and review duties',
+            ),
+            Divider(height: 1),
+            AeroListTile(
+              icon: Icons.route_outlined,
+              title: '3. Generate transport requirements',
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+
+  Widget _processingView() =>
+      const AeroLoadingState(label: 'Validating and extracting roster duties');
+
+  Widget _reviewView() {
+    final confirmed = _duties.where((duty) => duty['confirmed'] == true).length;
+    final uncertain = _duties.where((duty) => duty['uncertain'] == true).length;
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              AeroCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${_duties.length} duties detected',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '$confirmed confirmed automatically · $uncertain require review',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: context.aero.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const AeroSectionHeader(title: 'Review detected duties'),
+              const SizedBox(height: 12),
+              ...List.generate(_duties.length, (index) => _dutyCard(index)),
+              TextButton(
+                onPressed: () => setState(() {
+                  _stage = _RosterStage.upload;
+                  _duties = const [];
+                }),
+                child: const Text('Choose another file'),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: context.aero.surface,
+            border: Border(top: BorderSide(color: context.aero.border)),
+          ),
+          child: AeroButton(
+            label: _confirming ? 'Confirming…' : 'Confirm $confirmed duties',
+            icon: Icons.check,
+            expand: true,
+            onPressed: _confirming || confirmed == 0 ? null : _confirm,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _dutyCard(int index) {
+    final duty = _duties[index];
+    final selected = duty['confirmed'] == true;
+    final uncertain = duty['uncertain'] == true;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: AeroCard(
+        onTap: () => setState(() => _duties[index]['confirmed'] = !selected),
+        child: Row(
+          children: [
+            Checkbox(
+              value: selected,
+              onChanged: (value) =>
+                  setState(() => _duties[index]['confirmed'] = value ?? false),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${duty['flightNumber'] ?? 'Duty'} · ${duty['airport'] ?? 'Airport pending'}',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Text(
+                    '${duty['date'] ?? 'Date pending'} · ${duty['departureTime'] ?? 'Time pending'}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            if (uncertain)
+              AeroStatusChip(
+                label: 'Review',
+                color: context.aero.warning,
+                icon: Icons.warning_amber,
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

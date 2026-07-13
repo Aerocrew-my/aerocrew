@@ -44,25 +44,34 @@ class _BillingScreenState extends State<BillingScreen> {
 
   String get planName {
     switch (plan) {
-      case 'aeroflex': return 'AeroFlex';
-      case 'aerosolo': return 'AeroSolo';
-      default: return 'AeroPool';
+      case 'aeroflex':
+        return 'AeroFlex';
+      case 'aerosolo':
+        return 'AeroSolo';
+      default:
+        return 'AeroPool';
     }
   }
 
   Color get planColor {
     switch (plan) {
-      case 'aeroflex': return const Color(0xFF378ADD);
-      case 'aerosolo': return const Color(0xFFEF9F27);
-      default: return AeroColors.amber;
+      case 'aeroflex':
+        return const Color(0xFF378ADD);
+      case 'aerosolo':
+        return const Color(0xFFEF9F27);
+      default:
+        return AeroColors.amber;
     }
   }
 
   double get planPrice {
     switch (plan) {
-      case 'aeroflex': return 0;
-      case 'aerosolo': return 1500;
-      default: return 750;
+      case 'aeroflex':
+        return 0;
+      case 'aerosolo':
+        return 1500;
+      default:
+        return 750;
     }
   }
 
@@ -100,7 +109,8 @@ class _BillingScreenState extends State<BillingScreen> {
       body: SafeArea(
         child: isLoading
             ? const Center(
-                child: CircularProgressIndicator(color: AeroColors.amber))
+                child: CircularProgressIndicator(color: AeroColors.amber),
+              )
             : Column(
                 children: [
                   _buildHeader(),
@@ -114,8 +124,7 @@ class _BillingScreenState extends State<BillingScreen> {
                           const SizedBox(height: 16),
                           _buildQuickActions(),
                           const SizedBox(height: 24),
-                          const Text('PAYMENT HISTORY',
-                              style: AeroText.label),
+                          const Text('PAYMENT HISTORY', style: AeroText.label),
                           const SizedBox(height: 10),
                           ...paymentHistory.map(_buildPaymentRow),
                         ],
@@ -142,25 +151,34 @@ class _BillingScreenState extends State<BillingScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('BILLING',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Subscription & payments',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'BILLING',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Subscription & payments',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -189,49 +207,64 @@ class _BillingScreenState extends State<BillingScreen> {
                 plan == 'aeroflex'
                     ? Icons.bolt
                     : plan == 'aerosolo'
-                        ? Icons.star
-                        : Icons.people,
+                    ? Icons.star
+                    : Icons.people,
                 color: Colors.white,
                 size: 18,
               ),
               const SizedBox(width: 8),
-              Text(planName,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white)),
+              Text(
+                planName,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text('Active',
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
+                child: const Text(
+                  'Active',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 16),
           plan == 'aeroflex'
-              ? const Text('Pay per trip',
+              ? const Text(
+                  'Pay per trip',
                   style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white))
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                )
               : Text(
                   'RM${planPrice.toStringAsFixed(0)}',
                   style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white)),
+                    fontSize: 36,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
           if (plan != 'aeroflex')
-            const Text('per month',
-                style: TextStyle(fontSize: 13, color: Colors.white70)),
+            const Text(
+              'per month',
+              style: TextStyle(fontSize: 13, color: Colors.white70),
+            ),
           const SizedBox(height: 16),
           Container(height: 1, color: Colors.white.withValues(alpha: 0.2)),
           const SizedBox(height: 16),
@@ -241,14 +274,18 @@ class _BillingScreenState extends State<BillingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Next renewal',
-                        style: TextStyle(
-                            fontSize: 11, color: Colors.white70)),
-                    const Text('1 Jul 2026',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
+                    const Text(
+                      'Next renewal',
+                      style: TextStyle(fontSize: 11, color: Colors.white70),
+                    ),
+                    const Text(
+                      '1 Jul 2026',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -256,14 +293,18 @@ class _BillingScreenState extends State<BillingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Zone',
-                        style: TextStyle(
-                            fontSize: 11, color: Colors.white70)),
-                    Text(userData['homeZone'] ?? '—',
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
+                    const Text(
+                      'Zone',
+                      style: TextStyle(fontSize: 11, color: Colors.white70),
+                    ),
+                    Text(
+                      userData['homeZone'] ?? '—',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -279,26 +320,29 @@ class _BillingScreenState extends State<BillingScreen> {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ChangePlanScreen())),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ChangePlanScreen()),
+            ),
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(14),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
               child: const Column(
                 children: [
-                  Icon(Icons.swap_horiz,
-                      color: AeroColors.amber, size: 22),
+                  Icon(Icons.swap_horiz, color: AeroColors.amber, size: 22),
                   SizedBox(height: 6),
-                  Text('Change plan',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
+                  Text(
+                    'Change plan',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -308,26 +352,28 @@ class _BillingScreenState extends State<BillingScreen> {
         Expanded(
           child: GestureDetector(
             onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => SubscriptionScreen(plan: plan))),
+              context,
+              MaterialPageRoute(builder: (_) => SubscriptionScreen(plan: plan)),
+            ),
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(14),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
               child: const Column(
                 children: [
                   Icon(Icons.refresh, color: AeroColors.success, size: 22),
                   SizedBox(height: 6),
-                  Text('Renew now',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
+                  Text(
+                    'Renew now',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -343,18 +389,26 @@ class _BillingScreenState extends State<BillingScreen> {
                 color: AeroColors.dangerLight,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                    color: AeroColors.danger.withValues(alpha: 0.2), width: 0.5),
+                  color: AeroColors.danger.withValues(alpha: 0.2),
+                  width: 0.5,
+                ),
               ),
               child: const Column(
                 children: [
-                  Icon(Icons.cancel_outlined,
-                      color: AeroColors.danger, size: 22),
+                  Icon(
+                    Icons.cancel_outlined,
+                    color: AeroColors.danger,
+                    size: 22,
+                  ),
                   SizedBox(height: 6),
-                  Text('Cancel',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: AeroColors.danger)),
+                  Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: AeroColors.danger,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -382,22 +436,29 @@ class _BillingScreenState extends State<BillingScreen> {
               color: AeroColors.success.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.receipt_long,
-                color: AeroColors.success, size: 18),
+            child: const Icon(
+              Icons.receipt_long,
+              color: AeroColors.success,
+              size: 18,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(payment['month'] as String,
-                    style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
-                Text('${payment['method']} · ${payment['date']}',
-                    style: const TextStyle(
-                        fontSize: 11, color: AeroColors.grey)),
+                Text(
+                  payment['month'] as String,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '${payment['method']} · ${payment['date']}',
+                  style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
@@ -405,23 +466,27 @@ class _BillingScreenState extends State<BillingScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                  'RM${(payment['amount'] as double).toStringAsFixed(0)}',
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white)),
+                'RM${(payment['amount'] as double).toStringAsFixed(0)}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: AeroColors.success.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text('Paid',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: AeroColors.success,
-                        fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Paid',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AeroColors.success,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),

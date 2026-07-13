@@ -67,9 +67,7 @@ class _SupportScreenState extends State<SupportScreen> {
         child: Column(
           children: [
             _buildHeader(context),
-            Expanded(
-              child: submitted ? _buildSuccessView() : _buildContent(),
-            ),
+            Expanded(child: submitted ? _buildSuccessView() : _buildContent()),
           ],
         ),
       ),
@@ -90,25 +88,34 @@ class _SupportScreenState extends State<SupportScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('SUPPORT',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Help & contact',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'SUPPORT',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Help & contact',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -143,7 +150,9 @@ class _SupportScreenState extends State<SupportScreen> {
         color: AeroColors.amber.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: AeroColors.amber.withValues(alpha: 0.2), width: 0.5),
+          color: AeroColors.amber.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: [
@@ -153,28 +162,34 @@ class _SupportScreenState extends State<SupportScreen> {
               color: AeroColors.amber.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.headset_mic_outlined,
-                color: AeroColors.amber, size: 20),
+            child: const Icon(
+              Icons.headset_mic_outlined,
+              color: AeroColors.amber,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Live support available',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
-                Text('Mon–Fri 8am–10pm · Sat–Sun 8am–6pm',
-                    style: TextStyle(
-                        fontSize: 11, color: AeroColors.grey)),
+                Text(
+                  'Live support available',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Mon–Fri 8am–10pm · Sat–Sun 8am–6pm',
+                  style: TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: AeroColors.success.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
@@ -183,11 +198,14 @@ class _SupportScreenState extends State<SupportScreen> {
               children: [
                 Icon(Icons.circle, size: 6, color: AeroColors.success),
                 SizedBox(width: 4),
-                Text('Online',
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AeroColors.success)),
+                Text(
+                  'Online',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AeroColors.success,
+                  ),
+                ),
               ],
             ),
           ),
@@ -223,20 +241,22 @@ class _SupportScreenState extends State<SupportScreen> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(faq['q'] as String,
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
+                        child: Text(
+                          faq['q'] as String,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                       Icon(
-                          isOpen
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
-                          color: isOpen
-                              ? AeroColors.amber
-                              : AeroColors.grey,
-                          size: 20),
+                        isOpen
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: isOpen ? AeroColors.amber : AeroColors.grey,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -244,11 +264,14 @@ class _SupportScreenState extends State<SupportScreen> {
               if (isOpen)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-                  child: Text(faq['a'] as String,
-                      style: const TextStyle(
-                          fontSize: 12,
-                          color: AeroColors.grey,
-                          height: 1.5)),
+                  child: Text(
+                    faq['a'] as String,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AeroColors.grey,
+                      height: 1.5,
+                    ),
+                  ),
                 ),
             ],
           ),
@@ -281,7 +304,9 @@ class _SupportScreenState extends State<SupportScreen> {
                   child: Container(
                     margin: const EdgeInsets.only(right: 8),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 8),
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AeroColors.amber.withValues(alpha: 0.15)
@@ -296,19 +321,24 @@ class _SupportScreenState extends State<SupportScreen> {
                     ),
                     child: Row(
                       children: [
-                        Icon(cat['icon'] as IconData,
-                            size: 13,
+                        Icon(
+                          cat['icon'] as IconData,
+                          size: 13,
+                          color: isSelected
+                              ? AeroColors.amber
+                              : AeroColors.grey,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          cat['label'] as String,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                             color: isSelected
                                 ? AeroColors.amber
-                                : AeroColors.grey),
-                        const SizedBox(width: 5),
-                        Text(cat['label'] as String,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: isSelected
-                                    ? AeroColors.amber
-                                    : AeroColors.grey)),
+                                : AeroColors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -325,24 +355,29 @@ class _SupportScreenState extends State<SupportScreen> {
             style: const TextStyle(color: Colors.white, fontSize: 13),
             decoration: InputDecoration(
               hintText: 'Describe your issue...',
-              hintStyle:
-                  const TextStyle(color: AeroColors.grey, fontSize: 13),
+              hintStyle: const TextStyle(color: AeroColors.grey, fontSize: 13),
               filled: true,
               fillColor: AeroColors.navy,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide:
-                    const BorderSide(color: AeroColors.divider, width: 0.5),
+                borderSide: const BorderSide(
+                  color: AeroColors.divider,
+                  width: 0.5,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide:
-                    const BorderSide(color: AeroColors.divider, width: 0.5),
+                borderSide: const BorderSide(
+                  color: AeroColors.divider,
+                  width: 0.5,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: const BorderSide(
-                    color: AeroColors.amber, width: 1.5),
+                  color: AeroColors.amber,
+                  width: 1.5,
+                ),
               ),
               contentPadding: const EdgeInsets.all(14),
             ),
@@ -360,12 +395,14 @@ class _SupportScreenState extends State<SupportScreen> {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 elevation: 0,
               ),
-              child: const Text('Send message',
-                  style: TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Send message',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],
@@ -387,23 +424,31 @@ class _SupportScreenState extends State<SupportScreen> {
                 color: AeroColors.success.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Icon(Icons.check_rounded,
-                  color: AeroColors.success, size: 40),
+              child: const Icon(
+                Icons.check_rounded,
+                color: AeroColors.success,
+                size: 40,
+              ),
             ),
             const SizedBox(height: 20),
-            const Text('Message sent!',
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white)),
+            const Text(
+              'Message sent!',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
             const SizedBox(height: 8),
             const Text(
-                'Our team will respond within 2 business hours.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AeroColors.grey,
-                    height: 1.5)),
+              'Our team will respond within 2 business hours.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: AeroColors.grey,
+                height: 1.5,
+              ),
+            ),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
@@ -414,12 +459,14 @@ class _SupportScreenState extends State<SupportScreen> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   elevation: 0,
                 ),
-                child: const Text('Back',
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Back',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ],

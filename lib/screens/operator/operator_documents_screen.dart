@@ -12,8 +12,7 @@ class OperatorDocumentsScreen extends StatefulWidget {
       _OperatorDocumentsScreenState();
 }
 
-class _OperatorDocumentsScreenState
-    extends State<OperatorDocumentsScreen> {
+class _OperatorDocumentsScreenState extends State<OperatorDocumentsScreen> {
   bool isLoading = false;
   Map<String, String> uploadedDocs = {};
 
@@ -63,8 +62,7 @@ class _OperatorDocumentsScreenState
         ),
         backgroundColor: AeroColors.success,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -90,14 +88,13 @@ class _OperatorDocumentsScreenState
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (_) => const OperatorPendingScreen()),
+        MaterialPageRoute(builder: (_) => const OperatorPendingScreen()),
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
     }
     setState(() => isLoading = false);
   }
@@ -136,27 +133,38 @@ class _OperatorDocumentsScreenState
                             color: AeroColors.navyCard,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                                color: AeroColors.divider, width: 0.5),
+                              color: AeroColors.divider,
+                              width: 0.5,
+                            ),
                           ),
-                          child: const Icon(Icons.arrow_back_ios_new,
-                              color: Colors.white, size: 16),
+                          child: const Icon(
+                            Icons.arrow_back_ios_new,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('STEP 2 OF 2',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: AeroColors.amber,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1)),
-                          Text('Upload documents',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
+                          Text(
+                            'STEP 2 OF 2',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.amber,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          Text(
+                            'Upload documents',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -165,29 +173,33 @@ class _OperatorDocumentsScreenState
                 const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Text('Verify your\nbusiness.',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: -0.5,
-                          height: 1.2)),
+                  child: Text(
+                    'Verify your\nbusiness.',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                      height: 1.2,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 6),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
-                      'Required by PDPA 2010. Stored securely. Reviewed within 24–48 hours.',
-                      style:
-                          TextStyle(fontSize: 12, color: AeroColors.grey)),
+                    'Required by PDPA 2010. Stored securely. Reviewed within 24–48 hours.',
+                    style: TextStyle(fontSize: 12, color: AeroColors.grey),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
                       color: AeroColors.background,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(28)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(28),
+                      ),
                     ),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(24),
@@ -203,20 +215,26 @@ class _OperatorDocumentsScreenState
                               color: AeroColors.navyCard,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: AeroColors.divider, width: 0.5),
+                                color: AeroColors.divider,
+                                width: 0.5,
+                              ),
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.lock_outline,
-                                    color: AeroColors.grey, size: 16),
+                                Icon(
+                                  Icons.lock_outline,
+                                  color: AeroColors.grey,
+                                  size: 16,
+                                ),
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     'Documents are encrypted, stored securely, and retained for 7 years per Malaysian commercial law.',
                                     style: TextStyle(
-                                        fontSize: 11,
-                                        color: AeroColors.grey,
-                                        height: 1.4),
+                                      fontSize: 11,
+                                      color: AeroColors.grey,
+                                      height: 1.4,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -232,13 +250,14 @@ class _OperatorDocumentsScreenState
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AeroColors.amber,
                                 foregroundColor: Colors.white,
-                                disabledBackgroundColor:
-                                    AeroColors.amber.withValues(alpha: 0.3),
+                                disabledBackgroundColor: AeroColors.amber
+                                    .withValues(alpha: 0.3),
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 16),
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(14)),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                                 elevation: 0,
                               ),
                               child: isLoading
@@ -246,15 +265,19 @@ class _OperatorDocumentsScreenState
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2))
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
                                   : Text(
                                       requiredDocsUploaded
                                           ? 'Submit for approval'
                                           : 'Upload required documents first',
                                       style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600)),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -308,12 +331,8 @@ class _OperatorDocumentsScreenState
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
-              isUploaded
-                  ? Icons.check_circle_outline
-                  : doc['icon'] as IconData,
-              color: isUploaded
-                  ? AeroColors.success
-                  : AeroColors.infoText,
+              isUploaded ? Icons.check_circle_outline : doc['icon'] as IconData,
+              color: isUploaded ? AeroColors.success : AeroColors.infoText,
               size: 22,
             ),
           ),
@@ -324,41 +343,49 @@ class _OperatorDocumentsScreenState
               children: [
                 Row(
                   children: [
-                    Text(doc['title'] as String,
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: AeroColors.navy)),
+                    Text(
+                      doc['title'] as String,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AeroColors.navy,
+                      ),
+                    ),
                     if (isRequired) ...[
                       const SizedBox(width: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AeroColors.dangerLight,
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: const Text('Required',
-                            style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.w600,
-                                color: AeroColors.danger)),
+                        child: const Text(
+                          'Required',
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w600,
+                            color: AeroColors.danger,
+                          ),
+                        ),
                       ),
                     ],
                   ],
                 ),
                 const SizedBox(height: 2),
-                Text(doc['desc'] as String,
-                    style: const TextStyle(
-                        fontSize: 11, color: AeroColors.grey)),
+                Text(
+                  doc['desc'] as String,
+                  style: const TextStyle(fontSize: 11, color: AeroColors.grey),
+                ),
               ],
             ),
           ),
           GestureDetector(
             onTap: () => _simulateUpload(docId),
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: isUploaded
                     ? AeroColors.successLight
@@ -373,11 +400,10 @@ class _OperatorDocumentsScreenState
               child: Text(
                 isUploaded ? 'Uploaded' : 'Upload',
                 style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: isUploaded
-                        ? AeroColors.success
-                        : AeroColors.amber),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: isUploaded ? AeroColors.success : AeroColors.amber,
+                ),
               ),
             ),
           ),

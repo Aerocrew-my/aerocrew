@@ -1,20 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/auth/login_screen.dart';
 import 'package:aerocrew/screens/shared/onboarding_screen.dart';
+import 'package:aerocrew/theme/aero_theme.dart';
+import 'package:aerocrew/theme/appearance_controller.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() async {
+import 'firebase_options.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-  ));
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    AppearanceController.instance.load(),
+  ]);
   runApp(const AeroCrewApp());
 }
 
@@ -23,18 +22,36 @@ class AeroCrewApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AeroCrew',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AeroColors.amber,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
-      home: const SplashScreen(),
+    return AnimatedBuilder(
+      animation: AppearanceController.instance,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'AeroCrew',
+          debugShowCheckedModeBanner: false,
+          theme: AeroTheme.light,
+          darkTheme: AeroTheme.dark,
+          themeMode: AppearanceController.instance.themeMode,
+          themeAnimationDuration: AeroMotion.standard,
+          builder: (context, child) {
+            final dark = Theme.of(context).brightness == Brightness.dark;
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: dark
+                    ? Brightness.light
+                    : Brightness.dark,
+                systemNavigationBarColor: context.aero.surface,
+                systemNavigationBarIconBrightness: dark
+                    ? Brightness.light
+                    : Brightness.dark,
+                systemNavigationBarDividerColor: context.aero.border,
+              ),
+              child: child ?? const SizedBox.shrink(),
+            );
+          },
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }
@@ -44,244 +61,143 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AeroColors.navy,
-      body: Stack(
-        children: [
-          Positioned(
-            top: -80,
-            right: -80,
-            child: Container(
-              width: 280,
-              height: 280,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AeroColors.amber.withValues(alpha: 0.06),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 60,
-            left: -60,
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AeroColors.amber.withValues(alpha: 0.04),
-              ),
-            ),
-          ),
-          SafeArea(
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.all(AeroSpacing.screen),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 48),
+                  const SizedBox(height: AeroSpacing.section),
                   Row(
                     children: [
                       Container(
-                        width: 44,
-                        height: 44,
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
-                          color: AeroColors.amber,
-                          borderRadius: BorderRadius.circular(12),
+                          color: theme.colorScheme.primary,
+                          borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Icon(Icons.flight,
-                            color: Colors.white, size: 22),
+                        child: const Icon(Icons.flight, color: Colors.white),
                       ),
-                      const SizedBox(width: 10),
-                      const Text('AeroCrew',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              letterSpacing: -0.3)),
+                      const SizedBox(width: AeroSpacing.sm),
+                      Text('AeroCrew', style: theme.textTheme.titleLarge),
                     ],
                   ),
-                  const SizedBox(height: 40),
+                  const Spacer(),
                   Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: AeroDecoration.darkCard,
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AeroColors.amber.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(Icons.verified_user,
-                              color: AeroColors.amber, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Verified operators only',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
-                              SizedBox(height: 2),
-                              Text('SSM, PSV & permit checked',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: AeroColors.grey)),
-                            ],
-                          ),
-                        ),
-                      ],
+                    width: 56,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: AeroDecoration.darkCard,
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AeroColors.success.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(Icons.auto_awesome,
-                              color: AeroColors.success, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('AI-powered roster scan',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
-                              SizedBox(height: 2),
-                              Text('Photo to schedule in seconds',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: AeroColors.grey)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: AeroDecoration.darkCard,
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AeroColors.infoText.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(Icons.people,
-                              color: AeroColors.infoText, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Smart pooling',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
-                              SizedBox(height: 2),
-                              Text('Auto-matched by zone & flight time',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: AeroColors.grey)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: AeroSpacing.md),
                   Text(
-                    'Transport built\nfor aviation crew.',
-                    style: AeroText.heading1.copyWith(fontSize: 34),
+                    'Crew transport,\nready when you are.',
+                    style: theme.textTheme.displaySmall,
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Reliable. Verified. Affordable.',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: AeroColors.grey,
-                        letterSpacing: 0.3),
+                  const SizedBox(height: AeroSpacing.sm),
+                  Text(
+                    'Plan roster-based pickups, follow live trips, and arrive ready for duty.',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: context.aero.textSecondary,
+                    ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AeroSpacing.lg),
+                  _TrustPoint(
+                    icon: Icons.verified_user_outlined,
+                    title: 'Verified transport operators',
+                    subtitle: 'Operator and vehicle documents are reviewed.',
+                  ),
+                  const SizedBox(height: AeroSpacing.sm),
+                  _TrustPoint(
+                    icon: Icons.calendar_month_outlined,
+                    title: 'Roster-led planning',
+                    subtitle:
+                        'Turn confirmed duties into transport requirements.',
+                  ),
+                  const SizedBox(height: AeroSpacing.sm),
+                  _TrustPoint(
+                    icon: Icons.route_outlined,
+                    title: 'Operational trip visibility',
+                    subtitle:
+                        'Assignment, driver, vehicle, and route in one place.',
+                  ),
+                  const Spacer(),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(
-                              builder: (_) => OnboardingScreen())),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AeroColors.amber,
-                        foregroundColor: Colors.white,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)),
-                        elevation: 0,
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => OnboardingScreen()),
                       ),
-                      child: const Text('Get started',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.2)),
+                      child: const Text('Get started'),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AeroSpacing.sm),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(
-                              builder: (_) => const LoginScreen())),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AeroColors.greyLight,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(
-                            color: AeroColors.divider, width: 1),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
                       ),
-                      child: const Text('Sign in',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500)),
+                      child: const Text('Sign in'),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: Text(
-                      'SZB · KLIA · KLIA2 · PEN',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: AeroColors.grey.withValues(alpha: 0.6),
-                          letterSpacing: 1.5),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AeroSpacing.xs),
                 ],
               ),
             ),
           ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class _TrustPoint extends StatelessWidget {
+  const _TrustPoint({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: context.aero.blueSurface,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: Theme.of(context).colorScheme.primary),
+        ),
+        const SizedBox(width: AeroSpacing.sm),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 2),
+              Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

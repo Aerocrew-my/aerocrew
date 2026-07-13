@@ -54,17 +54,23 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
 
   String get productName {
     switch (userData['product'] ?? 'aeropool') {
-      case 'aeroflex': return 'AeroFlex';
-      case 'aerosolo': return 'AeroSolo';
-      default: return 'AeroPool';
+      case 'aeroflex':
+        return 'AeroFlex';
+      case 'aerosolo':
+        return 'AeroSolo';
+      default:
+        return 'AeroPool';
     }
   }
 
   Color get productColor {
     switch (userData['product'] ?? 'aeropool') {
-      case 'aeroflex': return const Color(0xFF378ADD);
-      case 'aerosolo': return const Color(0xFFEF9F27);
-      default: return AeroColors.amber;
+      case 'aeroflex':
+        return const Color(0xFF378ADD);
+      case 'aerosolo':
+        return const Color(0xFFEF9F27);
+      default:
+        return AeroColors.amber;
     }
   }
 
@@ -74,7 +80,9 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
       backgroundColor: AeroColors.navy,
       body: SafeArea(
         child: isLoading
-            ? const Center(child: CircularProgressIndicator(color: AeroColors.amber))
+            ? const Center(
+                child: CircularProgressIndicator(color: AeroColors.amber),
+              )
             : SingleChildScrollView(
                 child: Column(
                   children: [
@@ -102,46 +110,60 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('MY PROFILE',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Account details',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'MY PROFILE',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Account details',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           const Spacer(),
           GestureDetector(
-  onTap: () => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (_) => const EditProfileScreen()),
-  ),
-  child: Container(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+            ),
+            child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: AeroColors.amber.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                    color: AeroColors.amber.withValues(alpha: 0.3), width: 0.5),
+                  color: AeroColors.amber.withValues(alpha: 0.3),
+                  width: 0.5,
+                ),
               ),
-              child: const Text('Edit',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AeroColors.amber)),
+              child: const Text(
+                'Edit',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AeroColors.amber,
+                ),
+              ),
             ),
           ),
         ],
@@ -172,72 +194,91 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
                 child: Text(
                   (userData['name'] ?? 'C').substring(0, 1).toUpperCase(),
                   style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: AeroColors.amber),
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: AeroColors.amber,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 12),
-            Text(userData['name'] ?? 'Crew Member',
-                style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white)),
+            Text(
+              userData['name'] ?? 'Crew Member',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
             const SizedBox(height: 4),
-            Text(userData['email'] ?? '',
-                style: const TextStyle(fontSize: 13, color: AeroColors.grey)),
+            Text(
+              userData['email'] ?? '',
+              style: const TextStyle(fontSize: 13, color: AeroColors.grey),
+            ),
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: productColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: productColor.withValues(alpha: 0.3), width: 0.5),
+                      color: productColor.withValues(alpha: 0.3),
+                      width: 0.5,
+                    ),
                   ),
-                  child: Text(productName,
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: productColor)),
+                  child: Text(
+                    productName,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: productColor,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
-                    color: (userData['status'] == 'verified'
-                            ? AeroColors.success
-                            : AeroColors.amber)
-                        .withValues(alpha: 0.12),
+                    color:
+                        (userData['status'] == 'verified'
+                                ? AeroColors.success
+                                : AeroColors.amber)
+                            .withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     children: [
                       Icon(
-                          userData['status'] == 'verified'
-                              ? Icons.verified
-                              : Icons.pending,
-                          size: 11,
-                          color: userData['status'] == 'verified'
-                              ? AeroColors.success
-                              : AeroColors.amber),
+                        userData['status'] == 'verified'
+                            ? Icons.verified
+                            : Icons.pending,
+                        size: 11,
+                        color: userData['status'] == 'verified'
+                            ? AeroColors.success
+                            : AeroColors.amber,
+                      ),
                       const SizedBox(width: 4),
                       Text(
-                          userData['status'] == 'verified'
-                              ? 'Verified'
-                              : 'Pending',
-                          style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: userData['status'] == 'verified'
-                                  ? AeroColors.success
-                                  : AeroColors.amber)),
+                        userData['status'] == 'verified'
+                            ? 'Verified'
+                            : 'Pending',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: userData['status'] == 'verified'
+                              ? AeroColors.success
+                              : AeroColors.amber,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -249,11 +290,20 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
             Row(
               children: [
                 _buildProfileStat(
-                    'Airline', userData['airline'] ?? '—', Icons.flight),
-                _buildProfileStat('Base',
-                    userData['baseAirport'] ?? '—', Icons.location_on_outlined),
+                  'Airline',
+                  userData['airline'] ?? '—',
+                  Icons.flight,
+                ),
                 _buildProfileStat(
-                    'Zone', userData['homeZone'] ?? '—', Icons.home_outlined),
+                  'Base',
+                  userData['baseAirport'] ?? '—',
+                  Icons.location_on_outlined,
+                ),
+                _buildProfileStat(
+                  'Zone',
+                  userData['homeZone'] ?? '—',
+                  Icons.home_outlined,
+                ),
               ],
             ),
           ],
@@ -268,14 +318,19 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
         children: [
           Icon(icon, color: AeroColors.amber, size: 18),
           const SizedBox(height: 4),
-          Text(value,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white)),
-          Text(label,
-              style: const TextStyle(fontSize: 10, color: AeroColors.grey)),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 10, color: AeroColors.grey),
+          ),
         ],
       ),
     );
@@ -338,51 +393,68 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          ...menuItems.map((item) => GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => item['screen'] as Widget)),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AeroColors.navyCard,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AeroColors.divider, width: 0.5),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: (item['color'] as Color).withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(item['icon'] as IconData,
-                            color: item['color'] as Color, size: 18),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(item['label'] as String,
-                                style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white)),
-                            Text(item['desc'] as String,
-                                style: const TextStyle(
-                                    fontSize: 11, color: AeroColors.grey)),
-                          ],
-                        ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios,
-                          size: 13, color: AeroColors.grey),
-                    ],
-                  ),
+          ...menuItems.map(
+            (item) => GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => item['screen'] as Widget),
+              ),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AeroColors.navyCard,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AeroColors.divider, width: 0.5),
                 ),
-              )),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: (item['color'] as Color).withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        item['icon'] as IconData,
+                        color: item['color'] as Color,
+                        size: 18,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['label'] as String,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            item['desc'] as String,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: AeroColors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 13,
+                      color: AeroColors.grey,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: _signOut,
@@ -393,25 +465,32 @@ class _CrewProfileViewScreenState extends State<CrewProfileViewScreen> {
                 color: AeroColors.danger.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                    color: AeroColors.danger.withValues(alpha: 0.2), width: 0.5),
+                  color: AeroColors.danger.withValues(alpha: 0.2),
+                  width: 0.5,
+                ),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.logout, color: AeroColors.danger, size: 16),
                   SizedBox(width: 8),
-                  Text('Sign out',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AeroColors.danger)),
+                  Text(
+                    'Sign out',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AeroColors.danger,
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 32),
-          const Text('AeroCrew v1.0.0',
-              style: TextStyle(fontSize: 11, color: AeroColors.lightGrey)),
+          const Text(
+            'AeroCrew v1.0.0',
+            style: TextStyle(fontSize: 11, color: AeroColors.lightGrey),
+          ),
           const SizedBox(height: 8),
         ],
       ),

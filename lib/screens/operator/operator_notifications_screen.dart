@@ -33,7 +33,8 @@ class _OperatorNotificationsScreenState
     {
       'type': 'reminder',
       'title': 'Upcoming pickup',
-      'body': 'Reminder: 2 crew pickup tomorrow at 07:00 from Shah Alam → KLIA.',
+      'body':
+          'Reminder: 2 crew pickup tomorrow at 07:00 from Shah Alam → KLIA.',
       'time': '5 hours ago',
       'read': true,
       'icon': Icons.alarm,
@@ -42,7 +43,8 @@ class _OperatorNotificationsScreenState
     {
       'type': 'system',
       'title': 'Account verified',
-      'body': 'Your documents have been approved. You are now active on AeroCrew.',
+      'body':
+          'Your documents have been approved. You are now active on AeroCrew.',
       'time': 'Yesterday',
       'read': true,
       'icon': Icons.verified_outlined,
@@ -61,8 +63,7 @@ class _OperatorNotificationsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final unread =
-        notifications.where((n) => n['read'] == false).length;
+    final unread = notifications.where((n) => n['read'] == false).length;
 
     return Scaffold(
       backgroundColor: AeroColors.navy,
@@ -81,10 +82,15 @@ class _OperatorNotificationsScreenState
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -92,20 +98,23 @@ class _OperatorNotificationsScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('NOTIFICATIONS',
-                            style: TextStyle(
-                                fontSize: 11,
-                                color: AeroColors.amber,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1)),
+                        const Text(
+                          'NOTIFICATIONS',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AeroColors.amber,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                          ),
+                        ),
                         Text(
-                            unread > 0
-                                ? '$unread unread'
-                                : 'All caught up',
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white)),
+                          unread > 0 ? '$unread unread' : 'All caught up',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -116,11 +125,14 @@ class _OperatorNotificationsScreenState
                           n['read'] = true;
                         }
                       }),
-                      child: const Text('Mark all read',
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w500)),
+                      child: const Text(
+                        'Mark all read',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                 ],
               ),
@@ -135,8 +147,7 @@ class _OperatorNotificationsScreenState
                   final isUnread = n['read'] == false;
                   final color = n['color'] as Color;
                   return GestureDetector(
-                    onTap: () =>
-                        setState(() => n['read'] = true),
+                    onTap: () => setState(() => n['read'] = true),
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(14),
@@ -162,28 +173,30 @@ class _OperatorNotificationsScreenState
                               color: color.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Icon(n['icon'] as IconData,
-                                color: color, size: 18),
+                            child: Icon(
+                              n['icon'] as IconData,
+                              color: color,
+                              size: 18,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
                                     Expanded(
                                       child: Text(
-                                          n['title'] as String,
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight:
-                                                  FontWeight.w600,
-                                              color: isUnread
-                                                  ? Colors.white
-                                                  : AeroColors
-                                                      .greyLight)),
+                                        n['title'] as String,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: isUnread
+                                              ? Colors.white
+                                              : AeroColors.greyLight,
+                                        ),
+                                      ),
                                     ),
                                     if (isUnread)
                                       Container(
@@ -197,16 +210,22 @@ class _OperatorNotificationsScreenState
                                   ],
                                 ),
                                 const SizedBox(height: 4),
-                                Text(n['body'] as String,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        color: AeroColors.grey,
-                                        height: 1.4)),
+                                Text(
+                                  n['body'] as String,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: AeroColors.grey,
+                                    height: 1.4,
+                                  ),
+                                ),
                                 const SizedBox(height: 6),
-                                Text(n['time'] as String,
-                                    style: const TextStyle(
-                                        fontSize: 11,
-                                        color: AeroColors.lightGrey)),
+                                Text(
+                                  n['time'] as String,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: AeroColors.lightGrey,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

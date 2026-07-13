@@ -5,8 +5,7 @@ class SavedAddressesScreen extends StatefulWidget {
   const SavedAddressesScreen({super.key});
 
   @override
-  State<SavedAddressesScreen> createState() =>
-      _SavedAddressesScreenState();
+  State<SavedAddressesScreen> createState() => _SavedAddressesScreenState();
 }
 
 class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
@@ -58,21 +57,26 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                         color: AeroColors.amber.withValues(alpha: 0.06),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color: AeroColors.amber.withValues(alpha: 0.2),
-                            width: 0.5),
+                          color: AeroColors.amber.withValues(alpha: 0.2),
+                          width: 0.5,
+                        ),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.info_outline,
-                              color: AeroColors.amber, size: 16),
+                          Icon(
+                            Icons.info_outline,
+                            color: AeroColors.amber,
+                            size: 16,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Your default address is used for all AeroPool pickups. Set it to your most frequent pickup location.',
                               style: TextStyle(
-                                  fontSize: 12,
-                                  color: AeroColors.amber,
-                                  height: 1.4),
+                                fontSize: 12,
+                                color: AeroColors.amber,
+                                height: 1.4,
+                              ),
                             ),
                           ),
                         ],
@@ -108,86 +112,106 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                                 color: color.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Icon(addr['icon'] as IconData,
-                                  color: color, size: 20),
+                              child: Icon(
+                                addr['icon'] as IconData,
+                                color: color,
+                                size: 20,
+                              ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
-                                      Text(addr['label'] as String,
-                                          style: const TextStyle(
-                                              fontSize: 13,
-                                              fontWeight:
-                                                  FontWeight.w600,
-                                              color: Colors.white)),
+                                      Text(
+                                        addr['label'] as String,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                       if (addr['isDefault'] == true) ...[
                                         const SizedBox(width: 6),
                                         Container(
-                                          padding: const EdgeInsets
-                                              .symmetric(
-                                              horizontal: 6,
-                                              vertical: 2),
-                                          decoration: BoxDecoration(
-                                            color: color
-                                                .withValues(alpha: 0.12),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2,
                                           ),
-                                          child: Text('Default',
-                                              style: TextStyle(
-                                                  fontSize: 9,
-                                                  color: color,
-                                                  fontWeight:
-                                                      FontWeight.w600)),
+                                          decoration: BoxDecoration(
+                                            color: color.withValues(
+                                              alpha: 0.12,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Default',
+                                            style: TextStyle(
+                                              fontSize: 9,
+                                              color: color,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ],
                                   ),
                                   const SizedBox(height: 2),
-                                  Text(addr['address'] as String,
-                                      style: const TextStyle(
-                                          fontSize: 11,
-                                          color: AeroColors.grey),
-                                      maxLines: 2),
+                                  Text(
+                                    addr['address'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: AeroColors.grey,
+                                    ),
+                                    maxLines: 2,
+                                  ),
                                 ],
                               ),
                             ),
                             PopupMenuButton<String>(
                               color: AeroColors.navyCard,
-                              icon: const Icon(Icons.more_vert,
-                                  color: AeroColors.grey, size: 18),
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: AeroColors.grey,
+                                size: 18,
+                              ),
                               onSelected: (value) {
                                 if (value == 'default') {
                                   setState(() {
                                     for (final a in addresses) {
                                       a['isDefault'] = false;
                                     }
-                                    addresses[e.key]['isDefault'] =
-                                        true;
+                                    addresses[e.key]['isDefault'] = true;
                                   });
                                 } else if (value == 'delete') {
-                                  setState(() =>
-                                      addresses.removeAt(e.key));
+                                  setState(() => addresses.removeAt(e.key));
                                 }
                               },
                               itemBuilder: (_) => [
                                 const PopupMenuItem(
-                                    value: 'default',
-                                    child: Text('Set as default',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 13))),
+                                  value: 'default',
+                                  child: Text(
+                                    'Set as default',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
                                 const PopupMenuItem(
-                                    value: 'delete',
-                                    child: Text('Delete',
-                                        style: TextStyle(
-                                            color: AeroColors.danger,
-                                            fontSize: 13))),
+                                  value: 'delete',
+                                  child: Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                      color: AeroColors.danger,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -202,40 +226,38 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                           color: AeroColors.navyCard,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                              color: AeroColors.amber.withValues(alpha: 0.3)),
+                            color: AeroColors.amber.withValues(alpha: 0.3),
+                          ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('ADD ADDRESS',
-                                style: AeroText.label),
+                            const Text('ADD ADDRESS', style: AeroText.label),
                             const SizedBox(height: 12),
                             _buildAddField(
-                                labelController, 'Label (e.g. Home)',
-                                Icons.label_outline),
+                              labelController,
+                              'Label (e.g. Home)',
+                              Icons.label_outline,
+                            ),
                             const SizedBox(height: 10),
                             _buildAddField(
-                                addressController,
-                                'Full address',
-                                Icons.location_on_outlined),
+                              addressController,
+                              'Full address',
+                              Icons.location_on_outlined,
+                            ),
                             const SizedBox(height: 12),
                             Row(
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      if (labelController.text
-                                              .isNotEmpty &&
-                                          addressController
-                                              .text.isNotEmpty) {
+                                      if (labelController.text.isNotEmpty &&
+                                          addressController.text.isNotEmpty) {
                                         setState(() {
                                           addresses.add({
-                                            'label': labelController
-                                                .text,
-                                            'address': addressController
-                                                .text,
-                                            'icon':
-                                                Icons.location_on,
+                                            'label': labelController.text,
+                                            'address': addressController.text,
+                                            'icon': Icons.location_on,
                                             'color': AeroColors.amber,
                                             'isDefault': false,
                                           });
@@ -249,8 +271,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                                       backgroundColor: AeroColors.amber,
                                       foregroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                       elevation: 0,
                                     ),
                                     child: const Text('Save'),
@@ -259,15 +281,16 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: OutlinedButton(
-                                    onPressed: () => setState(
-                                        () => showAddForm = false),
+                                    onPressed: () =>
+                                        setState(() => showAddForm = false),
                                     style: OutlinedButton.styleFrom(
                                       foregroundColor: AeroColors.grey,
                                       side: const BorderSide(
-                                          color: AeroColors.divider),
+                                        color: AeroColors.divider,
+                                      ),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                     ),
                                     child: const Text('Cancel'),
                                   ),
@@ -282,19 +305,19 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton.icon(
-                          onPressed: () =>
-                              setState(() => showAddForm = true),
+                          onPressed: () => setState(() => showAddForm = true),
                           icon: const Icon(Icons.add, size: 16),
                           label: const Text('Add new address'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AeroColors.amber,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 14),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                             side: const BorderSide(
-                                color: AeroColors.amber, width: 1),
+                              color: AeroColors.amber,
+                              width: 1,
+                            ),
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),
@@ -321,28 +344,36 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
               decoration: BoxDecoration(
                 color: AeroColors.navyCard,
                 borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: AeroColors.divider, width: 0.5),
+                border: Border.all(color: AeroColors.divider, width: 0.5),
               ),
-              child: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.white, size: 16),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('SAVED ADDRESSES',
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: AeroColors.amber,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1)),
-              Text('Pickup locations',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              Text(
+                'SAVED ADDRESSES',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AeroColors.amber,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                ),
+              ),
+              Text(
+                'Pickup locations',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ],
@@ -351,7 +382,10 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
   }
 
   Widget _buildAddField(
-      TextEditingController ctrl, String hint, IconData icon) {
+    TextEditingController ctrl,
+    String hint,
+    IconData icon,
+  ) {
     return TextField(
       controller: ctrl,
       style: const TextStyle(color: Colors.white, fontSize: 13),
@@ -363,21 +397,20 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
         fillColor: AeroColors.navy,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide:
-              const BorderSide(color: AeroColors.divider, width: 0.5),
+          borderSide: const BorderSide(color: AeroColors.divider, width: 0.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide:
-              const BorderSide(color: AeroColors.divider, width: 0.5),
+          borderSide: const BorderSide(color: AeroColors.divider, width: 0.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide:
-              const BorderSide(color: AeroColors.amber, width: 1.5),
+          borderSide: const BorderSide(color: AeroColors.amber, width: 1.5),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         isDense: true,
       ),
     );

@@ -23,27 +23,38 @@ class AboutScreen extends StatelessWidget {
                         color: AeroColors.navyCard,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AeroColors.divider, width: 0.5),
+                          color: AeroColors.divider,
+                          width: 0.5,
+                        ),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white, size: 16),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('ABOUT',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: AeroColors.amber,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1)),
-                      Text('AeroCrew',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
+                      Text(
+                        'ABOUT',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AeroColors.amber,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        'AeroCrew',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -62,22 +73,30 @@ class AboutScreen extends StatelessWidget {
                         color: AeroColors.amber,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Icon(Icons.flight,
-                          color: Colors.white, size: 40),
+                      child: const Icon(
+                        Icons.flight,
+                        color: Colors.white,
+                        size: 40,
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    const Text('AeroCrew',
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                    const Text('Version 1.0.0',
-                        style: TextStyle(
-                            fontSize: 14, color: AeroColors.grey)),
+                    const Text(
+                      'AeroCrew',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Text(
+                      'Version 1.0.0',
+                      style: TextStyle(fontSize: 14, color: AeroColors.grey),
+                    ),
                     const SizedBox(height: 6),
-                    const Text('Made in Malaysia 🇲🇾',
-                        style: TextStyle(
-                            fontSize: 13, color: AeroColors.grey)),
+                    const Text(
+                      'Made in Malaysia 🇲🇾',
+                      style: TextStyle(fontSize: 13, color: AeroColors.grey),
+                    ),
                     const SizedBox(height: 32),
                     _buildInfoCard(
                       'Our mission',
@@ -89,7 +108,10 @@ class AboutScreen extends StatelessWidget {
                       'To become the default ground transportation network for aviation professionals across Southeast Asia.',
                     ),
                     const SizedBox(height: 20),
-                    _buildLinkRow('Terms of Service', Icons.description_outlined),
+                    _buildLinkRow(
+                      'Terms of Service',
+                      Icons.description_outlined,
+                    ),
                     _buildLinkRow('Privacy Policy', Icons.privacy_tip_outlined),
                     _buildLinkRow('Cookie Policy', Icons.cookie_outlined),
                     _buildLinkRow('Open source licences', Icons.code),
@@ -98,16 +120,20 @@ class AboutScreen extends StatelessWidget {
                       '© 2026 AeroCrew Sdn Bhd\nAll rights reserved',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 11,
-                          color: AeroColors.lightGrey,
-                          height: 1.6),
+                        fontSize: 11,
+                        color: AeroColors.lightGrey,
+                        height: 1.6,
+                      ),
                     ),
                     const SizedBox(height: 20),
-                    const Text('aerocrew.my',
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: AeroColors.amber,
-                            fontWeight: FontWeight.w500)),
+                    const Text(
+                      'aerocrew.my',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AeroColors.amber,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -130,17 +156,23 @@ class AboutScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AeroColors.amber)),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: AeroColors.amber,
+            ),
+          ),
           const SizedBox(height: 8),
-          Text(body,
-              style: const TextStyle(
-                  fontSize: 12,
-                  color: AeroColors.grey,
-                  height: 1.6)),
+          Text(
+            body,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AeroColors.grey,
+              height: 1.6,
+            ),
+          ),
         ],
       ),
     );
@@ -160,12 +192,12 @@ class AboutScreen extends StatelessWidget {
           Icon(icon, size: 16, color: AeroColors.grey),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(label,
-                style: const TextStyle(
-                    fontSize: 13, color: Colors.white)),
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 13, color: Colors.white),
+            ),
           ),
-          const Icon(Icons.arrow_forward_ios,
-              size: 13, color: AeroColors.grey),
+          const Icon(Icons.arrow_forward_ios, size: 13, color: AeroColors.grey),
         ],
       ),
     );
