@@ -6,7 +6,6 @@ import 'package:aerocrew/services/user_profile_service.dart';
 import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:aerocrew/widgets/aero_components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AuthGate extends StatelessWidget {
@@ -70,10 +69,6 @@ class _AuthenticatedProfileLoaderState
         if (snapshot.hasError) {
           final error = snapshot.error;
           final failure = error is ProfileFailure ? error : null;
-          final debugDetail =
-              kDebugMode && failure?.code == ProfileFailureCode.permissionDenied
-              ? '\n\nDebug: Firestore denied users/${widget.user.uid}. Review deployed rules and Firebase app configuration.'
-              : '';
           return Scaffold(
             body: SafeArea(
               child: Center(
@@ -83,7 +78,8 @@ class _AuthenticatedProfileLoaderState
                     padding: const EdgeInsets.all(AeroSpacing.screen),
                     child: AeroErrorState(
                       message:
-                          '${failure?.userMessage ?? 'Your profile could not be loaded.'}$debugDetail',
+                          failure?.userMessage ??
+                          'Your profile could not be loaded.',
                       onRetry: _reload,
                     ),
                   ),

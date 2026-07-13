@@ -34,9 +34,11 @@ class AuthService {
       );
       return credential.user!;
     } on FirebaseAuthException catch (error, stackTrace) {
-      debugPrint('Firebase Auth sign-in failed [${error.code}]: $error');
-      debugPrintStack(stackTrace: stackTrace);
-      throw _mapFailure(error);
+      if (kDebugMode) {
+        debugPrint('Firebase Auth sign-in failed [${error.code}]: $error');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      throw mapFirebaseAuthException(error);
     }
   }
 
@@ -51,50 +53,54 @@ class AuthService {
       );
       return credential.user!;
     } on FirebaseAuthException catch (error, stackTrace) {
-      debugPrint('Firebase Auth signup failed [${error.code}]: $error');
-      debugPrintStack(stackTrace: stackTrace);
-      throw _mapFailure(error);
+      if (kDebugMode) {
+        debugPrint('Firebase Auth signup failed [${error.code}]: $error');
+        debugPrintStack(stackTrace: stackTrace);
+      }
+      throw mapFirebaseAuthException(error);
     }
   }
 
   Future<void> signOut() => _auth.signOut();
+}
 
-  AuthFailure _mapFailure(FirebaseAuthException error) {
-    return switch (error.code) {
-      'invalid-email' => const AuthFailure(
-        AuthFailureCode.invalidEmail,
-        'Enter a valid email address.',
-      ),
-      'invalid-credential' ||
-      'user-not-found' ||
-      'wrong-password' => const AuthFailure(
-        AuthFailureCode.invalidCredential,
-        'The email or password is incorrect.',
-      ),
-      'user-disabled' => const AuthFailure(
-        AuthFailureCode.userDisabled,
-        'This account has been disabled. Contact AeroCrew support.',
-      ),
-      'too-many-requests' => const AuthFailure(
-        AuthFailureCode.tooManyRequests,
-        'Too many attempts. Wait a moment before trying again.',
-      ),
-      'network-request-failed' => const AuthFailure(
-        AuthFailureCode.network,
-        'A network connection is required. Check your connection and retry.',
-      ),
-      'email-already-in-use' => const AuthFailure(
-        AuthFailureCode.emailAlreadyInUse,
-        'An account already exists for this email.',
-      ),
-      'weak-password' => const AuthFailure(
-        AuthFailureCode.weakPassword,
-        'Use a stronger password with at least 8 characters.',
-      ),
-      _ => const AuthFailure(
-        AuthFailureCode.unknown,
-        'Authentication is temporarily unavailable. Try again.',
-      ),
-    };
-  }
+/// Converts Firebase's implementation-specific error codes into stable,
+/// user-safe failures that can be presented by the authentication UI.
+AuthFailure mapFirebaseAuthException(FirebaseAuthException error) {
+  return switch (error.code) {
+    'invalid-email' => const AuthFailure(
+      AuthFailureCode.invalidEmail,
+      'Enter a valid email address.',
+    ),
+    'invalid-credential' ||
+    'user-not-found' ||
+    'wrong-password' => const AuthFailure(
+      AuthFailureCode.invalidCredential,
+      'The email or password is incorrect.',
+    ),
+    'user-disabled' => const AuthFailure(
+      AuthFailureCode.userDisabled,
+      'This account has been disabled. Contact AeroCrew support.',
+    ),
+    'too-many-requests' => const AuthFailure(
+      AuthFailureCode.tooManyRequests,
+      'Too many attempts. Wait a moment before trying again.',
+    ),
+    'network-request-failed' => const AuthFailure(
+      AuthFailureCode.network,
+      'A network connection is required. Check your connection and retry.',
+    ),
+    'email-already-in-use' => const AuthFailure(
+      AuthFailureCode.emailAlreadyInUse,
+      'An account already exists for this email.',
+    ),
+    'weak-password' => const AuthFailure(
+      AuthFailureCode.weakPassword,
+      'Use a stronger password with at least 8 characters.',
+    ),
+    _ => const AuthFailure(
+      AuthFailureCode.unknown,
+      'Authentication is temporarily unavailable. Try again.',
+    ),
+  };
 }

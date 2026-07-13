@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/screens/crew/crew_profile_screen.dart';
+import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -89,24 +89,12 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final selected = products.firstWhere((p) => p['id'] == selectedProduct);
 
     return Scaffold(
-      backgroundColor: AeroColors.navy,
       body: Stack(
         children: [
-          Positioned(
-            top: -60,
-            right: -60,
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AeroColors.amber.withValues(alpha: 0.05),
-              ),
-            ),
-          ),
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,35 +106,31 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: AeroColors.amber.withValues(alpha: 0.15),
+                          color: context.aero.blueSurface,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.local_taxi,
-                          color: AeroColors.amber,
+                          color: theme.colorScheme.primary,
                           size: 22,
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'STEP 2 OF 3',
-                            style: TextStyle(
+                            style: theme.textTheme.labelSmall?.copyWith(
                               fontSize: 11,
-                              color: AeroColors.amber,
+                              color: theme.colorScheme.primary,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1,
                             ),
                           ),
                           Text(
                             'Choose your plan',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+                            style: theme.textTheme.titleMedium,
                           ),
                         ],
                       ),
@@ -154,25 +138,21 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     'Transport that\nfits your schedule.',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      letterSpacing: -0.5,
-                      height: 1.2,
-                    ),
+                    style: theme.textTheme.headlineSmall,
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     'You can change this anytime.',
-                    style: TextStyle(fontSize: 13, color: AeroColors.grey),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: context.aero.textSecondary,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -198,12 +178,12 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? color.withValues(alpha: 0.08)
-                                    : AeroColors.navyCard,
+                                    : context.aero.surfaceElevated,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: isSelected
                                       ? color
-                                      : AeroColors.divider,
+                                      : context.aero.border,
                                   width: isSelected ? 1.5 : 0.5,
                                 ),
                               ),
@@ -241,9 +221,9 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                           ),
                                           Text(
                                             product['tagline'] as String,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 11,
-                                              color: AeroColors.grey,
+                                              color: context.aero.textSecondary,
                                             ),
                                           ),
                                         ],
@@ -282,25 +262,25 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                     children: [
                                       Text(
                                         product['price'] as String,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 22,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.white,
+                                          color: theme.colorScheme.onSurface,
                                         ),
                                       ),
                                       Text(
                                         product['period'] as String,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 12,
-                                          color: AeroColors.grey,
+                                          color: context.aero.textSecondary,
                                         ),
                                       ),
                                     ],
                                   ),
                                   if (isSelected) ...[
                                     const SizedBox(height: 12),
-                                    const Divider(
-                                      color: AeroColors.divider,
+                                    Divider(
+                                      color: context.aero.border,
                                       height: 1,
                                     ),
                                     const SizedBox(height: 10),
@@ -319,9 +299,10 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               f,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 12,
-                                                color: AeroColors.greyLight,
+                                                color:
+                                                    theme.colorScheme.onSurface,
                                               ),
                                             ),
                                           ],
@@ -339,21 +320,12 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: isLoading ? null : _selectProduct,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AeroColors.amber,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              elevation: 0,
-                            ),
                             child: isLoading
-                                ? const SizedBox(
+                                ? SizedBox(
                                     height: 20,
                                     width: 20,
                                     child: CircularProgressIndicator(
-                                      color: Colors.white,
+                                      color: theme.colorScheme.onPrimary,
                                       strokeWidth: 2,
                                     ),
                                   )

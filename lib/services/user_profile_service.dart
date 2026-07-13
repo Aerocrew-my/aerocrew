@@ -30,17 +30,21 @@ class UserProfileService {
       if (!document.exists) return null;
       return AppUser.fromDocument(document);
     } on AppUserFormatException catch (error, stackTrace) {
-      debugPrint('Malformed user profile for $uid: ${error.message}');
-      debugPrintStack(stackTrace: stackTrace);
+      if (kDebugMode) {
+        debugPrint('Malformed user profile for $uid: ${error.message}');
+        debugPrintStack(stackTrace: stackTrace);
+      }
       throw const ProfileFailure(
         ProfileFailureCode.malformed,
         'Your account profile needs support before it can be opened.',
       );
     } on FirebaseException catch (error, stackTrace) {
-      debugPrint(
-        'Firestore profile read failed [${error.code}] for $uid: $error',
-      );
-      debugPrintStack(stackTrace: stackTrace);
+      if (kDebugMode) {
+        debugPrint(
+          'Firestore profile read failed [${error.code}] for $uid: $error',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
       throw _mapFailure(error);
     }
   }
@@ -71,10 +75,12 @@ class UserProfileService {
       final created = await reference.get();
       return AppUser.fromDocument(created);
     } on FirebaseException catch (error, stackTrace) {
-      debugPrint(
-        'Firestore profile creation failed [${error.code}] for ${authUser.uid}: $error',
-      );
-      debugPrintStack(stackTrace: stackTrace);
+      if (kDebugMode) {
+        debugPrint(
+          'Firestore profile creation failed [${error.code}] for ${authUser.uid}: $error',
+        );
+        debugPrintStack(stackTrace: stackTrace);
+      }
       throw _mapFailure(error);
     }
   }

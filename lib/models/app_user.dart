@@ -67,6 +67,14 @@ class AppUser {
         'Profile contains invalid required fields.',
       );
     }
+    final product = data['product'];
+    final onboardingStage = data['onboardingStage'];
+    if ((product != null && product is! String) ||
+        (onboardingStage != null && onboardingStage is! String)) {
+      throw const AppUserFormatException(
+        'Profile contains invalid optional fields.',
+      );
+    }
     return AppUser(
       id: id,
       name: name,
@@ -76,8 +84,8 @@ class AppUser {
       status: status,
       profileComplete: data['profileComplete'] == true,
       documentsSubmitted: data['documentsSubmittedAt'] != null,
-      product: data['product'] as String?,
-      onboardingStage: data['onboardingStage'] as String?,
+      product: product as String?,
+      onboardingStage: onboardingStage as String?,
     );
   }
 }

@@ -76,16 +76,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _loadProfile(User user) async {
     try {
-      await _profiles.load(user.uid);
+      final profile = await _profiles.load(user.uid);
       if (!mounted) return;
+      if (kDebugMode) {
+        debugPrint(
+          profile == null
+              ? 'Authenticated user ${user.uid} needs profile recovery.'
+              : 'Authenticated user ${user.uid} profile loaded.',
+        );
+      }
       Navigator.of(context).popUntil((route) => route.isFirst);
     } on ProfileFailure catch (failure) {
       if (!mounted) return;
-      final debugDetail =
-          kDebugMode && failure.code == ProfileFailureCode.permissionDenied
-          ? ' Debug: Firestore denied users/${user.uid}; verify deployed rules and Firebase app selection.'
-          : '';
-      setState(() => _error = '${failure.userMessage}$debugDetail');
+      setState(() => _error = failure.userMessage);
     }
   }
 

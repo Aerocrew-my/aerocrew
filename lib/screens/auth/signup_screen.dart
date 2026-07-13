@@ -1,12 +1,10 @@
 import 'package:aerocrew/models/app_user.dart';
 import 'package:aerocrew/screens/auth/login_screen.dart';
-import 'package:aerocrew/screens/auth/otp_screen.dart';
 import 'package:aerocrew/services/auth_service.dart';
 import 'package:aerocrew/services/user_profile_service.dart';
 import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:aerocrew/widgets/aero_components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -100,23 +98,15 @@ class _SignupScreenState extends State<SignupScreen> {
         role: _role,
       );
       if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              OtpScreen(phone: _phoneController.text.trim(), role: _role.name),
-        ),
-      );
+      // Email/password signup does not verify a phone number. Return to the
+      // root AuthGate, which owns all post-authentication routing.
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } on ProfileFailure catch (failure) {
       if (!mounted) return;
-      final debugDetail =
-          kDebugMode && failure.code == ProfileFailureCode.permissionDenied
-          ? ' Debug: Firestore denied profile creation. Review the deployed users/{uid} create rule.'
-          : '';
       setState(() {
         _pendingProfileUser = user;
         _error =
-            '${failure.userMessage}$debugDetail Your Firebase account remains signed in; retrying will not create a duplicate.';
+            '${failure.userMessage} Your Firebase account remains signed in; retrying will not create a duplicate.';
       });
     }
   }
