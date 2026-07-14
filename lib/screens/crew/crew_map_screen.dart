@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
+import 'package:aerocrew/features/trips/domain/trip.dart';
 
 class CrewMapScreen extends StatelessWidget {
-  final Map<String, dynamic> trip;
+  final Trip trip;
 
   const CrewMapScreen({super.key, required this.trip});
 
@@ -98,7 +99,7 @@ class CrewMapScreen extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   Text(
-                    trip['flight'] ?? 'No Flight Assigned',
+                    '${trip.airport}${trip.terminal == null ? '' : ' · ${trip.terminal}'}',
                     style: const TextStyle(
                       color: AeroColors.amber,
                       fontSize: 16,
@@ -174,19 +175,19 @@ class CrewMapScreen extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
+                  _infoRow(Icons.flight, "Flight", trip.airport),
+
+                  const SizedBox(height: 14),
+
+                  _infoRow(Icons.location_city, "Status", trip.status.name),
+
+                  const SizedBox(height: 14),
+
                   _infoRow(
-                    Icons.flight,
-                    "Flight",
-                    trip['flight']?.toString() ?? '-',
+                    Icons.directions_car,
+                    "Driver",
+                    trip.driverName ?? "Not assigned",
                   ),
-
-                  const SizedBox(height: 14),
-
-                  _infoRow(Icons.location_city, "Status", "Pending Dispatch"),
-
-                  const SizedBox(height: 14),
-
-                  _infoRow(Icons.directions_car, "Driver", "Not Assigned"),
 
                   const SizedBox(height: 14),
 

@@ -14,7 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CrewDashboardScreen extends StatefulWidget {
-  const CrewDashboardScreen({super.key});
+  const CrewDashboardScreen({super.key, this.tripRepository});
+  final TripRepository? tripRepository;
 
   @override
   State<CrewDashboardScreen> createState() => _CrewDashboardScreenState();
@@ -26,13 +27,19 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   bool _isVerified = false;
   bool _loading = true;
   String? _error;
-  List<Map<String, dynamic>> _trips = const [];
+  List<Trip> _trips = const [];
+  late final TripRepository _tripRepository;
+  StreamSubscription<List<Trip>>? _tripSubscription;
 
   @override
   void initState() {
     super.initState();
+    _tripRepository = widget.tripRepository ?? FirebaseTripRepository(FirebaseFirestore.instance);
     _loadDashboard();
   }
+
+  @override
+  void dispose() { _tripSubscription?.cancel(); super.dispose(); }
 
   Future<void> _loadDashboard() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -41,24 +48,16 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
       return;
     }
     try {
-      final results = await Future.wait([
-        FirebaseFirestore.instance.collection('users').doc(user.uid).get(),
-        FirebaseFirestore.instance
-            .collection('trips')
-            .where('crewId', isEqualTo: user.uid)
-            .limit(20)
-            .get(),
-      ]);
-      final profile = results[0] as DocumentSnapshot<Map<String, dynamic>>;
-      final trips = results[1] as QuerySnapshot<Map<String, dynamic>>;
+      final profile = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       if (!mounted) return;
       setState(() {
         _userName = profile.data()?['name'] as String? ?? 'Crew';
         _isVerified = profile.data()?['status'] == 'verified';
-        _trips = trips.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList()
-          ..sort((a, b) => _sortKey(a).compareTo(_sortKey(b)));
-        _loading = false;
       });
+      await _tripSubscription?.cancel();
+      _tripSubscription = _tripRepository.watchCrewTrips(user.uid).listen((trips) {
+        if (mounted) setState(() { _trips = trips; _loading = false; _error = null; });
+      }, onError: (_) { if (mounted) setState(() { _error = 'Trips could not be loaded. Check your connection and try again.'; _loading = false; }); });
     } catch (error) {
       if (!mounted) return;
       setState(() {
@@ -68,9 +67,6 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
       });
     }
   }
-
-  static String _sortKey(Map<String, dynamic> trip) =>
-      '${trip['date'] ?? ''}${trip['pickupTime'] ?? ''}';
 
   String get _firstName => _userName.trim().split(' ').first;
 
@@ -270,23 +266,15 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
     );
   }
 
-  Widget _nextPickupCard(Map<String, dynamic> trip) {
-    final status = (trip['status'] ?? 'requested').toString();
-    final confirmed = ['matched', 'confirmed', 'assigned'].contains(status);
-    final pickup = (trip['pickupTime'] ?? 'Time pending').toString();
-    final date = (trip['date'] ?? 'Date pending').toString();
-    final origin =
-        (trip['pickupAddress'] ?? trip['zone'] ?? 'Pickup location pending')
-            .toString();
-    final destination =
-        (trip['terminal'] ?? trip['airport'] ?? 'Airport terminal pending')
-            .toString();
-    final driver =
-        (trip['driverName'] ?? _driverFromVan(trip['van']) ?? 'Driver pending')
-            .toString();
-    final vehicle = (trip['vehicle'] ?? trip['van'] ?? 'Vehicle pending')
-        .toString();
-    final plate = (trip['plate'] ?? 'Plate pending').toString();
+  Widget _nextPickupCard(Trip trip) {
+    final confirmed = trip.assignmentStatus == AssignmentStatus.assigned || trip.assignmentStatus == AssignmentStatus.accepted;
+    final pickup = tripTime(trip.scheduledPickupAt);
+    final date = tripDate(trip.scheduledPickupAt);
+    final origin = trip.pickupStops.isEmpty ? 'Pickup location pending' : trip.pickupStops.first.address;
+    final destination = trip.terminal ?? trip.airport;
+    final driver = trip.driverName ?? 'Driver pending';
+    final vehicle = trip.vehicleDescription ?? 'Vehicle pending';
+    final plate = trip.vehiclePlate ?? 'Plate pending';
 
     return AeroCard(
       padding: const EdgeInsets.all(20),
@@ -316,7 +304,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Pickup in ${trip['countdown'] ?? 'time pending'}',
+            'Pickup in ${_countdown(trip.scheduledPickupAt)}',
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: context.aero.textSecondary),
@@ -363,9 +351,11 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
     );
   }
 
-  String? _driverFromVan(dynamic value) {
-    if (value is! String || value.isEmpty) return null;
-    return value.split('·').first.trim();
+  String _countdown(DateTime pickup) {
+    final value = pickup.difference(DateTime.now());
+    if (value.isNegative) return 'now';
+    if (value.inHours > 0) return '${value.inHours}h ${value.inMinutes.remainder(60)}m';
+    return '${value.inMinutes}m';
   }
 
   Widget _routeLine(String origin, String destination) => Row(
@@ -400,7 +390,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
     ],
   );
 
-  Widget _tripCard(Map<String, dynamic> trip) => Padding(
+  Widget _tripCard(Trip trip) => Padding(
     padding: const EdgeInsets.only(bottom: AeroSpacing.sm),
     child: AeroCard(
       onTap: () => _open(CrewMapScreen(trip: trip)),
@@ -424,11 +414,11 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${trip['date'] ?? 'Date pending'} · ${trip['pickupTime'] ?? 'Time pending'}',
+                  '${tripDate(trip.scheduledPickupAt)} · ${tripTime(trip.scheduledPickupAt)}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  '${trip['zone'] ?? 'Pickup'} → ${trip['terminal'] ?? trip['airport'] ?? 'Airport'}',
+                  '${trip.pickupStops.isEmpty ? 'Pickup' : trip.pickupStops.first.address} → ${trip.terminal ?? trip.airport}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
@@ -612,3 +602,9 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   Future<void> _open(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
 }
+import 'dart:async';
+
+import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
+import 'package:aerocrew/features/trips/data/trip_repository.dart';
+import 'package:aerocrew/features/trips/domain/trip.dart';
+import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';

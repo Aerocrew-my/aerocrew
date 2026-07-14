@@ -13,7 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OperatorDashboardScreen extends StatefulWidget {
-  const OperatorDashboardScreen({super.key});
+  const OperatorDashboardScreen({super.key, this.tripRepository});
+  final TripRepository? tripRepository;
 
   @override
   State<OperatorDashboardScreen> createState() =>
@@ -26,13 +27,20 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   bool _acceptingJobs = true;
   bool _loading = true;
   String? _error;
-  List<Map<String, dynamic>> _jobs = const [];
+  List<Trip> _typedJobs = const [];
+  List<Map<String, dynamic>> get _jobs => _typedJobs.map(legacyTripView).toList(growable: false);
+  late final TripRepository _tripRepository;
+  StreamSubscription<List<Trip>>? _jobSubscription;
 
   @override
   void initState() {
     super.initState();
+    _tripRepository = widget.tripRepository ?? FirebaseTripRepository(FirebaseFirestore.instance);
     _loadDashboard();
   }
+
+  @override
+  void dispose() { _jobSubscription?.cancel(); super.dispose(); }
 
   Future<void> _loadDashboard() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -41,24 +49,16 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
       return;
     }
     try {
-      final results = await Future.wait([
-        FirebaseFirestore.instance.collection('users').doc(user.uid).get(),
-        FirebaseFirestore.instance
-            .collection('pools')
-            .where('operatorId', isEqualTo: user.uid)
-            .limit(20)
-            .get(),
-      ]);
-      final profile = results[0] as DocumentSnapshot<Map<String, dynamic>>;
-      final jobs = results[1] as QuerySnapshot<Map<String, dynamic>>;
+      final profile = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       if (!mounted) return;
       setState(() {
         _operatorName = profile.data()?['name'] as String? ?? 'Operator';
         _acceptingJobs = profile.data()?['isAvailable'] as bool? ?? true;
-        _jobs = jobs.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList()
-          ..sort((a, b) => _sortKey(a).compareTo(_sortKey(b)));
-        _loading = false;
       });
+      await _jobSubscription?.cancel();
+      _jobSubscription = _tripRepository.watchOperatorTrips(user.uid).listen((jobs) {
+        if (mounted) setState(() { _typedJobs = jobs; _loading = false; _error = null; });
+      }, onError: (_) { if (mounted) setState(() { _error = 'Jobs could not be loaded. Check your connection and try again.'; _loading = false; }); });
     } catch (_) {
       if (!mounted) return;
       setState(() {
@@ -69,18 +69,17 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
     }
   }
 
-  static String _sortKey(Map<String, dynamic> job) =>
-      '${job['date'] ?? ''}${job['pickupTime'] ?? ''}';
-
   String get _firstName => _operatorName.trim().split(' ').first;
 
   Map<String, dynamic>? get _activeJob {
     for (final job in _jobs) {
       if ([
-        'active',
-        'en_route',
-        'arrived',
+        'accepted',
+        'driverEnRoute',
+        'driverArrived',
         'boarding',
+        'inTransit',
+        'arrived',
       ].contains(job['status'])) {
         return job;
       }
@@ -256,10 +255,12 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
     final active =
         _activeJob != null &&
         [
-          'active',
-          'en_route',
+          'accepted',
+          'driverEnRoute',
+          'driverArrived',
           'arrived',
           'boarding',
+          'inTransit',
         ].contains(_activeJob!['status']);
     final label = active
         ? 'On Active Trip'
@@ -301,12 +302,7 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
         (job['pickupStopCount'] ??
                 (job['crew'] is List ? (job['crew'] as List).length : 0))
             .toString();
-    final action = switch (status) {
-      'active' || 'en_route' => 'Continue trip',
-      'arrived' => 'Begin boarding',
-      'boarding' => 'Complete trip',
-      _ => 'Start route',
-    };
+    final action = _actionLabel(status);
     return AeroCard(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -368,7 +364,7 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
             label: action,
             icon: Icons.navigation_outlined,
             expand: true,
-            onPressed: () => _openJob(job, status),
+            onPressed: () => _performNextAction(job),
           ),
         ],
       ),
@@ -583,13 +579,38 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   };
 
   void _openJob(Map<String, dynamic> job, String status) {
-    if (['active', 'en_route', 'arrived', 'boarding'].contains(status)) {
+    if (['accepted', 'driverEnRoute', 'driverArrived', 'arrived', 'boarding', 'inTransit'].contains(status)) {
       _open(OperatorLiveJobScreen(job: job));
     } else {
       _open(ActiveJobScreen(job: job));
     }
   }
 
+  String _actionLabel(String status) => switch (status) {
+    'assigned' => 'Accept job', 'accepted' => 'Start route', 'driverEnRoute' => 'Mark driver arrived',
+    'driverArrived' => 'Begin boarding', 'boarding' => 'Begin airport journey', 'inTransit' => 'Mark airport arrival',
+    'arrived' => 'Complete trip', _ => 'View job',
+  };
+
+  Future<void> _performNextAction(Map<String, dynamic> view) async {
+    final trip = _typedJobs.where((item) => item.id == view['id']).firstOrNull;
+    final user = FirebaseAuth.instance.currentUser;
+    if (trip == null || user == null) return;
+    final next = TripTransitions.operatorNext(trip.status);
+    if (next == null) { _openJob(view, trip.status.name); return; }
+    try { await _tripRepository.transitionOperatorTrip(trip: trip, operatorId: user.uid, next: next); }
+    catch (_) { if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('The job status could not be updated.'))); }
+  }
+
   Future<void> _open(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
 }
+
+extension _FirstOrNull<T> on Iterable<T> { T? get firstOrNull => isEmpty ? null : first; }
+import 'dart:async';
+
+import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
+import 'package:aerocrew/features/trips/data/trip_repository.dart';
+import 'package:aerocrew/features/trips/domain/trip.dart';
+import 'package:aerocrew/features/trips/domain/trip_transitions.dart';
+import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';

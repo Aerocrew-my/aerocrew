@@ -1,12 +1,5 @@
 class AppConfig {
-  // CHIP payment gateway. Prefer a server-side payment endpoint for release;
-  // this build-time value exists only for compatibility with the current flow.
-  static const String chipApiKey = String.fromEnvironment('CHIP_API_KEY');
-
-  static const String chipBrandId = '6431e43b-8c4d-4106-8f77-b7f2a839cabf';
-
-  // Base URLs
-  static const String chipBaseUrl = 'https://gate.chip-in.asia/api/v1';
+  static const String paymentApiUrl = String.fromEnvironment('PAYMENT_API_URL');
   static const String appWebUrl = 'https://aerocrew-96754.web.app';
 
   // Pricing (RM)

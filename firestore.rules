@@ -43,6 +43,25 @@ service cloud.firestore {
       ]);
     }
 
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isCrew() { return signedIn() && profile().role == 'crew'; }
+    function isOperator() { return signedIn() && profile().role == 'operator' && profile().status == 'approved'; }
+    function crewOnTrip(data) { return isCrew() && request.auth.uid in data.crewIds; }
+    function operatorOnTrip(data) { return isOperator() && data.operatorId == request.auth.uid; }
+
+    function validOperatorTransition(from, to) {
+      return (from == 'assigned' && to == 'accepted')
+        || (from == 'accepted' && to == 'driverEnRoute')
+        || (from == 'driverEnRoute' && to == 'driverArrived')
+        || (from == 'driverArrived' && to == 'boarding')
+        || (from == 'boarding' && to == 'inTransit')
+        || (from == 'inTransit' && to == 'arrived')
+        || (from == 'arrived' && to == 'completed');
+    }
+
     match /users/{userId} {
       allow create: if validInitialProfile(userId);
       allow read: if isOwner(userId);
@@ -50,7 +69,58 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // trips, pools, rosters, and payments remain denied until their ownership
-    // models and trusted server write paths have dedicated production rules.
+    match /trips/{tripId} {
+      allow read: if crewOnTrip(resource.data) || operatorOnTrip(resource.data);
+      allow create: if isCrew()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.crewIds == [request.auth.uid]
+        && request.resource.data.status == 'requested'
+        && request.resource.data.assignmentStatus == 'unassigned'
+        && request.resource.data.paymentStatus == 'pending'
+        && request.resource.data.operatorId == null
+        && request.resource.data.driverId == null
+        && request.resource.data.vehicleId == null;
+      allow update: if operatorOnTrip(resource.data)
+        && request.resource.data.operatorId == resource.data.operatorId
+        && request.resource.data.crewIds == resource.data.crewIds
+        && request.resource.data.paymentStatus == resource.data.paymentStatus
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'assignmentStatus', 'updatedAt', 'actualPickupAt', 'actualArrivalAt'
+        ])
+        && validOperatorTransition(resource.data.status, request.resource.data.status);
+      allow delete: if false;
+    }
+
+    match /rosters/{rosterId} {
+      allow create: if isCrew() && request.resource.data.crewId == request.auth.uid;
+      allow read: if isCrew() && resource.data.crewId == request.auth.uid;
+      allow update: if isCrew()
+        && resource.data.crewId == request.auth.uid
+        && request.resource.data.crewId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['duties', 'status', 'updatedAt']);
+      allow delete: if false;
+    }
+
+    match /transportRequirements/{requirementId} {
+      allow read: if isCrew() && resource.data.crewId == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /vehicles/{vehicleId} {
+      allow read: if isOperator() && resource.data.operatorId == request.auth.uid;
+      allow create: if isOperator() && request.resource.data.operatorId == request.auth.uid;
+      allow update: if isOperator() && resource.data.operatorId == request.auth.uid && request.resource.data.operatorId == request.auth.uid;
+      allow delete: if isOperator() && resource.data.operatorId == request.auth.uid;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /payments/{paymentId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
   }
 }
