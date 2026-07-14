@@ -1,5 +1,10 @@
 class AppConfig {
   static const String paymentApiUrl = String.fromEnvironment('PAYMENT_API_URL');
+  static const String rosterMatchingApiUrl = String.fromEnvironment(
+    'ROSTER_MATCHING_URL',
+  );
+  static bool get isRosterMatchingConfigured =>
+      rosterMatchingApiUrl.trim().isNotEmpty;
   static const String appWebUrl = 'https://aerocrew-96754.web.app';
 
   // Pricing (RM)

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:aerocrew/services/anthropic_service.dart';
-import 'package:aerocrew/services/matching_service.dart';
+import 'package:aerocrew/services/roster_matching_service.dart';
 import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:aerocrew/widgets/aero_components.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -120,7 +120,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
         final date = _parseDutyDate(duty['date']?.toString());
         if (date == null) continue;
         try {
-          await MatchingService.matchCrewToPool(
+          await RosterMatchingService.matchCrewToPool(
             flightNumber: duty['flightNumber']?.toString() ?? '',
             flightDate: date,
             departureTime: duty['departureTime']?.toString() ?? '',

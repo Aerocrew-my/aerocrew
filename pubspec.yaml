@@ -1,5 +1,5 @@
 name: aerocrew
-description: "A new Flutter project."
+description: "AeroCrew — aviation crew ground-mobility app for pilots and cabin crew, coordinating airport pickups, drop-offs, and live trip progression."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
