@@ -35,19 +35,25 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   bool _loading = true;
   String? _error;
   List<Trip> _typedJobs = const [];
-  List<Map<String, dynamic>> get _jobs => _typedJobs.map(legacyTripView).toList(growable: false);
+  List<Map<String, dynamic>> get _jobs =>
+      _typedJobs.map(legacyTripView).toList(growable: false);
   late final TripRepository _tripRepository;
   StreamSubscription<List<Trip>>? _jobSubscription;
 
   @override
   void initState() {
     super.initState();
-    _tripRepository = widget.tripRepository ?? FirebaseTripRepository(FirebaseFirestore.instance);
+    _tripRepository =
+        widget.tripRepository ??
+        FirebaseTripRepository(FirebaseFirestore.instance);
     _loadDashboard();
   }
 
   @override
-  void dispose() { _jobSubscription?.cancel(); super.dispose(); }
+  void dispose() {
+    _jobSubscription?.cancel();
+    super.dispose();
+  }
 
   Future<void> _loadDashboard() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -56,16 +62,36 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
       return;
     }
     try {
-      final profile = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final profile = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       if (!mounted) return;
       setState(() {
         _operatorName = profile.data()?['name'] as String? ?? 'Operator';
         _acceptingJobs = profile.data()?['isAvailable'] as bool? ?? true;
       });
       await _jobSubscription?.cancel();
-      _jobSubscription = _tripRepository.watchOperatorTrips(user.uid).listen((jobs) {
-        if (mounted) setState(() { _typedJobs = jobs; _loading = false; _error = null; });
-      }, onError: (_) { if (mounted) setState(() { _error = 'Jobs could not be loaded. Check your connection and try again.'; _loading = false; }); });
+      _jobSubscription = _tripRepository
+          .watchOperatorTrips(user.uid)
+          .listen(
+            (jobs) {
+              if (mounted)
+                setState(() {
+                  _typedJobs = jobs;
+                  _loading = false;
+                  _error = null;
+                });
+            },
+            onError: (_) {
+              if (mounted)
+                setState(() {
+                  _error =
+                      'Jobs could not be loaded. Check your connection and try again.';
+                  _loading = false;
+                });
+            },
+          );
     } catch (_) {
       if (!mounted) return;
       setState(() {
@@ -586,7 +612,14 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   };
 
   void _openJob(Map<String, dynamic> job, String status) {
-    if (['accepted', 'driverEnRoute', 'driverArrived', 'arrived', 'boarding', 'inTransit'].contains(status)) {
+    if ([
+      'accepted',
+      'driverEnRoute',
+      'driverArrived',
+      'arrived',
+      'boarding',
+      'inTransit',
+    ].contains(status)) {
       _open(OperatorLiveJobScreen(job: job));
     } else {
       _open(ActiveJobScreen(job: job));
@@ -594,9 +627,14 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   }
 
   String _actionLabel(String status) => switch (status) {
-    'assigned' => 'Accept job', 'accepted' => 'Start route', 'driverEnRoute' => 'Mark driver arrived',
-    'driverArrived' => 'Begin boarding', 'boarding' => 'Begin airport journey', 'inTransit' => 'Mark airport arrival',
-    'arrived' => 'Complete trip', _ => 'View job',
+    'assigned' => 'Accept job',
+    'accepted' => 'Start route',
+    'driverEnRoute' => 'Mark driver arrived',
+    'driverArrived' => 'Begin boarding',
+    'boarding' => 'Begin airport journey',
+    'inTransit' => 'Mark airport arrival',
+    'arrived' => 'Complete trip',
+    _ => 'View job',
   };
 
   Future<void> _performNextAction(Map<String, dynamic> view) async {
@@ -604,13 +642,28 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
     final user = FirebaseAuth.instance.currentUser;
     if (trip == null || user == null) return;
     final next = TripTransitions.operatorNext(trip.status);
-    if (next == null) { _openJob(view, trip.status.name); return; }
-    try { await _tripRepository.transitionOperatorTrip(trip: trip, operatorId: user.uid, next: next); }
-    catch (_) { if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('The job status could not be updated.'))); }
+    if (next == null) {
+      _openJob(view, trip.status.name);
+      return;
+    }
+    try {
+      await _tripRepository.transitionOperatorTrip(
+        trip: trip,
+        operatorId: user.uid,
+        next: next,
+      );
+    } catch (_) {
+      if (mounted)
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('The job status could not be updated.')),
+        );
+    }
   }
 
   Future<void> _open(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
 }
 
-extension _FirstOrNull<T> on Iterable<T> { T? get firstOrNull => isEmpty ? null : first; }
+extension _FirstOrNull<T> on Iterable<T> {
+  T? get firstOrNull => isEmpty ? null : first;
+}

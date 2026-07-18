@@ -40,12 +40,17 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _tripRepository = widget.tripRepository ?? FirebaseTripRepository(FirebaseFirestore.instance);
+    _tripRepository =
+        widget.tripRepository ??
+        FirebaseTripRepository(FirebaseFirestore.instance);
     _loadDashboard();
   }
 
   @override
-  void dispose() { _tripSubscription?.cancel(); super.dispose(); }
+  void dispose() {
+    _tripSubscription?.cancel();
+    super.dispose();
+  }
 
   Future<void> _loadDashboard() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -54,16 +59,36 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
       return;
     }
     try {
-      final profile = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final profile = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       if (!mounted) return;
       setState(() {
         _userName = profile.data()?['name'] as String? ?? 'Crew';
         _isVerified = profile.data()?['status'] == 'verified';
       });
       await _tripSubscription?.cancel();
-      _tripSubscription = _tripRepository.watchCrewTrips(user.uid).listen((trips) {
-        if (mounted) setState(() { _trips = trips; _loading = false; _error = null; });
-      }, onError: (_) { if (mounted) setState(() { _error = 'Trips could not be loaded. Check your connection and try again.'; _loading = false; }); });
+      _tripSubscription = _tripRepository
+          .watchCrewTrips(user.uid)
+          .listen(
+            (trips) {
+              if (mounted)
+                setState(() {
+                  _trips = trips;
+                  _loading = false;
+                  _error = null;
+                });
+            },
+            onError: (_) {
+              if (mounted)
+                setState(() {
+                  _error =
+                      'Trips could not be loaded. Check your connection and try again.';
+                  _loading = false;
+                });
+            },
+          );
     } catch (error) {
       if (!mounted) return;
       setState(() {
@@ -273,10 +298,14 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   }
 
   Widget _nextPickupCard(Trip trip) {
-    final confirmed = trip.assignmentStatus == AssignmentStatus.assigned || trip.assignmentStatus == AssignmentStatus.accepted;
+    final confirmed =
+        trip.assignmentStatus == AssignmentStatus.assigned ||
+        trip.assignmentStatus == AssignmentStatus.accepted;
     final pickup = tripTime(trip.scheduledPickupAt);
     final date = tripDate(trip.scheduledPickupAt);
-    final origin = trip.pickupStops.isEmpty ? 'Pickup location pending' : trip.pickupStops.first.address;
+    final origin = trip.pickupStops.isEmpty
+        ? 'Pickup location pending'
+        : trip.pickupStops.first.address;
     final destination = trip.terminal ?? trip.airport;
     final driver = trip.driverName ?? 'Driver pending';
     final vehicle = trip.vehicleDescription ?? 'Vehicle pending';
@@ -360,7 +389,8 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   String _countdown(DateTime pickup) {
     final value = pickup.difference(DateTime.now());
     if (value.isNegative) return 'now';
-    if (value.inHours > 0) return '${value.inHours}h ${value.inMinutes.remainder(60)}m';
+    if (value.inHours > 0)
+      return '${value.inHours}h ${value.inMinutes.remainder(60)}m';
     return '${value.inMinutes}m';
   }
 
