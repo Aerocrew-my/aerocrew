@@ -29,7 +29,12 @@ void main() {
     expect(parsed.status, TripStatus.assigned);
     expect(parsed.crewIds, ['crew-1']);
     expect(parsed.pickupStops.single.address, 'Subang Jaya');
-    expect(parsed.scheduledPickupAt, now.add(const Duration(hours: 2)));
+    expect(
+      parsed.scheduledPickupAt.isAtSameMomentAs(
+        now.add(const Duration(hours: 2)),
+      ),
+      isTrue,
+    );
     expect(original.toMap()['createdAt'], isA<Timestamp>());
   });
 
