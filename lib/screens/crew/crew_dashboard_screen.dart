@@ -1,3 +1,9 @@
+import 'dart:async';
+
+import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
+import 'package:aerocrew/features/trips/data/trip_repository.dart';
+import 'package:aerocrew/features/trips/domain/trip.dart';
+import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';
 import 'package:aerocrew/screens/crew/billing_screen.dart';
 import 'package:aerocrew/screens/crew/crew_map_screen.dart';
 import 'package:aerocrew/screens/crew/crew_profile_view_screen.dart';
@@ -602,9 +608,3 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   Future<void> _open(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
 }
-import 'dart:async';
-
-import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
-import 'package:aerocrew/features/trips/data/trip_repository.dart';
-import 'package:aerocrew/features/trips/domain/trip.dart';
-import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';

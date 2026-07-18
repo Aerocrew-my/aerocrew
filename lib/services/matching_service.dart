@@ -1,6 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// LEGACY — retained for reference only.
+///
+/// This service performs matching and pool creation directly from the
+/// client, which is not permitted in production (see handover section 7:
+/// matching, pool creation, and transport-requirement generation are
+/// trusted-server responsibilities). Do not import this from any
+/// `lib/screens` file. Use `RosterMatchingService` instead, which calls the
+/// trusted server endpoint.
 class MatchingService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 

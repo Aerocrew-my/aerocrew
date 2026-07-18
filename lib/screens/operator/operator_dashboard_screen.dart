@@ -1,3 +1,10 @@
+import 'dart:async';
+
+import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
+import 'package:aerocrew/features/trips/data/trip_repository.dart';
+import 'package:aerocrew/features/trips/domain/trip.dart';
+import 'package:aerocrew/features/trips/domain/trip_transitions.dart';
+import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';
 import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
@@ -607,10 +614,3 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
 }
 
 extension _FirstOrNull<T> on Iterable<T> { T? get firstOrNull => isEmpty ? null : first; }
-import 'dart:async';
-
-import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
-import 'package:aerocrew/features/trips/data/trip_repository.dart';
-import 'package:aerocrew/features/trips/domain/trip.dart';
-import 'package:aerocrew/features/trips/domain/trip_transitions.dart';
-import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';
