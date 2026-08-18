@@ -1,18 +1,14 @@
-import 'dart:async';
-
 import 'package:aerocrew/features/offers/data/api_operator_offer_repository.dart';
 import 'package:aerocrew/features/offers/data/operator_offer_repository.dart';
 import 'package:aerocrew/features/offers/data/operator_vehicle_repository.dart';
 import 'package:aerocrew/features/offers/domain/operator_offer.dart';
-import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
-import 'package:aerocrew/features/trips/data/trip_repository.dart';
-import 'package:aerocrew/features/trips/domain/trip.dart';
-import 'package:aerocrew/features/trips/domain/trip_transitions.dart';
+import 'package:aerocrew/features/trip_execution/data/api_trip_execution_repository.dart';
+import 'package:aerocrew/features/trip_execution/data/trip_execution_repository.dart';
+import 'package:aerocrew/features/trip_execution/domain/execution_trip.dart';
 import 'package:aerocrew/features/trips/presentation/legacy_trip_adapter.dart';
 import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
-import 'package:aerocrew/screens/operator/operator_live_job_screen.dart';
 import 'package:aerocrew/screens/operator/operator_offer_screen.dart';
 import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
 import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
@@ -27,10 +23,10 @@ import 'package:flutter/material.dart';
 class OperatorDashboardScreen extends StatefulWidget {
   const OperatorDashboardScreen({
     super.key,
-    this.tripRepository,
+    this.executionRepository,
     this.offerRepository,
   });
-  final TripRepository? tripRepository;
+  final TripExecutionRepository? executionRepository;
   final OperatorOfferRepository? offerRepository;
 
   @override
@@ -44,28 +40,20 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   bool _acceptingJobs = true;
   bool _loading = true;
   String? _error;
-  List<Trip> _typedJobs = const [];
+  List<ExecutionTrip> _typedJobs = const [];
   List<OperatorOffer> _offers = const [];
   List<Map<String, dynamic>> get _jobs =>
-      _typedJobs.map(legacyTripView).toList(growable: false);
-  late final TripRepository _tripRepository;
+      _typedJobs.map(_executionView).toList(growable: false);
+  late final TripExecutionRepository _executionRepository;
   late final OperatorOfferRepository _offerRepository;
-  StreamSubscription<List<Trip>>? _jobSubscription;
 
   @override
   void initState() {
     super.initState();
-    _tripRepository =
-        widget.tripRepository ??
-        FirebaseTripRepository(FirebaseFirestore.instance);
+    _executionRepository =
+        widget.executionRepository ?? ApiTripExecutionRepository();
     _offerRepository = widget.offerRepository ?? ApiOperatorOfferRepository();
     _loadDashboard();
-  }
-
-  @override
-  void dispose() {
-    _jobSubscription?.cancel();
-    super.dispose();
   }
 
   Future<void> _loadDashboard() async {
@@ -84,29 +72,13 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
         _operatorName = profile.data()?['name'] as String? ?? 'Operator';
         _acceptingJobs = profile.data()?['isAvailable'] as bool? ?? true;
       });
-      await _jobSubscription?.cancel();
-      _jobSubscription = _tripRepository
-          .watchOperatorTrips(user.uid)
-          .listen(
-            (jobs) {
-              if (mounted) {
-                setState(() {
-                  _typedJobs = jobs;
-                  _loading = false;
-                  _error = null;
-                });
-              }
-            },
-            onError: (_) {
-              if (mounted) {
-                setState(() {
-                  _error =
-                      'Jobs could not be loaded. Check your connection and try again.';
-                  _loading = false;
-                });
-              }
-            },
-          );
+      final jobs = await _executionRepository.getActiveAssignments();
+      if (!mounted) return;
+      setState(() {
+        _typedJobs = jobs;
+        _loading = false;
+        _error = null;
+      });
       await _refreshOffers();
     } catch (_) {
       if (!mounted) return;
@@ -117,6 +89,35 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
       });
     }
   }
+
+  Map<String, dynamic> _executionView(ExecutionTrip trip) => {
+    'id': trip.id,
+    'status': trip.status,
+    'service': trip.serviceType,
+    'airport': trip.airport,
+    'terminal': trip.terminal,
+    'date': trip.scheduledPickupAt == null
+        ? 'Date pending'
+        : '${trip.scheduledPickupAt!.toLocal().day}/${trip.scheduledPickupAt!.toLocal().month}/${trip.scheduledPickupAt!.toLocal().year}',
+    'pickupTime': trip.scheduledPickupAt == null
+        ? 'Time pending'
+        : '${trip.scheduledPickupAt!.toLocal().hour.toString().padLeft(2, '0')}:${trip.scheduledPickupAt!.toLocal().minute.toString().padLeft(2, '0')}',
+    'crewCount': trip.stops.length,
+    'stops': trip.stops
+        .map(
+          (stop) => {
+            'id': stop.id,
+            'status': stop.status.name,
+            'address': stop.address,
+            'scheduledAt': stop.scheduledAt?.toLocal().toString(),
+          },
+        )
+        .toList(),
+    'vehicle': [
+      trip.vehicleDescription,
+      trip.vehiclePlate,
+    ].whereType<String>().join(' · '),
+  };
 
   Future<void> _refreshOffers() async {
     try {
@@ -288,8 +289,8 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
                 if (_activeJob == null)
                   const AeroEmptyState(
                     icon: Icons.work_outline,
-                    title: 'No assigned jobs',
-                    message: 'New work will appear here when it is assigned.',
+                    title: 'No active assignments',
+                    message: 'Assigned work will appear here when available.',
                   )
                 else
                   _priorityJob(_activeJob!),
@@ -509,7 +510,7 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   Widget _jobCard(Map<String, dynamic> job) => Padding(
     padding: const EdgeInsets.only(bottom: 12),
     child: AeroCard(
-      onTap: () => _open(ActiveJobScreen(job: job)),
+      onTap: () => _open(ActiveJobScreen(tripId: job['id'].toString())),
       child: Row(
         children: [
           Container(
@@ -689,21 +690,6 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
     _ => context.aero.success,
   };
 
-  void _openJob(Map<String, dynamic> job, String status) {
-    if ([
-      'accepted',
-      'driverEnRoute',
-      'driverArrived',
-      'arrived',
-      'boarding',
-      'inTransit',
-    ].contains(status)) {
-      _open(OperatorLiveJobScreen(job: job));
-    } else {
-      _open(ActiveJobScreen(job: job));
-    }
-  }
-
   String _actionLabel(String status) => switch (status) {
     'assigned' => 'View assignment',
     'accepted' => 'Start route',
@@ -716,37 +702,9 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   };
 
   Future<void> _performNextAction(Map<String, dynamic> view) async {
-    final trip = _typedJobs.where((item) => item.id == view['id']).firstOrNull;
-    final user = FirebaseAuth.instance.currentUser;
-    if (trip == null || user == null) return;
-    if (trip.status == TripStatus.assigned) {
-      _openJob(view, trip.status.name);
-      return;
-    }
-    final next = TripTransitions.operatorNext(trip.status);
-    if (next == null) {
-      _openJob(view, trip.status.name);
-      return;
-    }
-    try {
-      await _tripRepository.transitionOperatorTrip(
-        trip: trip,
-        operatorId: user.uid,
-        next: next,
-      );
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('The job status could not be updated.')),
-        );
-      }
-    }
+    await _open(ActiveJobScreen(tripId: view['id'].toString()));
   }
 
   Future<void> _open(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
-}
-
-extension _FirstOrNull<T> on Iterable<T> {
-  T? get firstOrNull => isEmpty ? null : first;
 }
