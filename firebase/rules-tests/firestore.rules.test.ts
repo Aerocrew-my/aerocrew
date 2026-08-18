@@ -6,7 +6,18 @@ import {
   initializeTestEnvironment,
   type RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { afterAll, beforeAll, beforeEach, describe, test } from 'vitest';
 
 const projectId = 'demo-aerocrew';
@@ -59,6 +70,11 @@ describe('users', () => {
       await assertFails(updateDoc(doc(dbFor(crewId), `users/${crewId}`), { [field]: true }));
     },
   );
+
+  test('a user can update an allowed profile field but cannot add arbitrary data', async () => {
+    await assertSucceeds(updateDoc(doc(dbFor(crewId), `users/${crewId}`), { homeZone: 'KUL' }));
+    await assertFails(updateDoc(doc(dbFor(crewId), `users/${crewId}`), { accountCredit: 100000 }));
+  });
 });
 
 describe('trips', () => {
@@ -79,19 +95,27 @@ describe('trips', () => {
     await assertFails(getDoc(doc(dbFor(otherCrewId), 'trips/trip-1')));
   });
 
-  test('the assigned operator can make an allowed transition', async () => {
-    await assertSucceeds(
-      updateDoc(doc(dbFor(operatorId), 'trips/trip-1'), {
-        status: 'accepted',
-        assignmentStatus: 'accepted',
-      }),
-    );
+  test('the assigned operator and driver can read a trip', async () => {
+    await assertSucceeds(getDoc(doc(dbFor(operatorId), 'trips/trip-1')));
+    await seed('trips/driver-trip', {
+      crewIds: [crewId],
+      operatorId: otherOperatorId,
+      driverId: operatorId,
+      status: 'accepted',
+    });
+    await assertSucceeds(getDoc(doc(dbFor(operatorId), 'trips/driver-trip')));
   });
 
-  test('the assigned operator cannot jump directly to completed', async () => {
+  test('trip creation and all execution or assignment writes are server-only', async () => {
+    await assertFails(setDoc(doc(dbFor(crewId), 'trips/new'), {
+      crewIds: [crewId],
+      status: 'requested',
+      assignmentStatus: 'unassigned',
+    }));
     await assertFails(
-      updateDoc(doc(dbFor(operatorId), 'trips/trip-1'), { status: 'completed' }),
+      updateDoc(doc(dbFor(operatorId), 'trips/trip-1'), { status: 'accepted' }),
     );
+    await assertFails(deleteDoc(doc(dbFor(operatorId), 'trips/trip-1')));
   });
 
   test.each(['status', 'paymentStatus', 'operatorId'])(
@@ -140,26 +164,38 @@ describe('transport requirements', () => {
 });
 
 describe('vehicles', () => {
-  test('operators can manage only vehicles under their own account', async () => {
+  test('operators can read only their vehicles and cannot write them', async () => {
     const own = doc(dbFor(operatorId), 'vehicles/own');
-    await assertSucceeds(setDoc(own, { operatorId, registrationNumber: 'TEST-1' }));
-    await assertSucceeds(updateDoc(own, { registrationNumber: 'TEST-2' }));
-    await assertSucceeds(deleteDoc(own));
-    await assertFails(
-      setDoc(doc(dbFor(operatorId), 'vehicles/other'), {
-        operatorId: otherOperatorId,
-        registrationNumber: 'OTHER-1',
-      }),
-    );
+    await seed('vehicles/own', { operatorId, registrationNumber: 'TEST-1' });
+    await seed('vehicles/other', { operatorId: otherOperatorId, registrationNumber: 'OTHER-1' });
+    await assertSucceeds(getDoc(own));
+    await assertFails(getDoc(doc(dbFor(operatorId), 'vehicles/other')));
+    await assertFails(setDoc(doc(dbFor(operatorId), 'vehicles/new'), { operatorId }));
+    await assertFails(updateDoc(own, { registrationNumber: 'TEST-2' }));
+    await assertFails(deleteDoc(own));
   });
 });
 
 describe('notifications', () => {
-  test('users can read their own notifications but cannot create system notifications', async () => {
-    await seed('notifications/notification-1', { userId: crewId, title: 'Assigned' });
+  test('recipient query and read-state-only updates are allowed', async () => {
+    await seed('notifications/notification-1', { recipientId: crewId, title: 'Assigned', read: false });
     const notification = doc(dbFor(crewId), 'notifications/notification-1');
     await assertSucceeds(getDoc(notification));
-    await assertFails(setDoc(doc(dbFor(crewId), 'notifications/new'), { userId: crewId }));
+    await assertSucceeds(getDocs(query(
+      collection(dbFor(crewId), 'notifications'),
+      where('recipientId', '==', crewId),
+    )));
+    await assertSucceeds(updateDoc(notification, { read: true, readAt: serverTimestamp() }));
+  });
+
+  test('notification content, ownership, creation, and deletion are server-only', async () => {
+    await seed('notifications/notification-1', { recipientId: crewId, title: 'Assigned', read: false });
+    const notification = doc(dbFor(crewId), 'notifications/notification-1');
+    await assertFails(updateDoc(notification, { title: 'Forged' }));
+    await assertFails(updateDoc(notification, { recipientId: otherCrewId }));
+    await assertFails(setDoc(doc(dbFor(crewId), 'notifications/new'), { recipientId: crewId }));
+    await assertFails(deleteDoc(notification));
+    await assertFails(getDoc(doc(dbFor(otherCrewId), 'notifications/notification-1')));
   });
 });
 
@@ -175,5 +211,21 @@ describe('payments', () => {
     await assertFails(
       updateDoc(payment, { providerStatus: 'paid', reconciliationStatus: 'reconciled' }),
     );
+  });
+
+  test('another user cannot read the payment', async () => {
+    await seed('payments/payment-1', { userId: crewId, status: 'pending' });
+    await assertFails(getDoc(doc(dbFor(otherCrewId), 'payments/payment-1')));
+  });
+});
+
+describe('server-owned collections', () => {
+  test('trip events and financial records cannot be read or written directly', async () => {
+    await seed('trips/trip-1', { crewIds: [crewId], operatorId, status: 'completed' });
+    await seed('trips/trip-1/events/event-1', { actorId: operatorId, eventType: 'completed' });
+    await seed('financialRecords/trip-1', { tripId: 'trip-1', crewIds: [crewId] });
+    await assertFails(getDoc(doc(dbFor(crewId), 'trips/trip-1/events/event-1')));
+    await assertFails(getDoc(doc(dbFor(crewId), 'financialRecords/trip-1')));
+    await assertFails(setDoc(doc(dbFor(operatorId), 'trips/trip-1/events/new'), { eventType: 'forged' }));
   });
 });

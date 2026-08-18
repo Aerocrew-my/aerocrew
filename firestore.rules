@@ -43,6 +43,28 @@ service cloud.firestore {
       ]);
     }
 
+    function onlyEditableProfileFieldsChanged() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'name',
+        'phone',
+        'airline',
+        'baseAirport',
+        'homeZone',
+        'product',
+        'productSelectedAt',
+        'profileComplete',
+        'companyName',
+        'vehicleType',
+        'plateNumber',
+        'coverageZones',
+        'capacity',
+        'onboardingStage',
+        'documentsSubmittedAt',
+        'documents',
+        'updatedAt'
+      ]);
+    }
+
     function profile() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
     }
@@ -50,45 +72,23 @@ service cloud.firestore {
     function isCrew() { return signedIn() && profile().role == 'crew'; }
     function isOperator() { return signedIn() && profile().role == 'operator' && profile().status == 'approved'; }
     function crewOnTrip(data) { return isCrew() && request.auth.uid in data.crewIds; }
-    function operatorOnTrip(data) { return isOperator() && data.operatorId == request.auth.uid; }
-
-    function validOperatorTransition(from, to) {
-      return (from == 'assigned' && to == 'accepted')
-        || (from == 'accepted' && to == 'driverEnRoute')
-        || (from == 'driverEnRoute' && to == 'driverArrived')
-        || (from == 'driverArrived' && to == 'boarding')
-        || (from == 'boarding' && to == 'inTransit')
-        || (from == 'inTransit' && to == 'arrived')
-        || (from == 'arrived' && to == 'completed');
+    function operatorOnTrip(data) {
+      return isOperator()
+        && (data.operatorId == request.auth.uid || data.driverId == request.auth.uid);
     }
 
     match /users/{userId} {
       allow create: if validInitialProfile(userId);
       allow read: if isOwner(userId);
-      allow update: if isOwner(userId) && protectedProfileFieldsAreUnchanged();
+      allow update: if isOwner(userId)
+        && protectedProfileFieldsAreUnchanged()
+        && onlyEditableProfileFieldsChanged();
       allow delete: if false;
     }
 
     match /trips/{tripId} {
       allow read: if crewOnTrip(resource.data) || operatorOnTrip(resource.data);
-      allow create: if isCrew()
-        && request.resource.data.createdBy == request.auth.uid
-        && request.resource.data.crewIds == [request.auth.uid]
-        && request.resource.data.status == 'requested'
-        && request.resource.data.assignmentStatus == 'unassigned'
-        && request.resource.data.paymentStatus == 'pending'
-        && request.resource.data.operatorId == null
-        && request.resource.data.driverId == null
-        && request.resource.data.vehicleId == null;
-      allow update: if operatorOnTrip(resource.data)
-        && request.resource.data.operatorId == resource.data.operatorId
-        && request.resource.data.crewIds == resource.data.crewIds
-        && request.resource.data.paymentStatus == resource.data.paymentStatus
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'status', 'assignmentStatus', 'updatedAt', 'actualPickupAt', 'actualArrivalAt'
-        ])
-        && validOperatorTransition(resource.data.status, request.resource.data.status);
-      allow delete: if false;
+      allow write: if false;
     }
 
     match /rosters/{rosterId} {
@@ -100,21 +100,20 @@ service cloud.firestore {
     }
 
     match /transportRequirements/{requirementId} {
-      allow read: if isCrew() && resource.data.crewId == request.auth.uid;
+      allow read: if isCrew()
+        && (resource.data.crewId == request.auth.uid
+          || request.auth.uid in resource.data.crewIds);
       allow write: if false;
     }
 
     match /vehicles/{vehicleId} {
       allow read: if isOperator() && resource.data.operatorId == request.auth.uid;
-      allow create: if isOperator() && request.resource.data.operatorId == request.auth.uid;
-      allow update: if isOperator() && resource.data.operatorId == request.auth.uid && request.resource.data.operatorId == request.auth.uid;
-      allow delete: if isOperator() && resource.data.operatorId == request.auth.uid;
+      allow write: if false;
     }
 
     match /notifications/{notificationId} {
       function ownsNotification(data) {
-        return signedIn()
-          && (data.recipientId == request.auth.uid || data.userId == request.auth.uid);
+        return signedIn() && data.recipientId == request.auth.uid;
       }
       allow read: if ownsNotification(resource.data);
       allow update: if ownsNotification(resource.data)
