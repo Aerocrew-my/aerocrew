@@ -19,7 +19,7 @@ the appearance preference are appropriately client-local.
 | --- | --- | --- |
 | `users` | auth routing, profiles, product, billing, dashboards | Firestore |
 | `trips` | crew/operator dashboards | Firestore via `FirebaseTripRepository` |
-| `rosters` | roster repository/upload | Firestore, but upload used a legacy shape |
+| `rosters` | asynchronous roster job repository/upload/review | trusted API writes; owner Firestore reads |
 | `transportRequirements` | trusted matching boundary | server-only writes |
 | `vehicles` | vehicle management | Firestore contract; screen remains partial |
 | `notifications` | notification screens | server-only writes; screens remain partial |
@@ -27,8 +27,8 @@ the appearance preference are appropriately client-local.
 
 ## Authoritative versus prototype data
 
-Authentication, profile routing, dashboard trip lists, trip transitions, roster
-extraction boundary, and payment API boundary are connected. Trip history,
+Authentication, profile routing, dashboard trip lists, trip transitions,
+asynchronous roster upload/review/confirmation, and payment API boundary are connected. Trip history,
 receipt, live tracking, pool members, wallet, crew statistics, several roster
 calendar cards, operator active/live details, route optimisation, earnings,
 ratings, notifications, and chat still contain presentation fixtures. Static
@@ -78,9 +78,9 @@ status check only; webhook reconciliation remains authoritative.
 
 ## Production blockers and execution order
 
-1. Deploy authenticated roster-job and matching endpoints.
+1. Deploy the authenticated roster-job endpoints, including deterministic requirement and initial trip creation.
 2. Deploy payment purchase/status endpoints and signed CHIP webhook handling.
-3. Migrate legacy roster documents and connect upload to the canonical job flow.
+3. Migrate legacy roster documents (`review` remains readable as `needs_review`).
 4. Connect fixture-backed trip detail/history screens to `TripRepository`.
 5. Finish operator vehicle/driver assignment with server overlap checks.
 6. Connect notifications and earnings repositories.

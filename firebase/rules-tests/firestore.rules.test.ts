@@ -103,17 +103,30 @@ describe('trips', () => {
 });
 
 describe('rosters', () => {
-  test('crew can create and read only their own roster documents', async () => {
+  test('crew can read only their own server-created roster documents', async () => {
+    await seed('rosters/own', { crewId, duties: [], status: 'needs_review' });
+    await seed('rosters/other', { crewId: otherCrewId, duties: [], status: 'needs_review' });
     const own = doc(dbFor(crewId), 'rosters/own');
-    await assertSucceeds(setDoc(own, { crewId, duties: [], status: 'draft' }));
     await assertSucceeds(getDoc(own));
+    await assertFails(getDoc(doc(dbFor(crewId), 'rosters/other')));
     await assertFails(
-      setDoc(doc(dbFor(crewId), 'rosters/other'), {
-        crewId: otherCrewId,
+      setDoc(doc(dbFor(crewId), 'rosters/new'), {
+        crewId,
         duties: [],
-        status: 'draft',
+        status: 'uploaded',
       }),
     );
+  });
+
+  test('crew cannot overwrite parser metadata or confirm directly', async () => {
+    await seed('rosters/own', {
+      crewId,
+      status: 'needs_review',
+      duties: [{ id: 'duty-1', confidence: 0.95 }],
+    });
+    const own = doc(dbFor(crewId), 'rosters/own');
+    await assertFails(updateDoc(own, { duties: [{ id: 'duty-1', confidence: 1 }] }));
+    await assertFails(updateDoc(own, { status: 'confirmed' }));
   });
 });
 

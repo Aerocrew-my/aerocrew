@@ -1,194 +1,268 @@
-import 'dart:typed_data';
+import 'dart:async';
 
-import 'package:aerocrew/services/anthropic_service.dart';
-import 'package:aerocrew/services/roster_matching_service.dart';
+import 'package:aerocrew/features/roster/data/api_roster_repository.dart';
+import 'package:aerocrew/features/roster/data/roster_repository.dart';
+import 'package:aerocrew/features/roster/domain/roster.dart';
 import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:aerocrew/widgets/aero_components.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-enum _RosterStage { upload, processing, review }
-
 class RosterUploadScreen extends StatefulWidget {
-  const RosterUploadScreen({super.key});
+  const RosterUploadScreen({super.key, this.repository});
+  final RosterRepository? repository;
 
   @override
   State<RosterUploadScreen> createState() => _RosterUploadScreenState();
 }
 
 class _RosterUploadScreenState extends State<RosterUploadScreen> {
-  _RosterStage _stage = _RosterStage.upload;
-  List<Map<String, dynamic>> _duties = const [];
-  String? _fileName;
+  late final RosterRepository _repository;
+  StreamSubscription<Roster>? _subscription;
+  Roster? _roster;
   String? _error;
+  bool _selecting = false;
+  bool _uploading = false;
   bool _confirming = false;
 
-  Future<void> _selectAndExtract() async {
-    setState(() => _error = null);
-    const rosterFiles = XTypeGroup(
-      label: 'Roster files',
-      extensions: ['jpg', 'jpeg', 'png', 'pdf'],
-      mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
-    );
-    final file = await openFile(acceptedTypeGroups: const [rosterFiles]);
-    if (file == null || !mounted) return;
-    final bytes = await file.readAsBytes();
-    if (bytes.isEmpty || bytes.length > 12 * 1024 * 1024) {
-      setState(
-        () => _error = 'Choose a non-empty roster file smaller than 12 MB.',
-      );
-      return;
-    }
-    final extension = file.name.split('.').last.toLowerCase();
-    final mediaType = switch (extension) {
-      'png' => 'image/png',
-      'pdf' => 'application/pdf',
-      _ => 'image/jpeg',
-    };
-    setState(() {
-      _fileName = file.name;
-      _stage = _RosterStage.processing;
-    });
-    await _extract(bytes, mediaType);
+  @override
+  void initState() {
+    super.initState();
+    _repository = widget.repository ?? ApiRosterRepository();
   }
 
-  Future<void> _extract(Uint8List bytes, String mediaType) async {
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _selectAndUpload() async {
+    setState(() {
+      _selecting = true;
+      _error = null;
+    });
+    const types = XTypeGroup(
+      label: 'Roster files',
+      extensions: ['pdf', 'jpg', 'jpeg', 'png'],
+      mimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
+    );
     try {
-      final duties = await AnthropicService.extractRoster(bytes, mediaType);
-      if (!mounted) return;
-      if (duties.isEmpty) {
-        setState(() {
-          _stage = _RosterStage.upload;
-          _error =
-              'No duties were detected. Use a clearer roster file or contact support.';
-        });
-        return;
+      final file = await openFile(acceptedTypeGroups: const [types]);
+      if (file == null) return;
+      final extension = file.name.split('.').last.toLowerCase();
+      final mediaType = switch (extension) {
+        'pdf' => 'application/pdf',
+        'jpg' || 'jpeg' => 'image/jpeg',
+        'png' => 'image/png',
+        _ => null,
+      };
+      if (mediaType == null) {
+        throw const RosterRepositoryException(
+          'Choose a PDF, JPG, JPEG, or PNG file.',
+        );
       }
-      setState(() {
-        _duties = duties.map((duty) {
-          final next = Map<String, dynamic>.from(duty);
-          next['confirmed'] = duty['confirmed'] != false;
-          next['uncertain'] =
-              duty['uncertain'] == true ||
-              duty['confidence'] is num && (duty['confidence'] as num) < 0.8;
-          return next;
-        }).toList();
-        _stage = _RosterStage.review;
-      });
-    } on RosterExtractionException catch (error) {
+      final bytes = await file.readAsBytes();
+      if (bytes.isEmpty) {
+        throw const RosterRepositoryException('The selected file is empty.');
+      }
+      if (bytes.length > 12 * 1024 * 1024) {
+        throw const RosterRepositoryException(
+          'Choose a roster smaller than 12 MB.',
+        );
+      }
       if (!mounted) return;
-      setState(() {
-        _stage = _RosterStage.upload;
-        _error = error.message;
-      });
+      setState(() => _uploading = true);
+      final id = await _repository.createRosterJob(
+        bytes: bytes,
+        mediaType: mediaType,
+        fileName: file.name,
+      );
+      await _watch(id);
+    } on RosterRepositoryException catch (error) {
+      if (mounted) setState(() => _error = error.message);
     } catch (_) {
-      if (!mounted) return;
-      setState(() {
-        _stage = _RosterStage.upload;
-        _error = 'The roster could not be processed. Try again later.';
-      });
+      if (mounted) {
+        setState(() => _error = 'The roster could not be uploaded. Try again.');
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _selecting = false;
+          _uploading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _watch(String id) async {
+    await _subscription?.cancel();
+    _subscription = _repository
+        .watchRoster(id)
+        .listen(
+          (roster) {
+            if (mounted) {
+              setState(() {
+                _roster = roster;
+                _error = null;
+              });
+            }
+          },
+          onError: (Object error) {
+            if (mounted) {
+              setState(
+                () => _error = error is RosterRepositoryException
+                    ? error.message
+                    : 'Roster status could not be loaded.',
+              );
+            }
+          },
+        );
+  }
+
+  Future<void> _retry() async {
+    final roster = _roster;
+    if (roster == null) return _selectAndUpload();
+    try {
+      setState(() => _error = null);
+      await _repository.retryRoster(roster.id);
+      await _watch(roster.id);
+    } on RosterRepositoryException catch (error) {
+      if (mounted) setState(() => _error = error.message);
     }
   }
 
   Future<void> _confirm() async {
-    final user = FirebaseAuth.instance.currentUser;
-    final confirmed = _duties
-        .where((duty) => duty['confirmed'] == true)
-        .toList();
-    if (user == null || confirmed.isEmpty) return;
-    setState(() => _confirming = true);
+    final roster = _roster;
+    if (roster == null || roster.status != RosterStatus.needsReview) return;
+    final duties = roster.duties.where((duty) => duty.confirmed).toList();
+    if (duties.isEmpty) {
+      setState(() => _error = 'Select at least one duty before confirming.');
+      return;
+    }
     try {
-      final profile = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      final zone = profile.data()?['homeZone'] as String? ?? 'Petaling Jaya';
-      final roster = await FirebaseFirestore.instance
-          .collection('rosters')
-          .add({
-            'userId': user.uid,
-            'sourceFileName': _fileName,
-            'flights': confirmed,
-            'uploadedAt': FieldValue.serverTimestamp(),
-            'status': 'confirmed',
-          });
-
-      var generated = 0;
-      for (final duty in confirmed) {
-        final date = _parseDutyDate(duty['date']?.toString());
-        if (date == null) continue;
-        try {
-          await RosterMatchingService.matchCrewToPool(
-            flightNumber: duty['flightNumber']?.toString() ?? '',
-            flightDate: date,
-            departureTime: duty['departureTime']?.toString() ?? '',
-            airport: duty['airport']?.toString() ?? '',
-            zone: zone,
-          );
-          generated++;
-        } catch (_) {
-          // The confirmed roster remains saved for server-side recovery.
-        }
-      }
-      await roster.update({
-        'status': generated == confirmed.length
-            ? 'transport_generated'
-            : 'requires_processing',
-        'transportRequirementsGenerated': generated,
+      setState(() {
+        _confirming = true;
+        _error = null;
       });
+      final confirmed = await _repository.confirmRoster(
+        roster.id,
+        roster.duties,
+      );
       if (!mounted) return;
+      setState(() => _roster = confirmed);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
-            '$generated of ${confirmed.length} transport requirements generated.',
+            'Roster confirmed. Transport generation is processing.',
           ),
         ),
       );
-      Navigator.pop(context);
-    } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('The roster could not be confirmed. Try again.'),
-        ),
-      );
-      setState(() => _confirming = false);
+    } on RosterRepositoryException catch (error) {
+      if (mounted) setState(() => _error = error.message);
+    } finally {
+      if (mounted) setState(() => _confirming = false);
     }
   }
 
-  DateTime? _parseDutyDate(String? value) {
-    if (value == null) return null;
-    final match = RegExp(
-      r'(\d{1,2})\s+([A-Za-z]{3})(?:\s+(\d{4}))?',
-    ).firstMatch(value);
-    if (match == null) return null;
-    const months = {
-      'jan': 1,
-      'feb': 2,
-      'mar': 3,
-      'apr': 4,
-      'may': 5,
-      'jun': 6,
-      'jul': 7,
-      'aug': 8,
-      'sep': 9,
-      'oct': 10,
-      'nov': 11,
-      'dec': 12,
-    };
-    final month = months[match.group(2)!.toLowerCase()];
-    if (month == null) return null;
-    final now = DateTime.now();
-    var year = int.tryParse(match.group(3) ?? '') ?? now.year;
-    var date = DateTime(year, month, int.parse(match.group(1)!));
-    if (match.group(3) == null &&
-        date.isBefore(now.subtract(const Duration(days: 60)))) {
-      year++;
-      date = DateTime(year, month, int.parse(match.group(1)!));
+  void _replaceDuty(int index, RosterDuty duty) {
+    final roster = _roster!;
+    final duties = [...roster.duties]..[index] = duty;
+    setState(
+      () => _roster = Roster(
+        id: roster.id,
+        crewId: roster.crewId,
+        status: roster.status,
+        duties: duties,
+        createdAt: roster.createdAt,
+        updatedAt: roster.updatedAt,
+        sourceFileName: roster.sourceFileName,
+        errorMessage: roster.errorMessage,
+      ),
+    );
+  }
+
+  Future<void> _editDuty(int index) async {
+    final duty = _roster!.duties[index];
+    final flight = TextEditingController(text: duty.flightNumber);
+    final origin = TextEditingController(text: duty.origin);
+    final destination = TextEditingController(text: duty.destination);
+    final airport = TextEditingController(text: duty.airport);
+    final report = TextEditingController(
+      text: duty.reportTime?.toIso8601String(),
+    );
+    final release = TextEditingController(
+      text: duty.releaseTime?.toIso8601String(),
+    );
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Correct duty'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: flight,
+                decoration: const InputDecoration(labelText: 'Flight number'),
+              ),
+              TextField(
+                controller: origin,
+                decoration: const InputDecoration(labelText: 'Origin'),
+              ),
+              TextField(
+                controller: destination,
+                decoration: const InputDecoration(labelText: 'Destination'),
+              ),
+              TextField(
+                controller: airport,
+                decoration: const InputDecoration(labelText: 'Base airport'),
+              ),
+              TextField(
+                controller: report,
+                decoration: const InputDecoration(
+                  labelText: 'Report time (ISO 8601)',
+                ),
+              ),
+              TextField(
+                controller: release,
+                decoration: const InputDecoration(
+                  labelText: 'Release time (ISO 8601)',
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+    if (saved != true) return;
+    final reportAt = DateTime.tryParse(report.text.trim());
+    final releaseAt = DateTime.tryParse(release.text.trim());
+    if ((report.text.trim().isNotEmpty && reportAt == null) ||
+        (release.text.trim().isNotEmpty && releaseAt == null)) {
+      setState(() => _error = 'Use a valid ISO 8601 report/release time.');
+      return;
     }
-    return date;
+    _replaceDuty(
+      index,
+      duty.copyWith(
+        flightNumber: flight.text.trim(),
+        origin: origin.text.trim(),
+        destination: destination.text.trim(),
+        airport: airport.text.trim(),
+        reportTime: reportAt,
+        releaseTime: releaseAt,
+      ),
+    );
   }
 
   @override
@@ -196,204 +270,168 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
     return Scaffold(
       appBar: const AeroAppBar(
         title: 'Upload roster',
-        subtitle: 'Validate, review, and confirm duties',
+        subtitle: 'Secure parsing and duty review',
       ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),
-          child: switch (_stage) {
-            _RosterStage.upload => _uploadView(),
-            _RosterStage.processing => _processingView(),
-            _RosterStage.review => _reviewView(),
-          },
+          child: ListView(
+            padding: const EdgeInsets.all(AeroSpacing.screen),
+            children: [
+              if (_error != null) ...[
+                AeroErrorState(message: _error!, onRetry: _retry),
+                const SizedBox(height: 16),
+              ],
+              if (_roster == null) _uploadCard() else _rosterView(_roster!),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _uploadView() => ListView(
-    padding: const EdgeInsets.all(20),
-    children: [
-      AeroCard(
-        child: Column(
-          children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: context.aero.blueSurface,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(
-                Icons.document_scanner_outlined,
-                size: 32,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Select a roster image or PDF',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We validate the file before extracting duties. You will review every detected entry before transport is generated.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: context.aero.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 20),
-            AeroButton(
-              label: 'Choose roster file',
-              icon: Icons.upload_file,
-              expand: true,
-              onPressed: _selectAndExtract,
-            ),
-          ],
+  Widget _uploadCard() => AeroCard(
+    child: Column(
+      children: [
+        Icon(
+          Icons.document_scanner_outlined,
+          size: 48,
+          color: Theme.of(context).colorScheme.primary,
         ),
-      ),
-      if (_error != null) ...[
         const SizedBox(height: 16),
-        AeroCard(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.info_outline, color: context.aero.information),
-              const SizedBox(width: 12),
-              Expanded(child: Text(_error!)),
-            ],
-          ),
+        Text(
+          'Select a roster image or PDF',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'The file is submitted to the secure roster service. Queued work remains visibly queued until parsing finishes.',
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 20),
+        AeroButton(
+          label: _selecting
+              ? 'Selecting…'
+              : _uploading
+              ? 'Uploading…'
+              : 'Choose roster file',
+          icon: Icons.upload_file,
+          expand: true,
+          onPressed: _selecting || _uploading ? null : _selectAndUpload,
         ),
       ],
-      const SizedBox(height: 24),
-      const AeroSectionHeader(title: 'What happens next'),
-      const SizedBox(height: 12),
-      const AeroCard(
-        padding: EdgeInsets.zero,
-        child: Column(
-          children: [
-            AeroListTile(
-              icon: Icons.verified_outlined,
-              title: '1. Validate file',
-            ),
-            Divider(height: 1),
-            AeroListTile(
-              icon: Icons.manage_search_outlined,
-              title: '2. Extract and review duties',
-            ),
-            Divider(height: 1),
-            AeroListTile(
-              icon: Icons.route_outlined,
-              title: '3. Generate transport requirements',
-            ),
-          ],
-        ),
-      ),
-    ],
+    ),
   );
 
-  Widget _processingView() =>
-      const AeroLoadingState(label: 'Validating and extracting roster duties');
-
-  Widget _reviewView() {
-    final confirmed = _duties.where((duty) => duty['confirmed'] == true).length;
-    final uncertain = _duties.where((duty) => duty['uncertain'] == true).length;
+  Widget _rosterView(Roster roster) {
+    if (roster.status != RosterStatus.needsReview &&
+        roster.status != RosterStatus.confirmed) {
+      return AeroCard(
+        child: Column(
+          children: [
+            if (roster.status != RosterStatus.failed)
+              const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Text(
+              _statusLabel(roster.status),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            if (roster.errorMessage != null)
+              Text(roster.errorMessage!, textAlign: TextAlign.center),
+            if (roster.status == RosterStatus.failed) ...[
+              const SizedBox(height: 16),
+              AeroButton(label: 'Retry processing', onPressed: _retry),
+            ],
+          ],
+        ),
+      );
+    }
     return Column(
       children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(20),
+        AeroCard(
+          child: Row(
             children: [
-              AeroCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${_duties.length} duties detected',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '$confirmed confirmed automatically · $uncertain require review',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: context.aero.textSecondary,
-                      ),
-                    ),
-                  ],
+              Expanded(
+                child: Text(
+                  _statusLabel(roster.status),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-              const SizedBox(height: 20),
-              const AeroSectionHeader(title: 'Review detected duties'),
-              const SizedBox(height: 12),
-              ...List.generate(_duties.length, (index) => _dutyCard(index)),
-              TextButton(
-                onPressed: () => setState(() {
-                  _stage = _RosterStage.upload;
-                  _duties = const [];
-                }),
-                child: const Text('Choose another file'),
+              AeroStatusChip(
+                label: roster.status == RosterStatus.confirmed
+                    ? 'Confirmed'
+                    : 'Review required',
+                color: roster.status == RosterStatus.confirmed
+                    ? context.aero.success
+                    : context.aero.warning,
               ),
             ],
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: context.aero.surface,
-            border: Border(top: BorderSide(color: context.aero.border)),
-          ),
-          child: AeroButton(
-            label: _confirming ? 'Confirming…' : 'Confirm $confirmed duties',
-            icon: Icons.check,
-            expand: true,
-            onPressed: _confirming || confirmed == 0 ? null : _confirm,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _dutyCard(int index) {
-    final duty = _duties[index];
-    final selected = duty['confirmed'] == true;
-    final uncertain = duty['uncertain'] == true;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: AeroCard(
-        onTap: () => setState(() => _duties[index]['confirmed'] = !selected),
-        child: Row(
-          children: [
-            Checkbox(
-              value: selected,
-              onChanged: (value) =>
-                  setState(() => _duties[index]['confirmed'] = value ?? false),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        const SizedBox(height: 12),
+        ...List.generate(roster.duties.length, (index) {
+          final duty = roster.duties[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: AeroCard(
+              child: Row(
                 children: [
-                  Text(
-                    '${duty['flightNumber'] ?? 'Duty'} · ${duty['airport'] ?? 'Airport pending'}',
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Checkbox(
+                    value: duty.confirmed,
+                    onChanged: roster.status == RosterStatus.confirmed
+                        ? null
+                        : (value) => _replaceDuty(
+                            index,
+                            duty.copyWith(confirmed: value ?? false),
+                          ),
                   ),
-                  Text(
-                    '${duty['date'] ?? 'Date pending'} · ${duty['departureTime'] ?? 'Time pending'}',
-                    style: Theme.of(context).textTheme.bodySmall,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          duty.flightNumber?.isNotEmpty == true
+                              ? duty.flightNumber!
+                              : 'Duty ${index + 1}',
+                        ),
+                        Text(
+                          '${duty.origin ?? 'Origin pending'} → ${duty.destination ?? 'Destination pending'}',
+                        ),
+                        Text(
+                          duty.reportTime?.toLocal().toString() ??
+                              duty.releaseTime?.toLocal().toString() ??
+                              'Time pending',
+                        ),
+                      ],
+                    ),
                   ),
+                  if (roster.status != RosterStatus.confirmed)
+                    IconButton(
+                      onPressed: () => _editDuty(index),
+                      icon: const Icon(Icons.edit_outlined),
+                    ),
                 ],
               ),
             ),
-            if (uncertain)
-              AeroStatusChip(
-                label: 'Review',
-                color: context.aero.warning,
-                icon: Icons.warning_amber,
-              ),
-          ],
-        ),
-      ),
+          );
+        }),
+        if (roster.status == RosterStatus.needsReview)
+          AeroButton(
+            label: _confirming ? 'Confirming…' : 'Confirm reviewed roster',
+            icon: Icons.check,
+            expand: true,
+            onPressed: _confirming ? null : _confirm,
+          ),
+      ],
     );
   }
+
+  String _statusLabel(RosterStatus status) => switch (status) {
+    RosterStatus.uploaded => 'Roster uploaded',
+    RosterStatus.queued => 'Roster queued',
+    RosterStatus.processing => 'Parsing roster',
+    RosterStatus.needsReview => 'Review parsed duties',
+    RosterStatus.confirmed => 'Roster confirmed',
+    RosterStatus.failed => 'Roster processing failed',
+  };
 }

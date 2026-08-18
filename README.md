@@ -28,14 +28,13 @@ inside the client:
 
 | Define | Used by | Purpose |
 | --- | --- | --- |
-| `ROSTER_EXTRACTION_URL` | `AnthropicService` | Server endpoint that extracts duties from an uploaded roster file |
-| `ROSTER_MATCHING_URL` | `RosterMatchingService` | Server endpoint that generates transport requirements / pool matches from a confirmed duty |
+| `ROSTER_EXTRACTION_URL` | `ApiRosterRepository` | Base URL for asynchronous roster jobs, confirmation, and retry |
 | `PAYMENT_API_URL` | `ChipService` | Server endpoint that creates and reconciles CHIP payment purchases |
 
 Example:
 
 ```powershell
-flutter run --dart-define=ROSTER_EXTRACTION_URL=https://example.com/roster/extract --dart-define=ROSTER_MATCHING_URL=https://example.com/roster/match --dart-define=PAYMENT_API_URL=https://example.com/payments
+flutter run --dart-define=ROSTER_EXTRACTION_URL=https://example.com --dart-define=PAYMENT_API_URL=https://example.com/payments
 ```
 
 Without these defines, the corresponding features fail safely with a

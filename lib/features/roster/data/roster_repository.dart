@@ -2,7 +2,20 @@ import 'dart:typed_data';
 import 'package:aerocrew/features/roster/domain/roster.dart';
 
 abstract interface class RosterRepository {
-  Stream<List<Roster>> watchCrewRosters(String crewId);
-  Future<List<RosterDuty>> extract(Uint8List bytes, String mediaType);
-  Future<void> save(Roster roster);
+  Future<String> createRosterJob({
+    required Uint8List bytes,
+    required String mediaType,
+    required String fileName,
+  });
+  Stream<Roster> watchRoster(String rosterId);
+  Future<Roster> getRoster(String rosterId);
+  Future<Roster> confirmRoster(String rosterId, List<RosterDuty> duties);
+  Future<void> retryRoster(String rosterId);
+}
+
+class RosterRepositoryException implements Exception {
+  const RosterRepositoryException(this.message);
+  final String message;
+  @override
+  String toString() => message;
 }

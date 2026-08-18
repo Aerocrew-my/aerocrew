@@ -38,6 +38,30 @@ void main() {
     expect(original.toMap()['createdAt'], isA<Timestamp>());
   });
 
+  test('initial request serialization contains no privileged assignment', () {
+    final request = Trip(
+      id: 'request-1',
+      status: TripStatus.requested,
+      serviceType: ServiceType.aeroPool,
+      crewIds: const ['crew-1'],
+      pickupStops: const [PickupStop(id: 'home', address: 'Subang Jaya')],
+      airport: 'KUL',
+      scheduledPickupAt: now,
+      requiredArrivalAt: now.add(const Duration(hours: 2)),
+      createdAt: now,
+      updatedAt: now,
+      createdBy: 'crew-1',
+    );
+    final map = request.toMap();
+    expect(map['status'], 'requested');
+    expect(map['assignmentStatus'], 'unassigned');
+    expect(map['paymentStatus'], 'pending');
+    expect(map['operatorId'], isNull);
+    expect(map['vehicleId'], isNull);
+    expect(map['driverId'], isNull);
+    expect(map['fare'], isNull);
+  });
+
   test('unknown enum values use safe non-privileged fallbacks', () {
     final map = trip().toMap()
       ..addAll({

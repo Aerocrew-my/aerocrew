@@ -92,13 +92,11 @@ service cloud.firestore {
     }
 
     match /rosters/{rosterId} {
-      allow create: if isCrew() && request.resource.data.crewId == request.auth.uid;
       allow read: if isCrew() && resource.data.crewId == request.auth.uid;
-      allow update: if isCrew()
-        && resource.data.crewId == request.auth.uid
-        && request.resource.data.crewId == request.auth.uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['duties', 'status', 'updatedAt']);
-      allow delete: if false;
+      // Parser output, confirmation, retries, and deterministic generation go
+      // through the authenticated roster backend. This prevents a client from
+      // overwriting parser metadata or bypassing idempotent generation.
+      allow write: if false;
     }
 
     match /transportRequirements/{requirementId} {

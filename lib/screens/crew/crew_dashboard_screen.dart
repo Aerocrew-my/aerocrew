@@ -103,6 +103,14 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
 
   String get _firstName => _userName.trim().split(' ').first;
 
+  List<Trip> get _upcomingTrips {
+    final values = _trips
+        .where((trip) => trip.isActive || trip.isUpcoming)
+        .toList();
+    values.sort((a, b) => a.scheduledPickupAt.compareTo(b.scheduledPickupAt));
+    return values;
+  }
+
   String get _greeting {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good morning';
@@ -240,7 +248,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                         ),
                       ),
                     ),
-                  if (_trips.isEmpty)
+                  if (_upcomingTrips.isEmpty)
                     AeroEmptyState(
                       icon: Icons.flight_takeoff_outlined,
                       title: 'No transport planned',
@@ -253,7 +261,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                       ),
                     )
                   else ...[
-                    _nextPickupCard(_trips.first),
+                    _nextPickupCard(_upcomingTrips.first),
                     const SizedBox(height: AeroSpacing.section),
                     AeroSectionHeader(
                       title: 'Upcoming trips',
@@ -263,7 +271,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                       ),
                     ),
                     const SizedBox(height: AeroSpacing.sm),
-                    ..._trips.skip(1).take(3).map(_tripCard),
+                    ..._upcomingTrips.skip(1).take(3).map(_tripCard),
                   ],
                   const SizedBox(height: AeroSpacing.section),
                   const AeroSectionHeader(title: 'Roster status'),
@@ -348,6 +356,11 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
           ),
           const SizedBox(height: 20),
           _routeLine(origin, destination),
+          const SizedBox(height: 12),
+          Text(
+            '${trip.serviceType.name} • ${trip.status.name} • ${trip.assignmentStatus.name}',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
           const SizedBox(height: 20),
           Divider(color: context.aero.border),
           const SizedBox(height: 12),

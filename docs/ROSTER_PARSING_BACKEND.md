@@ -47,7 +47,17 @@ deterministic transport requirements server-side. A recommended idempotency key
 is a hash of `crewId`, duty date, flight number, direction, report/release time,
 and airport. The server owns matching, assignment, and notification writes.
 
-The current synchronous extraction response (`{"duties": [...]}` or a duty
-array) remains a transitional compatibility contract. Move Flutter to the job
-endpoints before pilot rollout.
+Confirmation returns `200` with the canonical roster resource. It is
+idempotent: repeating the same confirmed duty set returns the same requirement
+and trip identifiers. `POST /v1/roster-jobs/{jobId}/retry` returns `202` and may
+only restart an owner-visible failed job.
 
+For duties touching the crew's configured base airport, confirmation creates a
+deterministically identified `transportRequirements` document and an initial
+`requested` trip without operator, driver, vehicle, fare override, match score,
+or paid state. Reporting from base creates home-to-airport transport; release
+after arriving at base creates airport-to-home transport. Other sectors create
+no airport transport requirement.
+
+Flutter now uses these asynchronous job endpoints exclusively. A deployed
+backend remains required before roster upload can operate in production.
