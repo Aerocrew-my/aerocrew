@@ -34,7 +34,7 @@ inside the client:
 Example:
 
 ```powershell
-flutter run --dart-define=ROSTER_EXTRACTION_URL=https://example.com --dart-define=PAYMENT_API_URL=https://example.com/payments
+flutter run --dart-define=ROSTER_EXTRACTION_URL=https://example.com/api --dart-define=PAYMENT_API_URL=https://example.com/payments
 ```
 
 Without these defines, the corresponding features fail safely with a

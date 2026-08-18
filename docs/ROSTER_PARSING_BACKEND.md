@@ -61,3 +61,27 @@ no airport transport requirement.
 
 Flutter now uses these asynchronous job endpoints exclusively. A deployed
 backend remains required before roster upload can operate in production.
+
+## Flutter local development
+
+The Next.js route handlers are under `/api`, while the paths above are relative
+to that API root. Start the web backend from its repository with:
+
+```powershell
+npm run dev
+```
+
+For Flutter Web, from this repository use:
+
+```powershell
+flutter run -d chrome --dart-define=ROSTER_EXTRACTION_URL=http://localhost:3000/api
+```
+
+For an Android emulator, the host machine is normally available as `10.0.2.2`:
+
+```powershell
+flutter run -d emulator-5554 --dart-define=ROSTER_EXTRACTION_URL=http://10.0.2.2:3000/api
+```
+
+The repository appends `/v1/roster-jobs` and its job, confirm, and retry
+suffixes. Do not include `/v1/roster-jobs` in `ROSTER_EXTRACTION_URL`.

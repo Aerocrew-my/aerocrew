@@ -117,6 +117,21 @@ class RosterDuty {
     'confirmed': confirmed,
     if (includeParserMetadata && confidence != null) 'confidence': confidence,
   };
+
+  Map<String, dynamic> toConfirmationMap() => {
+    'id': id,
+    if (date != null) 'date': date!.toIso8601String(),
+    if (flightNumber != null) 'flightNumber': flightNumber,
+    if (origin != null) 'origin': origin,
+    if (destination != null) 'destination': destination,
+    if (reportTime != null) 'reportTime': reportTime!.toIso8601String(),
+    if (departureTime != null)
+      'departureTime': departureTime!.toIso8601String(),
+    if (arrivalTime != null) 'arrivalTime': arrivalTime!.toIso8601String(),
+    if (releaseTime != null) 'releaseTime': releaseTime!.toIso8601String(),
+    if (airport != null) 'airport': airport,
+    if (dutyType != null) 'dutyType': dutyType,
+  };
 }
 
 class Roster {

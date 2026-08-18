@@ -257,7 +257,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                       action: AeroButton(
                         label: 'Upload roster',
                         icon: Icons.upload_file,
-                        onPressed: () => _open(const RosterUploadScreen()),
+                        onPressed: () => _openRosterUpload(),
                       ),
                     )
                   else ...[
@@ -317,6 +317,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
         ? 'Pickup location pending'
         : trip.pickupStops.first.address;
     final destination = trip.terminal ?? trip.airport;
+    final operatorName = trip.operatorName ?? 'Operator pending';
     final driver = trip.driverName ?? 'Driver pending';
     final vehicle = trip.vehicleDescription ?? 'Vehicle pending';
     final plate = trip.vehiclePlate ?? 'Plate pending';
@@ -377,7 +378,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      driver,
+                      '$operatorName · $driver',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text(
@@ -520,7 +521,7 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
                 label: 'Upload roster',
                 icon: Icons.upload_file,
                 expand: true,
-                onPressed: () => _open(const RosterUploadScreen()),
+                onPressed: () => _openRosterUpload(),
               ),
             ],
           ),
@@ -653,4 +654,11 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
 
   Future<void> _open(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+
+  Future<void> _openRosterUpload() =>
+      _open(RosterUploadScreen(onConfirmed: _refreshTrips));
+
+  void _refreshTrips() {
+    _loadDashboard();
+  }
 }

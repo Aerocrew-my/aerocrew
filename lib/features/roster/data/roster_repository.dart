@@ -14,8 +14,10 @@ abstract interface class RosterRepository {
 }
 
 class RosterRepositoryException implements Exception {
-  const RosterRepositoryException(this.message);
+  const RosterRepositoryException(this.message, {this.statusCode, this.code});
   final String message;
+  final int? statusCode;
+  final String? code;
   @override
   String toString() => message;
 }

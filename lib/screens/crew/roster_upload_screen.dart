@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:aerocrew/features/roster/data/api_roster_repository.dart';
 import 'package:aerocrew/features/roster/data/roster_repository.dart';
+import 'package:aerocrew/features/roster/data/roster_job_store.dart';
 import 'package:aerocrew/features/roster/domain/roster.dart';
 import 'package:aerocrew/theme/aero_theme.dart';
 import 'package:aerocrew/widgets/aero_components.dart';
@@ -9,8 +10,15 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 
 class RosterUploadScreen extends StatefulWidget {
-  const RosterUploadScreen({super.key, this.repository});
+  const RosterUploadScreen({
+    super.key,
+    this.repository,
+    this.jobStore,
+    this.onConfirmed,
+  });
   final RosterRepository? repository;
+  final RosterJobStore? jobStore;
+  final VoidCallback? onConfirmed;
 
   @override
   State<RosterUploadScreen> createState() => _RosterUploadScreenState();
@@ -18,6 +26,7 @@ class RosterUploadScreen extends StatefulWidget {
 
 class _RosterUploadScreenState extends State<RosterUploadScreen> {
   late final RosterRepository _repository;
+  late final RosterJobStore _jobStore;
   StreamSubscription<Roster>? _subscription;
   Roster? _roster;
   String? _error;
@@ -29,6 +38,14 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
   void initState() {
     super.initState();
     _repository = widget.repository ?? ApiRosterRepository();
+    _jobStore = widget.jobStore ?? PreferencesRosterJobStore();
+    _resumeCurrentJob();
+  }
+
+  Future<void> _resumeCurrentJob() async {
+    final id = await _jobStore.load();
+    if (!mounted || id == null || id.isEmpty) return;
+    await _watch(id);
   }
 
   @override
@@ -78,6 +95,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
         mediaType: mediaType,
         fileName: file.name,
       );
+      await _jobStore.save(id);
       await _watch(id);
     } on RosterRepositoryException catch (error) {
       if (mounted) setState(() => _error = error.message);
@@ -122,7 +140,10 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
 
   Future<void> _retry() async {
     final roster = _roster;
-    if (roster == null) return _selectAndUpload();
+    if (roster == null) {
+      await _selectAndUpload();
+      return;
+    }
     try {
       setState(() => _error = null);
       await _repository.retryRoster(roster.id);
@@ -133,6 +154,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
   }
 
   Future<void> _confirm() async {
+    if (_confirming) return;
     final roster = _roster;
     if (roster == null || roster.status != RosterStatus.needsReview) return;
     final duties = roster.duties.where((duty) => duty.confirmed).toList();
@@ -151,6 +173,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
       );
       if (!mounted) return;
       setState(() => _roster = confirmed);
+      widget.onConfirmed?.call();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
