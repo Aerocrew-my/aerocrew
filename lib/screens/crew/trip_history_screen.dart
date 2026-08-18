@@ -4,6 +4,7 @@ import 'package:aerocrew/features/trips/domain/trip.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'trip_receipt_screen.dart';
 
 class TripHistoryScreen extends StatelessWidget {
   const TripHistoryScreen({super.key, this.repository, this.crewId});
@@ -59,7 +60,13 @@ class TripHistoryScreen extends StatelessWidget {
                         subtitle: Text(
                           '${_date(trip.scheduledPickupAt)}\n${trip.operatorName ?? 'Operator not provided'} · ${vehicle.isEmpty ? 'Vehicle not provided' : vehicle}',
                         ),
-                        trailing: const Text('Completed'),
+                        trailing: const Icon(Icons.receipt_long_outlined),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => TripReceiptScreen(tripId: trip.id),
+                          ),
+                        ),
                       ),
                     );
                   },

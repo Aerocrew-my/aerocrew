@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:aerocrew/constants.dart';
 import 'package:aerocrew/features/trips/domain/trip.dart';
+import 'package:aerocrew/screens/crew/trip_payment_screen.dart';
+import 'package:aerocrew/screens/crew/trip_receipt_screen.dart';
 
 class CrewMapScreen extends StatelessWidget {
   final Trip trip;
@@ -195,6 +197,36 @@ class CrewMapScreen extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
+            if (trip.status == TripStatus.completed)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.receipt_long_outlined),
+                  label: const Text('View receipt'),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => TripReceiptScreen(tripId: trip.id),
+                    ),
+                  ),
+                ),
+              ),
+            if (trip.status != TripStatus.completed &&
+                trip.paymentStatus != PaymentStatus.paid)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.payments_outlined),
+                  label: const Text('Manage payment'),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => TripPaymentScreen(tripId: trip.id),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -112,8 +112,19 @@ service cloud.firestore {
     }
 
     match /notifications/{notificationId} {
-      allow read: if signedIn() && resource.data.userId == request.auth.uid;
-      allow write: if false;
+      function ownsNotification(data) {
+        return signedIn()
+          && (data.recipientId == request.auth.uid || data.userId == request.auth.uid);
+      }
+      allow read: if ownsNotification(resource.data);
+      allow update: if ownsNotification(resource.data)
+        && ownsNotification(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'read', 'readAt'
+        ])
+        && request.resource.data.read == true
+        && request.resource.data.readAt == request.time;
+      allow create, delete: if false;
     }
 
     match /payments/{paymentId} {
