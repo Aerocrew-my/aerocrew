@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:aerocrew/features/offers/data/api_operator_offer_repository.dart';
+import 'package:aerocrew/features/offers/data/operator_offer_repository.dart';
+import 'package:aerocrew/features/offers/data/operator_vehicle_repository.dart';
+import 'package:aerocrew/features/offers/domain/operator_offer.dart';
 import 'package:aerocrew/features/trips/data/firebase_trip_repository.dart';
 import 'package:aerocrew/features/trips/data/trip_repository.dart';
 import 'package:aerocrew/features/trips/domain/trip.dart';
@@ -9,6 +13,7 @@ import 'package:aerocrew/screens/operator/active_job_screen.dart';
 import 'package:aerocrew/screens/operator/availability_screen.dart';
 import 'package:aerocrew/screens/operator/earnings_screen.dart';
 import 'package:aerocrew/screens/operator/operator_live_job_screen.dart';
+import 'package:aerocrew/screens/operator/operator_offer_screen.dart';
 import 'package:aerocrew/screens/operator/operator_notifications_screen.dart';
 import 'package:aerocrew/screens/operator/operator_profile_view_screen.dart';
 import 'package:aerocrew/screens/operator/operator_trip_history_screen.dart';
@@ -20,8 +25,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OperatorDashboardScreen extends StatefulWidget {
-  const OperatorDashboardScreen({super.key, this.tripRepository});
+  const OperatorDashboardScreen({
+    super.key,
+    this.tripRepository,
+    this.offerRepository,
+  });
   final TripRepository? tripRepository;
+  final OperatorOfferRepository? offerRepository;
 
   @override
   State<OperatorDashboardScreen> createState() =>
@@ -35,9 +45,11 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   bool _loading = true;
   String? _error;
   List<Trip> _typedJobs = const [];
+  List<OperatorOffer> _offers = const [];
   List<Map<String, dynamic>> get _jobs =>
       _typedJobs.map(legacyTripView).toList(growable: false);
   late final TripRepository _tripRepository;
+  late final OperatorOfferRepository _offerRepository;
   StreamSubscription<List<Trip>>? _jobSubscription;
 
   @override
@@ -46,6 +58,7 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
     _tripRepository =
         widget.tripRepository ??
         FirebaseTripRepository(FirebaseFirestore.instance);
+    _offerRepository = widget.offerRepository ?? ApiOperatorOfferRepository();
     _loadDashboard();
   }
 
@@ -94,6 +107,7 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
               }
             },
           );
+      await _refreshOffers();
     } catch (_) {
       if (!mounted) return;
       setState(() {
@@ -101,6 +115,19 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
             'Jobs could not be loaded. Check your connection and try again.';
         _loading = false;
       });
+    }
+  }
+
+  Future<void> _refreshOffers() async {
+    try {
+      final offers = await _offerRepository.listOffers();
+      if (mounted) {
+        setState(
+          () => _offers = offers.where((offer) => offer.isPending).toList(),
+        );
+      }
+    } on OperatorOfferException catch (error) {
+      if (mounted) setState(() => _error = error.message);
     }
   }
 
@@ -245,6 +272,19 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
               children: [
                 _availabilityControl(),
                 const SizedBox(height: AeroSpacing.section),
+                const AeroSectionHeader(title: 'Pending offers'),
+                const SizedBox(height: AeroSpacing.sm),
+                if (_offers.isEmpty)
+                  const AeroEmptyState(
+                    icon: Icons.inbox_outlined,
+                    title: 'No pending offers',
+                    message: 'Eligible work offers will appear here.',
+                  )
+                else
+                  ..._offers.map(_offerCard),
+                const SizedBox(height: AeroSpacing.section),
+                const AeroSectionHeader(title: 'Assigned work'),
+                const SizedBox(height: AeroSpacing.sm),
                 if (_activeJob == null)
                   const AeroEmptyState(
                     icon: Icons.work_outline,
@@ -260,31 +300,67 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
                   ..._jobs.skip(1).map(_jobCard),
                 ],
                 const SizedBox(height: AeroSpacing.section),
-                AeroCard(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.payments_outlined,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Daily earnings',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                      Text(
-                        'RM ${_dailyEarnings.toStringAsFixed(2)}',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ],
+                const AeroCard(
+                  child: Text(
+                    'Earnings are unavailable until settlement is connected.',
                   ),
                 ),
               ],
             ),
           ),
   );
+
+  Widget _offerCard(OperatorOffer offer) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: AeroCard(
+      onTap: () => _openOffer(offer),
+      child: Row(
+        children: [
+          Icon(
+            offer.isPool ? Icons.groups_outlined : Icons.route_outlined,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  offer.isPool
+                      ? 'AeroPool · ${offer.crewCount} crew'
+                      : '${offer.serviceType} · ${offer.crewCount} crew',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  '${tripDate(offer.pickupAt)} · ${tripTime(offer.pickupAt)} · ${offer.airport}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right),
+        ],
+      ),
+    ),
+  );
+
+  Future<void> _openOffer(OperatorOffer offer) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    final changed = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => OperatorOfferScreen(
+          offer: offer,
+          repository: _offerRepository,
+          loadVehicles: (capacity) => OperatorVehicleRepository(
+            FirebaseFirestore.instance,
+          ).listEligible(user.uid, capacity: capacity),
+        ),
+      ),
+    );
+    if (changed == true) await _loadDashboard();
+  }
 
   Widget _availabilityControl() {
     final active =
@@ -629,7 +705,7 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
   }
 
   String _actionLabel(String status) => switch (status) {
-    'assigned' => 'Accept job',
+    'assigned' => 'View assignment',
     'accepted' => 'Start route',
     'driverEnRoute' => 'Mark driver arrived',
     'driverArrived' => 'Begin boarding',
@@ -643,6 +719,10 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
     final trip = _typedJobs.where((item) => item.id == view['id']).firstOrNull;
     final user = FirebaseAuth.instance.currentUser;
     if (trip == null || user == null) return;
+    if (trip.status == TripStatus.assigned) {
+      _openJob(view, trip.status.name);
+      return;
+    }
     final next = TripTransitions.operatorNext(trip.status);
     if (next == null) {
       _openJob(view, trip.status.name);
