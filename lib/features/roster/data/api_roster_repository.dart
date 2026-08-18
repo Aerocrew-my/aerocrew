@@ -31,7 +31,7 @@ class ApiRosterRepository implements RosterRepository {
   final String _baseUrl;
   final Duration pollingInterval;
 
-  Uri _uri([String suffix = '']) {
+  Uri _uri(String resource, [String suffix = '']) {
     if (_baseUrl.trim().isEmpty) {
       throw const RosterRepositoryException(
         'Secure roster processing is not configured for this build.',
@@ -40,7 +40,7 @@ class ApiRosterRepository implements RosterRepository {
     final base = _baseUrl.endsWith('/')
         ? _baseUrl.substring(0, _baseUrl.length - 1)
         : _baseUrl;
-    return Uri.parse('$base/v1/roster-jobs$suffix');
+    return Uri.parse('$base/v1/$resource$suffix');
   }
 
   Future<Map<String, String>> _headers({bool forceRefresh = false}) async {
@@ -71,39 +71,122 @@ class ApiRosterRepository implements RosterRepository {
   }
 
   @override
-  Future<String> createRosterJob({
-    required Uint8List bytes,
-    required String mediaType,
+  Future<RosterUploadAuthorization> authorizeRosterUpload({
     required String fileName,
+    required String mediaType,
   }) async {
+    try {
+      final response = await _send(
+        (headers) => _client.post(
+          _uri('roster-uploads'),
+          headers: headers,
+          body: jsonEncode({'mediaType': mediaType, 'fileName': fileName}),
+        ),
+      );
+      final body = _object(response.body);
+      if (response.statusCode != 201) {
+        throw _error(response, body, 'Upload authorization failed. Try again.');
+      }
+      final uploadId = body['uploadId']?.toString() ?? '';
+      final uploadUrl = Uri.tryParse(body['uploadUrl']?.toString() ?? '');
+      final method = body['method']?.toString() ?? '';
+      final expiresAt = DateTime.tryParse(body['expiresAt']?.toString() ?? '');
+      final rawHeaders = body['headers'];
+      if (uploadId.isEmpty ||
+          uploadUrl == null ||
+          !uploadUrl.hasScheme ||
+          method.isEmpty ||
+          expiresAt == null ||
+          rawHeaders is! Map) {
+        throw const FormatException();
+      }
+      return RosterUploadAuthorization(
+        uploadId: uploadId,
+        uploadUrl: uploadUrl,
+        method: method,
+        headers: rawHeaders.map(
+          (key, value) => MapEntry(key.toString(), value.toString()),
+        ),
+        expiresAt: expiresAt,
+      );
+    } on TimeoutException {
+      throw const RosterRepositoryException(
+        'Upload authorization timed out. Try again.',
+      );
+    } on FormatException {
+      throw const RosterRepositoryException(
+        'Upload authorization returned malformed data.',
+      );
+    }
+  }
+
+  @override
+  Future<void> uploadRosterBytes(
+    RosterUploadAuthorization authorization,
+    Uint8List bytes,
+  ) async {
     if (bytes.isEmpty) {
       throw const RosterRepositoryException('The selected file is empty.');
     }
     try {
+      final request =
+          http.Request(authorization.method, authorization.uploadUrl)
+            ..headers.addAll(authorization.headers)
+            ..bodyBytes = bytes;
+      final streamed = await _client.send(request).timeout(_timeout);
+      final response = await http.Response.fromStream(streamed);
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        final expired =
+            authorization.expiresAt.isBefore(DateTime.now()) ||
+            response.body.toLowerCase().contains('expired');
+        throw RosterRepositoryException(
+          expired
+              ? 'The upload authorization expired. Preparing a new upload.'
+              : 'Direct storage upload failed (${response.statusCode}). Try again.',
+          statusCode: response.statusCode,
+          code: expired
+              ? 'upload_authorization_expired'
+              : 'storage_upload_failed',
+        );
+      }
+    } on TimeoutException {
+      throw const RosterRepositoryException(
+        'Direct storage upload timed out. Try again.',
+        code: 'storage_upload_failed',
+      );
+    } on http.ClientException {
+      throw const RosterRepositoryException(
+        'Direct storage upload failed. On Flutter Web, verify the Storage bucket CORS allows this origin and PUT with the returned headers.',
+        code: 'storage_upload_failed',
+      );
+    }
+  }
+
+  @override
+  Future<String> createRosterJob({required String uploadId}) async {
+    try {
       final response = await _send(
         (headers) => _client.post(
-          _uri(),
+          _uri('roster-jobs'),
           headers: headers,
-          body: jsonEncode({
-            'mediaType': mediaType,
-            'fileName': fileName,
-            'file': base64Encode(bytes),
-          }),
+          body: jsonEncode({'uploadId': uploadId}),
         ),
       );
       final body = _object(response.body);
       final jobId = body['jobId']?.toString();
       if (response.statusCode != 202 || jobId == null || jobId.isEmpty) {
-        throw _error(response, body, 'The roster job could not be queued.');
+        throw _error(response, body, 'Job creation failed. Try again.');
       }
       return jobId;
     } on TimeoutException {
       throw const RosterRepositoryException(
-        'Roster upload timed out. Try again.',
+        'Job creation timed out. Retry without uploading the file again.',
+        code: 'job_creation_failed',
       );
     } on FormatException {
       throw const RosterRepositoryException(
-        'The roster service returned malformed data.',
+        'Job creation returned malformed data.',
+        code: 'job_creation_failed',
       );
     }
   }
@@ -112,7 +195,8 @@ class ApiRosterRepository implements RosterRepository {
   Future<Roster> getRoster(String rosterId) async {
     try {
       final response = await _send(
-        (headers) => _client.get(_uri('/$rosterId'), headers: headers),
+        (headers) =>
+            _client.get(_uri('roster-jobs', '/$rosterId'), headers: headers),
       );
       final body = _object(response.body);
       if (response.statusCode != 200) {
@@ -148,7 +232,7 @@ class ApiRosterRepository implements RosterRepository {
     try {
       final response = await _send(
         (headers) => _client.post(
-          _uri('/$rosterId/confirm'),
+          _uri('roster-jobs', '/$rosterId/confirm'),
           headers: headers,
           body: jsonEncode({
             'duties': duties
@@ -186,7 +270,10 @@ class ApiRosterRepository implements RosterRepository {
   @override
   Future<void> retryRoster(String rosterId) async {
     final response = await _send(
-      (headers) => _client.post(_uri('/$rosterId/retry'), headers: headers),
+      (headers) => _client.post(
+        _uri('roster-jobs', '/$rosterId/retry'),
+        headers: headers,
+      ),
     );
     if (response.statusCode != 202) {
       final body = _object(response.body);

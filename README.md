@@ -28,7 +28,7 @@ inside the client:
 
 | Define | Used by | Purpose |
 | --- | --- | --- |
-| `ROSTER_EXTRACTION_URL` | `ApiRosterRepository` | Base URL for asynchronous roster jobs, confirmation, and retry |
+| `ROSTER_EXTRACTION_URL` | `ApiRosterRepository` | API root for private roster upload authorization, jobs, confirmation, and retry |
 | `PAYMENT_API_URL` | `ChipService` | Server endpoint that creates and reconciles CHIP payment purchases |
 
 Example:
@@ -37,9 +37,16 @@ Example:
 flutter run --dart-define=ROSTER_EXTRACTION_URL=https://example.com/api --dart-define=PAYMENT_API_URL=https://example.com/payments
 ```
 
-Without these defines, the corresponding features fail safely with a
-clear "not configured" error rather than falling back to insecure
-client-side logic.
+Without these defines, the corresponding features fail safely with a clear
+"not configured" error rather than falling back to insecure client-side logic.
+
+Roster files use a private direct-upload flow: the app requests authorization
+with file name and MIME type, sends raw bytes to the returned short-lived signed
+Storage `PUT` URL, then creates a small roster job containing only the
+server-issued `uploadId`. Signed URLs and temporary Storage headers are never
+persisted. Flutter Web requires bucket CORS for `https://aerocrew.app` and the
+specific `http://localhost:<flutter-port>` development origin; configure CORS
+on the bucket rather than in the app.
 
 ## Validation
 

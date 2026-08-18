@@ -37,30 +37,109 @@ ApiRosterRepository repository(
 );
 
 void main() {
-  test(
-    'includes an authorization header and uses the exact server route',
-    () async {
-      final client = MockClient((request) async {
-        expect(
-          request.url.toString(),
-          'http://localhost:3000/api/v1/roster-jobs',
-        );
-        expect(request.headers['authorization'], 'Bearer fresh-token');
-        return http.Response(
-          jsonEncode({'jobId': 'job_1', 'status': 'queued'}),
-          202,
-        );
+  test('authorizes upload with metadata and Firebase bearer token', () async {
+    final client = MockClient((request) async {
+      expect(
+        request.url.toString(),
+        'http://localhost:3000/api/v1/roster-uploads',
+      );
+      expect(request.headers['authorization'], 'Bearer fresh-token');
+      expect(jsonDecode(request.body), {
+        'fileName': 'roster.pdf',
+        'mediaType': 'application/pdf',
       });
-      await repository(
-        client,
-        tokens: (_) async => 'fresh-token',
-      ).createRosterJob(
-        bytes: Uint8List.fromList([1]),
-        mediaType: 'application/pdf',
-        fileName: 'roster.pdf',
+      return http.Response(
+        jsonEncode({
+          'uploadId': 'upload_12345',
+          'uploadUrl': 'https://storage.example/object?signature=secret',
+          'method': 'PUT',
+          'headers': {'Content-Type': 'application/pdf', 'x-test': 'exact'},
+          'expiresAt': '2026-08-18T12:00:00Z',
+        }),
+        201,
+      );
+    });
+    final result = await repository(client, tokens: (_) async => 'fresh-token')
+        .authorizeRosterUpload(
+          fileName: 'roster.pdf',
+          mediaType: 'application/pdf',
+        );
+    expect(result.uploadId, 'upload_12345');
+    expect(result.method, 'PUT');
+    expect(result.headers['x-test'], 'exact');
+    expect(result.expiresAt, DateTime.utc(2026, 8, 18, 12));
+  });
+
+  test(
+    'PUTs raw bytes and exact storage headers without Firebase token',
+    () async {
+      final bytes = Uint8List.fromList([0, 1, 2, 255]);
+      final client = MockClient((request) async {
+        expect(request.method, 'PUT');
+        expect(request.url.query, 'signature=secret');
+        expect(request.headers['content-type'], 'application/pdf');
+        expect(request.headers['x-test'], 'exact');
+        expect(request.headers, isNot(contains('authorization')));
+        expect(request.bodyBytes, bytes);
+        expect(request.bodyBytes, isNot(base64Encode(bytes).codeUnits));
+        return http.Response('', 200);
+      });
+      await repository(client).uploadRosterBytes(
+        RosterUploadAuthorization(
+          uploadId: 'upload_12345',
+          uploadUrl: Uri.parse(
+            'https://storage.example/object?signature=secret',
+          ),
+          method: 'PUT',
+          headers: const {'Content-Type': 'application/pdf', 'x-test': 'exact'},
+          expiresAt: DateTime.now().add(const Duration(minutes: 10)),
+        ),
+        bytes,
       );
     },
   );
+
+  test('rejects storage non-2xx and identifies explicit expiry', () async {
+    final client = MockClient(
+      (_) async => http.Response('Request has expired', 403),
+    );
+    final future = repository(client).uploadRosterBytes(
+      RosterUploadAuthorization(
+        uploadId: 'upload_12345',
+        uploadUrl: Uri.parse('https://storage.example/object?secret=yes'),
+        method: 'PUT',
+        headers: const {'Content-Type': 'application/pdf'},
+        expiresAt: DateTime.now().add(const Duration(minutes: 1)),
+      ),
+      Uint8List.fromList([1]),
+    );
+    await expectLater(
+      future,
+      throwsA(
+        predicate<RosterRepositoryException>(
+          (error) => error.code == 'upload_authorization_expired',
+        ),
+      ),
+    );
+  });
+
+  test('creates a job using only uploadId', () async {
+    final client = MockClient((request) async {
+      expect(
+        request.url.toString(),
+        'http://localhost:3000/api/v1/roster-jobs',
+      );
+      expect(jsonDecode(request.body), {'uploadId': 'upload_12345'});
+      return http.Response(
+        jsonEncode({'jobId': 'job_1', 'status': 'queued'}),
+        202,
+      );
+    });
+    expect(
+      await repository(client).createRosterJob(uploadId: 'upload_12345'),
+      'job_1',
+    );
+  });
 
   test('refreshes the token once after a server 401', () async {
     final forced = <bool>[];

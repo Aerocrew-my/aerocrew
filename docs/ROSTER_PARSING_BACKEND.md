@@ -5,16 +5,29 @@ Firebase ID token to a trusted HTTPS service configured with
 `ROSTER_EXTRACTION_URL`; the service verifies the token and derives `crewId`
 from it.
 
-## Preferred asynchronous API
+## Private direct-upload API
 
-`POST /v1/roster-jobs` accepts `application/json`:
+Flutter first calls `POST /v1/roster-uploads` with a Firebase bearer token:
 
 ```json
-{"mediaType":"application/pdf","file":"<base64>"}
+{"fileName":"roster.pdf","mediaType":"application/pdf"}
 ```
 
-Validate JPEG, PNG, or PDF, a maximum decoded size of 12 MiB, and reject files
-whose content does not match the declared media type. Respond `202`:
+The server returns `201` with `uploadId`, a short-lived `uploadUrl`, `method`,
+required `headers`, and `expiresAt`. Flutter sends the raw PDF/JPEG/PNG bytes
+directly to that URL with the returned method and headers. It does not add the
+Firebase bearer token, rewrite the query, encode the bytes as base64, log the
+URL, or persist any signed-upload material.
+
+After a successful Storage response, `POST /v1/roster-jobs` accepts only:
+
+```json
+{"uploadId":"<server-issued-upload-id>"}
+```
+
+The server validates the private object, including non-empty content, a 12 MiB
+maximum, MIME type, signature, ownership, and server-derived object path. It
+responds `202`:
 
 ```json
 {"jobId":"job_123","status":"queued"}
@@ -59,8 +72,14 @@ or paid state. Reporting from base creates home-to-airport transport; release
 after arriving at base creates airport-to-home transport. Other sectors create
 no airport transport requirement.
 
-Flutter now uses these asynchronous job endpoints exclusively. A deployed
-backend remains required before roster upload can operate in production.
+Flutter automatically requests one replacement authorization only when Storage
+clearly reports expiry. If Storage succeeded but job creation failed, retry uses
+the same `uploadId` and does not upload a second object. Only accepted job IDs
+are persisted for polling/resume; signed URLs, query strings, and temporary
+headers are never persisted.
+
+A deployed backend remains required before roster upload can operate in
+production.
 
 ## Flutter local development
 
@@ -83,5 +102,21 @@ For an Android emulator, the host machine is normally available as `10.0.2.2`:
 flutter run -d emulator-5554 --dart-define=ROSTER_EXTRACTION_URL=http://10.0.2.2:3000/api
 ```
 
-The repository appends `/v1/roster-jobs` and its job, confirm, and retry
-suffixes. Do not include `/v1/roster-jobs` in `ROSTER_EXTRACTION_URL`.
+Production builds use:
+
+```powershell
+flutter build web --dart-define=ROSTER_EXTRACTION_URL=https://aerocrew.app/api
+```
+
+The repository appends `/v1/roster-uploads`, `/v1/roster-jobs`, and the job,
+confirm, and retry suffixes. Do not include a versioned route in
+`ROSTER_EXTRACTION_URL`.
+
+## Flutter Web Storage CORS
+
+The private Storage bucket must allow `PUT` and the returned upload headers
+(currently `Content-Type`) from `https://aerocrew.app` and each explicit local
+development origin such as `http://localhost:<flutter-port>`. Configure this on
+the bucket/deployment, keep reads private, and do not use a permissive `*` as a
+client workaround. A browser CORS failure is surfaced as a Storage upload error;
+native Android uploads are not subject to browser CORS.

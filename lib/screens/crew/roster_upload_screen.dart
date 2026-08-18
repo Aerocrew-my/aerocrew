@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:aerocrew/features/roster/data/api_roster_repository.dart';
 import 'package:aerocrew/features/roster/data/roster_repository.dart';
@@ -15,10 +16,12 @@ class RosterUploadScreen extends StatefulWidget {
     this.repository,
     this.jobStore,
     this.onConfirmed,
+    this.pickFile,
   });
   final RosterRepository? repository;
   final RosterJobStore? jobStore;
   final VoidCallback? onConfirmed;
+  final Future<XFile?> Function()? pickFile;
 
   @override
   State<RosterUploadScreen> createState() => _RosterUploadScreenState();
@@ -33,6 +36,8 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
   bool _selecting = false;
   bool _uploading = false;
   bool _confirming = false;
+  String? _uploadState;
+  String? _pendingUploadId;
 
   @override
   void initState() {
@@ -65,7 +70,9 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
       mimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
     );
     try {
-      final file = await openFile(acceptedTypeGroups: const [types]);
+      final file =
+          await (widget.pickFile?.call() ??
+              openFile(acceptedTypeGroups: const [types]));
       if (file == null) return;
       final extension = file.name.split('.').last.toLowerCase();
       final mediaType = switch (extension) {
@@ -89,14 +96,15 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
         );
       }
       if (!mounted) return;
-      setState(() => _uploading = true);
-      final id = await _repository.createRosterJob(
+      setState(() {
+        _uploading = true;
+        _uploadState = 'Preparing upload';
+      });
+      await _authorizeUploadAndCreateJob(
         bytes: bytes,
         mediaType: mediaType,
         fileName: file.name,
       );
-      await _jobStore.save(id);
-      await _watch(id);
     } on RosterRepositoryException catch (error) {
       if (mounted) setState(() => _error = error.message);
     } catch (_) {
@@ -108,9 +116,46 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
         setState(() {
           _selecting = false;
           _uploading = false;
+          _uploadState = null;
         });
       }
     }
+  }
+
+  Future<void> _authorizeUploadAndCreateJob({
+    required Uint8List bytes,
+    required String mediaType,
+    required String fileName,
+  }) async {
+    for (var attempt = 0; attempt < 2; attempt++) {
+      final authorization = await _repository.authorizeRosterUpload(
+        fileName: fileName,
+        mediaType: mediaType,
+      );
+      if (mounted) setState(() => _uploadState = 'Uploading roster');
+      try {
+        await _repository.uploadRosterBytes(authorization, bytes);
+      } on RosterRepositoryException catch (error) {
+        if (error.code == 'upload_authorization_expired' && attempt == 0) {
+          if (mounted) setState(() => _uploadState = 'Preparing upload');
+          continue;
+        }
+        rethrow;
+      }
+      _pendingUploadId = authorization.uploadId;
+      await _createPendingJob();
+      return;
+    }
+  }
+
+  Future<void> _createPendingJob() async {
+    final uploadId = _pendingUploadId;
+    if (uploadId == null) return;
+    if (mounted) setState(() => _uploadState = 'Creating roster job');
+    final id = await _repository.createRosterJob(uploadId: uploadId);
+    _pendingUploadId = null;
+    await _jobStore.save(id);
+    await _watch(id);
   }
 
   Future<void> _watch(String id) async {
@@ -141,6 +186,25 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
   Future<void> _retry() async {
     final roster = _roster;
     if (roster == null) {
+      if (_pendingUploadId != null) {
+        try {
+          setState(() {
+            _error = null;
+            _uploading = true;
+          });
+          await _createPendingJob();
+        } on RosterRepositoryException catch (error) {
+          if (mounted) setState(() => _error = error.message);
+        } finally {
+          if (mounted) {
+            setState(() {
+              _uploading = false;
+              _uploadState = null;
+            });
+          }
+        }
+        return;
+      }
       await _selectAndUpload();
       return;
     }
@@ -336,7 +400,7 @@ class _RosterUploadScreenState extends State<RosterUploadScreen> {
           label: _selecting
               ? 'Selecting…'
               : _uploading
-              ? 'Uploading…'
+              ? '${_uploadState ?? 'Uploading roster'}…'
               : 'Choose roster file',
           icon: Icons.upload_file,
           expand: true,
