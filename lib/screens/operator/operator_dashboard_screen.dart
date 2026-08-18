@@ -76,20 +76,22 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
           .watchOperatorTrips(user.uid)
           .listen(
             (jobs) {
-              if (mounted)
+              if (mounted) {
                 setState(() {
                   _typedJobs = jobs;
                   _loading = false;
                   _error = null;
                 });
+              }
             },
             onError: (_) {
-              if (mounted)
+              if (mounted) {
                 setState(() {
                   _error =
                       'Jobs could not be loaded. Check your connection and try again.';
                   _loading = false;
                 });
+              }
             },
           );
     } catch (_) {
@@ -653,10 +655,11 @@ class _OperatorDashboardScreenState extends State<OperatorDashboardScreen> {
         next: next,
       );
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('The job status could not be updated.')),
         );
+      }
     }
   }
 

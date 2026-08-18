@@ -8,7 +8,25 @@ DateTime? _date(Object? value) => value is Timestamp
     ? DateTime.tryParse(value)
     : null;
 
-enum RosterStatus { uploaded, processing, review, confirmed, failed }
+enum RosterStatus {
+  uploaded,
+  queued,
+  processing,
+  needsReview,
+  confirmed,
+  failed;
+
+  static RosterStatus parse(Object? value) => switch (value) {
+    'uploaded' => uploaded,
+    'queued' => queued,
+    'processing' => processing,
+    'review' || 'needs_review' => needsReview,
+    'confirmed' => confirmed,
+    _ => failed,
+  };
+
+  String get wireName => this == needsReview ? 'needs_review' : name;
+}
 
 class RosterDuty {
   const RosterDuty({
@@ -25,8 +43,9 @@ class RosterDuty {
   final bool confirmed;
   factory RosterDuty.fromMap(Map<String, dynamic> map) {
     final reportAt = _date(map['reportAt']);
-    if (reportAt == null)
+    if (reportAt == null) {
       throw const FormatException('Roster duty reportAt is invalid.');
+    }
     return RosterDuty(
       id: map['id']?.toString() ?? '',
       flightNumber: map['flightNumber']?.toString() ?? '',
@@ -62,13 +81,10 @@ class Roster {
   factory Roster.fromMap(String id, Map<String, dynamic> map) {
     final createdAt = _date(map['createdAt']);
     final updatedAt = _date(map['updatedAt']);
-    if (createdAt == null || updatedAt == null)
+    if (createdAt == null || updatedAt == null) {
       throw const FormatException('Roster timestamps are invalid.');
-    final status =
-        RosterStatus.values
-            .where((value) => value.name == map['status'])
-            .firstOrNull ??
-        RosterStatus.failed;
+    }
+    final status = RosterStatus.parse(map['status']);
     return Roster(
       id: id,
       crewId: map['crewId']?.toString() ?? '',
@@ -83,13 +99,9 @@ class Roster {
   }
   Map<String, dynamic> toMap() => {
     'crewId': crewId,
-    'status': status.name,
+    'status': status.wireName,
     'duties': duties.map((duty) => duty.toMap()).toList(),
     'createdAt': Timestamp.fromDate(createdAt),
     'updatedAt': Timestamp.fromDate(updatedAt),
   };
-}
-
-extension _FirstOrNull<T> on Iterable<T> {
-  T? get firstOrNull => isEmpty ? null : first;
 }

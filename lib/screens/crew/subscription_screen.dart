@@ -92,32 +92,29 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         return;
       }
 
-      if (result['success'] == true) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => PaymentWebviewScreen(
-              checkoutUrl: result['checkoutUrl'],
-              amount: price,
-              plan: planName,
-              transactionId: reference,
-            ),
-          ),
-        );
-      } else {
-        // Demo mode — CHIP not configured yet
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => PaymentWebviewScreen(
-              checkoutUrl: result['checkoutUrl'] as String,
-              amount: price,
-              plan: planName,
-              transactionId: reference,
-            ),
-          ),
-        );
+      final checkoutUrl = result['checkoutUrl'];
+      final purchaseId = result['purchaseId'] ?? result['id'];
+      if (checkoutUrl is! String ||
+          checkoutUrl.isEmpty ||
+          purchaseId is! String ||
+          purchaseId.isEmpty) {
+        setState(() {
+          errorMessage = 'The payment service returned an invalid checkout.';
+          isLoading = false;
+        });
+        return;
       }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PaymentWebviewScreen(
+            checkoutUrl: checkoutUrl,
+            amount: price,
+            plan: planName,
+            transactionId: purchaseId,
+          ),
+        ),
+      );
     } catch (e) {
       setState(() => errorMessage = 'Something went wrong. Please try again.');
     }

@@ -73,20 +73,22 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
           .watchCrewTrips(user.uid)
           .listen(
             (trips) {
-              if (mounted)
+              if (mounted) {
                 setState(() {
                   _trips = trips;
                   _loading = false;
                   _error = null;
                 });
+              }
             },
             onError: (_) {
-              if (mounted)
+              if (mounted) {
                 setState(() {
                   _error =
                       'Trips could not be loaded. Check your connection and try again.';
                   _loading = false;
                 });
+              }
             },
           );
     } catch (error) {
@@ -389,8 +391,9 @@ class _CrewDashboardScreenState extends State<CrewDashboardScreen> {
   String _countdown(DateTime pickup) {
     final value = pickup.difference(DateTime.now());
     if (value.isNegative) return 'now';
-    if (value.inHours > 0)
+    if (value.inHours > 0) {
       return '${value.inHours}h ${value.inMinutes.remainder(60)}m';
+    }
     return '${value.inMinutes}m';
   }
 
